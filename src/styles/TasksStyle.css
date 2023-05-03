@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  font-family: 'PT Sans', sans-serif;
+  
+  
+}
+
+.container{
+  font-weight: 250;
+  display: flex;
+  height: 50vh;
+  margin-left: 230px;
+  margin-top: 90px;
+  flex-direction: column;
+  
+
+}
+
+.header{
+  
+  font-size: 3rem;
+  font-weight: 600;
+  margin-left: 230px;
+  margin-top: 150px; 
+}
+
+
+.btn1 {
+  padding: 8px 22px;
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  font-size: 20px;
+  color: #030303;
+  cursor: pointer;
+  background-color: #c9b296;
+}
+
+.btn-active {
+  padding: 8px 22px;
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  font-size: 20px;
+  color: #030303;
+  cursor: pointer;
+  background-color: #6e532b;
+}
+
+.tab-buttons{
+
+  margin-bottom: 50px;
+}

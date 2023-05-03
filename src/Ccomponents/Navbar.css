@@ -1,0 +1,120 @@
+.navbar {
+  background-color: rgb(214 211 209);
+  width: 200px; /* Set the width of the navbar */
+  height: 100vh; /* Set the height of the navbar to take up the full viewport height */
+  position: fixed; /* Fix the position of the navbar */
+  top: 0; /* Align the top of the navbar with the top of the viewport */
+  left: 0; /* Align the left of the navbar with the left of the viewport */
+}
+
+
+.navbar-logo {
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.fa-firstdraft {
+  margin-left: 0.5rem;
+  font-size: 1.6rem;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.nav-menu > li {
+  display: flex;
+}
+
+.nav-item {
+  height: 90px;
+  justify-content: center;
+}
+
+.nav-links {
+  color: rgb(20, 19, 19);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: flex;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  font-size: 21px;
+}
+
+
+.nav-links:hover {
+  background-color: #c9b296;
+  border-radius: 30px;
+  transition: all 0.2s ease-out;
+}
+
+.fa-bars {
+  color: #fff;
+}
+
+.nav-links-mobile {
+  display: none;
+  color: white;
+  text-decoration: none;
+}
+
+.menu-icon {
+  display: none;
+}
+
+@media screen and (max-width: 960px) {
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90vh;
+    position: absolute;
+    top: 80px;
+    left: -100%;
+    transition: all 0.5s ease;
+  }
+
+  .nav-menu.active {
+    background: #242222;
+    left: 0;
+    transition: all 0.5s ease;
+    z-index: 1;
+  }
+
+  .nav-links:hover {
+    background-color: #1888ff;
+    border-radius: inherit;
+  }
+
+  .navbar-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(25%, 50%);
+  }
+
+  .menu-icon {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, 60%);
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  .fa-times {
+    color: #fff;
+    font-size: 2rem;
+  }
+}

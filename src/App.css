@@ -1,0 +1,66 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  font-family: 'PT Sans', sans-serif;
+  
+  
+}
+
+.home,
+.services,
+.Inventory,
+.Tasks,
+.Chat,
+.Create_Task,
+.guest-manager
+{
+  display: flex;
+  height: 90vh;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  
+}
+
+.home {
+  font-size: 50px;
+
+}
+
+.services {
+  font-size: 50px;
+}
+
+.guest-manager {
+  font-size: 50px;
+
+}
+
+.Chat {
+  font-size: 50px;
+
+}
+
+.Create_Task {
+  font-size: 50px;
+
+}
+
+.Tasks {
+  font-size: 50px;
+
+}
+
+.Inventory {
+  font-size: 50px;
+}
+
+
+/* .services {
+  background-image: url('./images/img-2.jpg'); 
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-size: 50px;
+} */
