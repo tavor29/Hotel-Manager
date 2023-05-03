@@ -1,10 +1,11 @@
 import React from "react";
 
 const HouseHoldTaskRow = ({ item, deleteFunc, key }) => {
-  const { requestID, amount, name, requestDate, requestHour } = item;
+  const { requestID, amount, name, roomNumber, requestDate, requestHour } =
+    item;
   const date = new Date(requestDate);
-  const formattedCheckInDate = date.toLocaleDateString("en-GB");
-  const formattedrequestHour = requestHour.substring(0, 5);
+  const formattedRequestDate = date.toLocaleDateString("en-GB");
+  const formattedRequestHour = requestHour.substring(0, 5);
   return (
     <div
       style={{
@@ -16,13 +17,15 @@ const HouseHoldTaskRow = ({ item, deleteFunc, key }) => {
     >
       <div style={{ flex: "1", textAlign: "center" }}>{requestID} </div>
       <div style={{ flex: "1", textAlign: "center" }}>{amount}</div>
-      <div style={{ flex: "1", textAlign: "center" }}>{name}</div>
+      <div style={{ flex: "1", textAlign: "center" }}>{name || "N/A"}</div>
       <div style={{ flex: "1", textAlign: "center" }}>
-        {" "}
-        {formattedCheckInDate}
+        {formattedRequestDate}
       </div>
       <div style={{ flex: "1", textAlign: "center" }}>
-        {formattedrequestHour}{" "}
+        {formattedRequestHour}
+      </div>
+      <div style={{ flex: "1", textAlign: "center" }}>
+        {roomNumber || "N/A"}
       </div>
       <div
         style={{ flex: "1", textAlign: "center" }}
@@ -31,7 +34,6 @@ const HouseHoldTaskRow = ({ item, deleteFunc, key }) => {
         <input type="checkbox" />{" "}
       </div>
     </div>
-    // onClick={() => deleteRow.mutate(indyex)}
   );
 };
 

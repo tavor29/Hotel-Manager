@@ -8,6 +8,7 @@ import {
 } from "react-query";
 import "../../styles/TasksStyle.css";
 import HouseHoldTaskRow from "../HouseHoldTaskRow";
+import Form from "../AddTaskForm";
 
 const fetchTable = async () => {
   const res = await fetch(
@@ -133,77 +134,23 @@ function TableComponent() {
             padding: "9px 0",
           }}
         >
-          <div style={{ flex: "1", textAlign: "center" }}>Request ID</div>
           <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
           <div style={{ flex: "1", textAlign: "center" }}>Name</div>
           <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
-          <div style={{ flex: "1", textAlign: "center" }}>Request Hour</div>
+          <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
+          <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
           <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
         </div>
         {tasks.map((item, index) => (
           <HouseHoldTaskRow item={item} key={index} deleteFunc={handleDelete} />
         ))}
-
+        <Form
+          addRow={addRow}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+          newRow={newRow}
+        />
         {isFetching && <p>Refreshing...</p>}
-        <form onSubmit={handleSubmit}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              borderBottom: "1px solid black",
-              padding: "10px 0",
-            }}
-          >
-            <input
-              type="text"
-              name="requestID"
-              placeholder="Request ID"
-              value={newRow.requestID}
-              onChange={handleInputChange}
-              style={{ flex: "1", textAlign: "center" }}
-            />
-            <input
-              type="text"
-              name="amount"
-              placeholder="Amount"
-              value={newRow.amount}
-              onChange={handleInputChange}
-              style={{ flex: "1", textAlign: "center" }}
-            />
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={newRow.name}
-              onChange={handleInputChange}
-              style={{ flex: "1", textAlign: "center" }}
-            />
-            <input
-              type="text"
-              name="requestDate"
-              placeholder="Request Date"
-              value={newRow.requestDate}
-              onChange={handleInputChange}
-              style={{ flex: "1", textAlign: "center" }}
-            />
-            <input
-              type="text"
-              name="requestHour"
-              placeholder="Request Hour"
-              value={newRow.requestHour}
-              onChange={handleInputChange}
-              style={{ flex: "1", textAlign: "center" }}
-            />
-          </div>
-          {isFetching && <p>Refreshing...</p>}
-          <button
-            type="submit"
-            className="btn1"
-            onClick={() => addRow.mutate()}
-          >
-            Create Task
-          </button>
-        </form>
       </div>
     </>
   );
