@@ -24,10 +24,12 @@ const HouseHoldTaskRow = ({ item, deleteFunc, key }) => {
       <div style={{ flex: "1", textAlign: "center" }}>
         {formattedrequestHour}{" "}
       </div>
-      <div style={{ flex: "1", textAlign: "center" }}>
+      <div
+        style={{ flex: "1", textAlign: "center" }}
+        onClick={() => deleteFunc(key)}
+      >
         <input type="checkbox" />{" "}
       </div>
-      <button onClick={() => deleteFunc(key)}>Delete</button>
     </div>
     // onClick={() => deleteRow.mutate(indyex)}
   );

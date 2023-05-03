@@ -24,6 +24,8 @@ function TableComponent() {
   const { data, isLoading, isError, isFetching } = useQuery(
     "tableData",
     fetchTable
+
+    // { refetchInterval: 30000 }
   );
 
   useEffect(() => {
@@ -193,13 +195,7 @@ function TableComponent() {
               style={{ flex: "1", textAlign: "center" }}
             />
           </div>
-          <div style={{ flex: "1", textAlign: "center" }}>
-            <input
-              type="checkbox"
-              name="complete"
-              onChange={handleInputChange}
-            />
-          </div>
+          {isFetching && <p>Refreshing...</p>}
           <button
             type="submit"
             className="btn1"
