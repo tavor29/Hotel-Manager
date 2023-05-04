@@ -2,14 +2,11 @@ import React, { useState } from "react";
 
 function AddTaskForm({ addRow, handleInputChange, handleSubmit, newRow }) {
   const currentDate = new Date();
-  const currentHour = currentDate.getHours();
-  const currentMinute = currentDate.getMinutes();
 
   const getTimeOptions = () => {
     const options = [];
 
     const now = new Date();
-    const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
 
     for (let hour = 0; hour < 24; hour++) {
@@ -84,25 +81,25 @@ function AddTaskForm({ addRow, handleInputChange, handleSubmit, newRow }) {
               style={{ flex: "1", textAlign: "center" }}
             />
 
-            <input // dateOptions
-              list="dateOptions"
+            <input // DateOptions
+              list="DateOptions"
               name="requestDate"
-              placeholder="Request Date"
+              placeholder="Requested Date"
               value={newRow.requestDate}
               onChange={handleInputChange}
               style={{ flex: "1", textAlign: "center" }}
             />
-            <datalist id="dateOptions">{getDateOptions()}</datalist>
+            <datalist id="DateOptions">{getDateOptions()}</datalist>
 
-            <input //timeOptions
-              list="timeOptions"
+            <input //HourOptions
+              type="time"
               name="requestHour"
-              placeholder="Request Time"
+              placeholder="Requested Time"
               value={newRow.requestHour}
               onChange={handleInputChange}
               style={{ flex: "1", textAlign: "center" }}
             />
-            <datalist id="timeOptions">{getTimeOptions()}</datalist>
+            <datalist id="HourOptions">{getTimeOptions()}</datalist>
 
             <input // roomNumber
               type="text"

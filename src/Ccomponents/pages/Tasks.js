@@ -35,13 +35,7 @@ function TableComponent() {
     }
   }, [data]);
 
-  const [newRow, setNewRow] = useState({
-    requestID: "",
-    amount: "",
-    name: "",
-    requestDate: "",
-    requestHour: "",
-  });
+  const [newRow, setNewRow] = useState({});
 
   const [tasks, setTasks] = useState([]);
 
@@ -85,7 +79,7 @@ function TableComponent() {
           body: JSON.stringify(newRow),
         }
       );
-      console.log("fetching");
+      console.log("Posting");
     },
     {
       onSuccess: () => {
@@ -102,16 +96,34 @@ function TableComponent() {
     }));
   };
 
+  const GetUid = () => {
+    const uid =
+      Date.now().toString(36) + Math.random().toString(36).substring(2);
+    console.log(uid);
+    return uid;
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
-    addRow.mutate();
+
+    const date = new Date();
+    const currentMinute = date.getMinutes().toString();
+    const RequestDate = date.toLocaleDateString("en-GB");
+    const RequestHour = currentMinute?.substring(0, 5);
+    console.log(RequestDate + "  , " + RequestHour + "  , " + { GetUid });
+
     setNewRow({
-      requestID: "",
+      requestID: { GetUid },
+      itemNames: "",
+      typeID: "",
       amount: "",
-      name: "",
-      requestDate: "",
-      requestHour: "",
+      requestDate: { RequestDate },
+      requestTime: { RequestHour },
+      roomNumber: "",
+      requestedDate: "",
+      requestedHour: "",
+      IsMarked: "",
     });
+    addRow.mutate();
   };
 
   if (isLoading) {
@@ -134,13 +146,22 @@ function TableComponent() {
             padding: "9px 0",
           }}
         >
+          <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
           <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
           <div style={{ flex: "1", textAlign: "center" }}>Name</div>
           <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
-          <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
+          <div style={{ flex: "1", textAlign: "center" }}>Requested Time</div>
+          <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+            Requested Date{" "}
+          </div>
+          <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+            {" "}
+            Requested Time
+          </div>
           <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
           <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
         </div>
+
         {tasks.map((item, index) => (
           <HouseHoldTaskRow item={item} key={index} deleteFunc={handleDelete} />
         ))}
