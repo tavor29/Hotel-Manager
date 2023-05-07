@@ -1,6 +1,6 @@
 import React from "react";
 
-const HouseHoldTaskRow = ({ item, deleteFunc, key }) => {
+const HouseHoldTaskRow = ({ item, deleteFunc, key, setIsMarked }) => {
   const {
     requestID,
     amount,
@@ -10,14 +10,16 @@ const HouseHoldTaskRow = ({ item, deleteFunc, key }) => {
     requestHour,
     requestedDate,
     requestedHour,
-  } = item;
+  } = item; // item is passed from Tasks.js
 
   const date = new Date(requestDate);
   const RequestDate = date.toLocaleDateString("en-GB");
-  const RequestHour = requestHour.substring(0, 5);
+  const RequestHour = requestHour?.substring(0, 5);
 
   const date2 = new Date(requestedDate);
-  const RequestedDate = date2.toLocaleDateString("en-GB");
+  const RequestedDate = requestedDate
+    ? date2.toLocaleDateString("en-GB")
+    : null;
   const RequestedHour = requestedHour?.substring(0, 5);
   return (
     <div
@@ -34,8 +36,12 @@ const HouseHoldTaskRow = ({ item, deleteFunc, key }) => {
       <div style={{ flex: "1", textAlign: "center" }}>{name || "N/A"}</div>
       <div style={{ flex: "1", textAlign: "center" }}> {RequestDate} </div>
       <div style={{ flex: "1", textAlign: "center" }}> {RequestHour}</div>
-      <div style={{ flex: "1", textAlign: "center" }}>{RequestedDate}</div>
-      <div style={{ flex: "1", textAlign: "center" }}>{RequestedHour}</div>
+      <div style={{ flex: "1", textAlign: "center" }}>
+        {RequestedDate || "ASAP"}
+      </div>
+      <div style={{ flex: "1", textAlign: "center" }}>
+        {RequestedHour || "ASAP"}
+      </div>
       <div style={{ flex: "1", textAlign: "center" }}>
         {" "}
         {roomNumber || "N/A"}
@@ -46,7 +52,10 @@ const HouseHoldTaskRow = ({ item, deleteFunc, key }) => {
         onClick={() => deleteFunc(key)}
       >
         {" "}
-        <input type="checkbox" />{" "}
+        <input
+          type="checkbox"
+          onChange={() => setIsMarked(requestID, name)}
+        />{" "}
       </div>
     </div>
   );

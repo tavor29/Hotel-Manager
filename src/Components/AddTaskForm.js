@@ -1,28 +1,62 @@
-import React from "react";
-
-function AddTaskForm({ addRow, handleInputChange, handleSubmit, newRow }) {
+import React, { useEffect, useState } from "react";
+function AddTaskForm({ setNewRow, handleSubmit }) {
   const currentDate = new Date();
 
-  const getTimeOptions = () => {
-    const options = [];
+  const [dataList, setDataList] = useState([]);
+  const [amount, setAmount] = useState("");
+  const [requestedDate, setrequestedDate] = useState("");
+  const [requestedHour, setrequestedHour] = useState("");
+  const [roomNumber, setRoomNumber] = useState("");
+  const [type, setType] = useState("");
 
-    const now = new Date();
-    const currentMinute = now.getMinutes();
+  useEffect(() => {
+    getData();
+  }, []);
 
-    for (let hour = 0; hour < 24; hour++) {
-      const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
-      const formattedMinute =
-        currentMinute < 10 ? `0${currentMinute}` : `${currentMinute}`;
-      const time = `${formattedHour}:${formattedMinute}`;
-
-      options.push(
-        <option key={`option-${hour}`} value={time}>
-          {time}
-        </option>
-      );
+  useEffect(() => {
+    if (
+      amount != "" ||
+      requestedDate != "" ||
+      requestedHour != "" ||
+      roomNumber != "" ||
+      type != ""
+    ) {
+      setNewRow({
+        amount,
+        requestedDate,
+        requestedHour,
+        roomNumber,
+        typeID: type,
+      });
     }
-    return options;
+  }, [amount, requestedDate, requestedHour, roomNumber, type]);
+
+  const getData = async () => {
+    try {
+      const res = await fetch(
+        "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomTypes"
+      );
+      if (res.ok) {
+        const json = await res.json();
+        setDataList(json);
+      }
+    } catch (error) {}
   };
+
+  // const fetchTable = async () => {
+  //   try {
+  //     const res = await fetch(
+  //       "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomTypes"
+  //     );
+  //     if (res.ok) {
+  //       const json = await res.json();
+  //       Datalist(json);
+  //     }
+  //     return res.json();
+  //   } catch (error) {}
+  // };
+
+  // console.log(fetchTable);
 
   const getDateOptions = () => {
     const options = [];
@@ -56,65 +90,54 @@ function AddTaskForm({ addRow, handleInputChange, handleSubmit, newRow }) {
               padding: "10px 0",
             }}
           >
-            <input //itemNames
-              list="names"
-              name="itemNames"
+            <select
+              name="name"
               placeholder="Name"
-              value={newRow.myBrowser}
-              onChange={handleInputChange}
               style={{ flex: "1", textAlign: "center" }}
-            />
-            <datalist id="names">
-              <option value="Towel" />
-              <option value="Toilet Paper" />
-              <option value="Condoms" />
-              <option value="Room Service" />
-              <option value="Cleaning" />
-            </datalist>
+              onChange={(e) => setType(e.target.value)}
+            >
+              {dataList.map((item) => (
+                <option value={item.typeID} key={item.typeID}>
+                  {item.name} Id = {item.typeID}
+                </option>
+              ))}
+            </select>
 
             <input //Amount
               type="text"
-              name="amount"
+              value={amount}
               placeholder="Amount"
-              value={newRow.amount}
-              onChange={handleInputChange}
+              onChange={(e) => setAmount(e.target.value)}
               style={{ flex: "1", textAlign: "center" }}
             />
 
             <input // DateOptions
               list="DateOptions"
-              name="requestDate"
+              value={requestedDate}
               placeholder="Requested Date"
-              value={newRow.requestDate}
-              onChange={handleInputChange}
+              onChange={(e) => setrequestedDate(e.target.value)}
               style={{ flex: "1", textAlign: "center" }}
             />
             <datalist id="DateOptions">{getDateOptions()}</datalist>
 
             <input //HourOptions
               type="time"
-              name="requestHour"
+              value={requestedHour}
               placeholder="Requested Time"
-              value={newRow.requestHour}
-              onChange={handleInputChange}
+              onChange={(e) => setrequestedHour(e.target.value)}
               style={{ flex: "1", textAlign: "center" }}
             />
-            <datalist id="HourOptions">{getTimeOptions()}</datalist>
+            {/* <datalist id="HourOptions">{getTimeOptions()}</datalist> */}
 
             <input // roomNumber
               type="text"
-              name="roomNumber"
+              value={roomNumber}
               placeholder="Room Number"
-              value={newRow.roomNumber}
-              onChange={handleInputChange}
+              onChange={(e) => setRoomNumber(e.target.value)}
               style={{ flex: "1" }}
             />
 
-            <button
-              type="submit"
-              className="btn1"
-              onClick={() => addRow.mutate()}
-            >
+            <button type="submit" className="btn1" onClick={handleSubmit}>
               Create Task
             </button>
           </div>
@@ -125,3 +148,24 @@ function AddTaskForm({ addRow, handleInputChange, handleSubmit, newRow }) {
 }
 
 export default AddTaskForm;
+
+// const getTimeOptions = () => {
+//   const options = [];
+
+//   const now = new Date();
+//   const currentMinute = now.getMinutes();
+
+//   for (let hour = 0; hour < 24; hour++) {
+//     const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
+//     const formattedMinute =
+//       currentMinute < 10 ? `0${currentMinute}` : `${currentMinute}`;
+//     const time = `${formattedHour}:${formattedMinute}`;
+
+//     options.push(
+//       <option key={`option-${hour}`} value={time}>
+//         {time}
+//       </option>
+//     );
+//   }
+//   return options;
+// };

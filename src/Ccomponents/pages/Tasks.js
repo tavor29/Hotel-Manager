@@ -12,7 +12,7 @@ import Form from "../../Components/AddTaskForm";
 
 const fetchTable = async () => {
   const res = await fetch(
-    "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1001"
+    "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1002"
   );
   return res.json();
 };
@@ -24,9 +24,9 @@ function TableComponent() {
 
   const { data, isLoading, isError, isFetching } = useQuery(
     "tableData",
-    fetchTable
+    fetchTable,
 
-    // { refetchInterval: 30000 }
+    { refetchInterval: 60000 }
   );
 
   useEffect(() => {
@@ -69,17 +69,20 @@ function TableComponent() {
 
   const addRow = useMutation(
     async () => {
+      const postObject = GetRequestObject();
       await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1001",
+        `http://proj.ruppin.ac.il/cgroup97/test2/api/AdminCreateHouseHoldRequest?roomNum=${newRow.roomNumber}&hotelID=1002`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newRow),
+          body: JSON.stringify(postObject),
         }
       );
       console.log("Posting");
+      const obj = JSON.stringify(GetRequestObject());
+      console.log(obj);
     },
     {
       onSuccess: () => {
@@ -88,51 +91,100 @@ function TableComponent() {
     }
   );
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setNewRow((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const GetUid = () => {
-    const uid =
-      Date.now().toString(36) + Math.random().toString(36).substring(2);
-    console.log(uid);
-    return uid;
-  };
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const date = new Date();
-    const currentMinute = date.getMinutes().toString();
-    const RequestDate = date.toLocaleDateString("en-GB");
-    const RequestHour = currentMinute?.substring(0, 5);
-    console.log(RequestDate + "  , " + RequestHour + "  , " + { GetUid });
-
-    setNewRow({
-      requestID: { GetUid },
-      itemNames: "",
-      typeID: "",
-      amount: "",
-      requestDate: { RequestDate },
-      requestTime: { RequestHour },
-      roomNumber: "",
-      requestedDate: "",
-      requestedHour: "",
-      IsMarked: "",
-    });
-    addRow.mutate();
+    if (newRow.amount != "" && newRow.roomNumber != "") {
+      addRow.mutate();
+    }
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <span className="header">Loading Requests</span>;
   }
 
   if (isError) {
-    return <div>Error fetching data</div>;
+    console.log("error fetch");
+    return <span className="header">Error Loading Requests</span>;
   }
+
+  const GetRequestObject = () => {
+    //creating the parent
+    let retVal = {};
+    const requestID = parseInt(
+      Date.now().toString() + Math.floor(Math.random() * 1000)
+    );
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const formattedDate = `${year}/${month}/${day}`;
+    const requestDate = formattedDate;
+    const requestHour = date.toLocaleTimeString("en-US", {
+      hour12: false,
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    });
+    const status = "open";
+
+    retVal["requestID"] = requestID;
+    retVal["requestDate"] = requestDate;
+    retVal["requestHour"] = requestHour;
+    retVal["status"] = status;
+
+    //creating the children
+    const houseHold_Request = {};
+    houseHold_Request["requestID"] = requestID;
+
+    const requestInOrder = [];
+
+    if (newRow.requestedDate || newRow.requestedHour) {
+      const requestedDate = newRow.requestedDate;
+      const requestedHour = newRow.requestedHour;
+
+      requestInOrder[0] = {
+        requestID,
+        requestedDate,
+        requestedHour,
+      };
+    } else {
+      requestInOrder[0] = { requestID };
+    }
+
+    //creating the grand children
+    const addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
+    const houseHold_Custom_Request = [addedCustomRequest];
+
+    // setting the grand child to his parent
+    houseHold_Request["HouseHold_Custom_Request"] = houseHold_Custom_Request;
+
+    //setting the childredn to the parent
+    retVal["HouseHold_Request"] = houseHold_Request;
+    retVal["Request_In_Order"] = requestInOrder;
+
+    return retVal;
+  };
+
+  const setIsMarked = (reqID, name) => {
+    const changedTask = tasks.filter(
+      (task) => task.requestID == reqID && task.name == name
+    );
+
+    if (changedTask.length > 0) {
+      changedTask[0].isMarked = true;
+    }
+
+    console.log(changedTask);
+
+    const prevTasks = tasks.filter(
+      (task) => task.requestID != reqID && task.name != name
+    );
+    prevTasks.push(changedTask);
+
+    console.log(prevTasks);
+
+    setTasks(prevTasks);
+  };
 
   return (
     <>
@@ -150,7 +202,7 @@ function TableComponent() {
           <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
           <div style={{ flex: "1", textAlign: "center" }}>Name</div>
           <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
-          <div style={{ flex: "1", textAlign: "center" }}>Requested Time</div>
+          <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
           <div style={{ flex: "1", textAlign: "center", color: "red" }}>
             Requested Date{" "}
           </div>
@@ -162,12 +214,21 @@ function TableComponent() {
           <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
         </div>
 
-        {tasks.map((item, index) => (
-          <HouseHoldTaskRow item={item} key={index} deleteFunc={handleDelete} />
-        ))}
+        {tasks.map(
+          (item, index) =>
+            !item.isMarked && (
+              <HouseHoldTaskRow
+                item={item}
+                key={index}
+                deleteFunc={handleDelete}
+                setIsMarked={setIsMarked}
+              />
+            )
+        )}
         <Form
+          types={"Toiletries"}
           addRow={addRow}
-          handleInputChange={handleInputChange}
+          setNewRow={setNewRow}
           handleSubmit={handleSubmit}
           newRow={newRow}
         />

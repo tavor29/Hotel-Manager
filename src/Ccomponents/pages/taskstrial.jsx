@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import "../../styles/TasksStyle.css";
 import { useTable } from "react-table";
-import TableData from "../JsonFiles/TableData.js";
+
 
 export default function Tasks() {
   const [activeTab, setActiveTab] = useState(0);
   const [combinedData, setCombinedData] = useState(["newData"]);
+  let TableData = '';
+  const fetchTable = async () => {
+    const res = await fetch(
+      "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1002"
+    );
+    TableData = res.json();
+    console.log(TableData);
+    return res.json();
+  };
+
+fetchTable();
+
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
