@@ -31,7 +31,7 @@ function TableComponent() {
 
   useEffect(() => {
     if (data) {
-      setNewTasks(data);
+      setTasks(data);
     }
   }, [data]);
 
@@ -39,23 +39,16 @@ function TableComponent() {
 
   const [tasks, setTasks] = useState([]);
 
-  const setNewTasks = (newTasks) => {
-    const currentTasksIds = [...new Set(tasks.map((task) => task.requestID))];
-    const addedTasks = [...newTasks];
-    addedTasks.filter((task) => !currentTasksIds.includes(task.requestID));
-    if (addedTasks.length > 0) setTasks([...tasks, ...addedTasks]);
-  };
-
-  const handleDelete = (index) => {
-    deleteRow.mutate(index);
+  const setIsMarked = (id, typeID) => {
+    deleteRow.mutate({ id, typeID });
   };
 
   const deleteRow = useMutation(
-    async (id) => {
+    async ({ id, typeID }) => {
       await fetch(
-        `http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1001/${id}`,
+        `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkCustomRequest?requestID=${id}&typeID=${typeID}`,
         {
-          method: "DELETE",
+          method: "PUT",
         }
       );
       console.log("fetching");
@@ -64,9 +57,12 @@ function TableComponent() {
       onSuccess: () => {
         queryClient2.invalidateQueries("tableData");
       },
+      onError: (error) => {
+        console.error(error);
+      },
     }
   );
-
+  
   const addRow = useMutation(
     async () => {
       const postObject = GetRequestObject();
@@ -81,8 +77,6 @@ function TableComponent() {
         }
       );
       console.log("Posting");
-      const obj = JSON.stringify(GetRequestObject());
-      console.log(obj);
     },
     {
       onSuccess: () => {
@@ -165,27 +159,6 @@ function TableComponent() {
     return retVal;
   };
 
-  const setIsMarked = (reqID, name) => {
-    const changedTask = tasks.filter(
-      (task) => task.requestID == reqID && task.name == name
-    );
-
-    if (changedTask.length > 0) {
-      changedTask[0].isMarked = true;
-    }
-
-    console.log(changedTask);
-
-    const prevTasks = tasks.filter(
-      (task) => task.requestID != reqID && task.name != name
-    );
-    prevTasks.push(changedTask);
-
-    console.log(prevTasks);
-
-    setTasks(prevTasks);
-  };
-
   return (
     <>
       <span className="header">Task List</span>
@@ -220,7 +193,6 @@ function TableComponent() {
               <HouseHoldTaskRow
                 item={item}
                 key={index}
-                deleteFunc={handleDelete}
                 setIsMarked={setIsMarked}
               />
             )

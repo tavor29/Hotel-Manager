@@ -98,7 +98,7 @@ function AddTaskForm({ setNewRow, handleSubmit }) {
             >
               {dataList.map((item) => (
                 <option value={item.typeID} key={item.typeID}>
-                  {item.name} Id = {item.typeID}
+                  {item.name.replace(/_/g, " ")}
                 </option>
               ))}
             </select>

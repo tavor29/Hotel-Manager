@@ -1,6 +1,6 @@
 import React from "react";
 
-const HouseHoldTaskRow = ({ item, deleteFunc, key, setIsMarked }) => {
+const HouseHoldTaskRow = ({ item, deleteFunc, setIsMarked }) => {
   const {
     requestID,
     amount,
@@ -10,6 +10,7 @@ const HouseHoldTaskRow = ({ item, deleteFunc, key, setIsMarked }) => {
     requestHour,
     requestedDate,
     requestedHour,
+    typeID
   } = item; // item is passed from Tasks.js
 
   const date = new Date(requestDate);
@@ -23,7 +24,6 @@ const HouseHoldTaskRow = ({ item, deleteFunc, key, setIsMarked }) => {
   const RequestedHour = requestedHour?.substring(0, 5);
   return (
     <div
-      key={key}
       style={{
         display: "flex",
         flexDirection: "row",
@@ -47,15 +47,25 @@ const HouseHoldTaskRow = ({ item, deleteFunc, key, setIsMarked }) => {
         {roomNumber || "N/A"}
       </div>
 
-      <div
-        style={{ flex: "1", textAlign: "center" }}
-        onClick={() => deleteFunc(key)}
-      >
-        {" "}
-        <input
-          type="checkbox"
-          onChange={() => setIsMarked(requestID, name)}
-        />{" "}
+      <div style={{ flex: "1", textAlign: "center" }}>
+        <button
+          onClick={() => setIsMarked(requestID, typeID)}
+          style={{
+            backgroundColor: "#4CAF50",
+            border: "none",
+            color: "white",
+            padding: "12px 24px",
+            textAlign: "center",
+            textDecoration: "none",
+            display: "inline-block",
+            fontSize: 14,
+            margin: 4,
+            cursor: "pointer",
+            borderRadius: "8px",
+          }}
+        >
+          Mark as Done
+        </button>
       </div>
     </div>
   );
