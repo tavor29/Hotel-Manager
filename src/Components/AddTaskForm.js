@@ -40,7 +40,7 @@ function AddTaskForm({ setNewRow, handleSubmit }) {
         const json = await res.json();
         setDataList(json);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   // const fetchTable = async () => {
@@ -95,7 +95,9 @@ function AddTaskForm({ setNewRow, handleSubmit }) {
               placeholder="Name"
               style={{ flex: "1", textAlign: "center" }}
               onChange={(e) => setType(e.target.value)}
+              defaultValue="Select Item"
             >
+              <option disabled>Select Item</option>
               {dataList.map((item) => (
                 <option value={item.typeID} key={item.typeID}>
                   {item.name.replace(/_/g, " ")}

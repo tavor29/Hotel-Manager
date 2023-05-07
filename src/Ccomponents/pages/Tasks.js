@@ -77,19 +77,25 @@ function TableComponent() {
         }
       );
       console.log("Posting");
-      return response.json(); // return the response as JSON
+      return response;
     },
     {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         queryClient2.invalidateQueries("tableData");
-        if(res.type && res.type){
-          if(res.message){
-            alert(res.message);
+        const data = await res.json();
+        console.log(data)
+        if (data.type && data.type == "NonActiveRoom") {
+          if (data.message) {
+            alert(data.message);
           }
+        } else {
+          alert("Please make sure to select an item");
         }
       },
     }
   );
+
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
