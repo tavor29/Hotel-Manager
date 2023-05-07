@@ -33,7 +33,7 @@ const HouseHoldTaskRow = ({ item, deleteFunc, setIsMarked }) => {
     >
       <div style={{ flex: "1", textAlign: "center" }}>{requestID} </div>
       <div style={{ flex: "1", textAlign: "center" }}>{amount}</div>
-      <div style={{ flex: "1", textAlign: "center" }}>{name || "N/A"}</div>
+      <div style={{ flex: "1", textAlign: "center" }}>{name?.replace(/_/g, " ") || "N/A"}</div>
       <div style={{ flex: "1", textAlign: "center" }}> {RequestDate} </div>
       <div style={{ flex: "1", textAlign: "center" }}> {RequestHour}</div>
       <div style={{ flex: "1", textAlign: "center" }}>
