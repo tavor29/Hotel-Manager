@@ -62,11 +62,11 @@ function TableComponent() {
       },
     }
   );
-  
+
   const addRow = useMutation(
     async () => {
       const postObject = GetRequestObject();
-      await fetch(
+      const response = await fetch(
         `http://proj.ruppin.ac.il/cgroup97/test2/api/AdminCreateHouseHoldRequest?roomNum=${newRow.roomNumber}&hotelID=1002`,
         {
           method: "POST",
@@ -77,10 +77,16 @@ function TableComponent() {
         }
       );
       console.log("Posting");
+      return response.json(); // return the response as JSON
     },
     {
-      onSuccess: () => {
+      onSuccess: (res) => {
         queryClient2.invalidateQueries("tableData");
+        if(res.type && res.type){
+          if(res.message){
+            alert(res.message);
+          }
+        }
       },
     }
   );
