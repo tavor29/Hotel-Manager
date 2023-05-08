@@ -87,7 +87,7 @@ function TableComponent() {
         queryClient2.invalidateQueries("tableData");
         const data = await res.json();
         console.log(data);
-        if (data.type && data.type == "NonActiveRoom") {
+        if (data.type && data.type === "NonActiveRoom") {
           if (data.message) {
             alert(data.message);
           }
@@ -100,7 +100,7 @@ function TableComponent() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (newRow.amount != "" && newRow.roomNumber != "") {
+    if (newRow.amount !== "" && newRow.roomNumber !== "") {
       addRow.mutate();
     }
   };
@@ -167,7 +167,7 @@ function TableComponent() {
 
   const CheckIfCustom = () => {
     const customTypeName = dataList?.find(
-      (obj) => obj.typeID == newRow.typeID
+      (obj) => obj.typeID === newRow.typeID
     )?.name;
 
     return customTypeName && customTypeName === "CUSTOM";
