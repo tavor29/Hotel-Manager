@@ -78,8 +78,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
   };
 
   const CheckIfCustom = () => {
-    const customTypeName = dataList?.find(obj => obj.typeID == type)?.name;
-
+    const customTypeName = dataList?.find(obj => obj.typeID == type)?.name;  //returns the type in the datalist fetched from the server.
     return customTypeName && customTypeName === "CUSTOM"
   }
 
@@ -107,8 +106,8 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
                   name="name"
                   placeholder="Name"
                   style={{ textAlign: "center", width: "100%", height: "100%" }}
-                  onChange={(e) => setType(e.target.value)}
-                  value={ type === "" ? "Select Item" : dataList?.find(x => x.typeID === type)?.name}
+                  onChange={(e) => setType(e.target.value)}     //sets type to the chosen value (toiletpaper/towel/shampoo) 
+                  value={ type === "" ? "Select Item" : dataList?.find(x => x.typeID === type)?.name}   //returns the type in the datalist fetched from the server.
                 >
                   <option disabled>Select Item</option>
                   {dataList.map((item) => (
@@ -192,23 +191,3 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
 
 export default AddTaskForm;
 
-// const getTimeOptions = () => {
-//   const options = [];
-
-//   const now = new Date();
-//   const currentMinute = now.getMinutes();
-
-//   for (let hour = 0; hour < 24; hour++) {
-//     const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
-//     const formattedMinute =
-//       currentMinute < 10 ? `0${currentMinute}` : `${currentMinute}`;
-//     const time = `${formattedHour}:${formattedMinute}`;
-
-//     options.push(
-//       <option key={`option-${hour}`} value={time}>
-//         {time}
-//       </option>
-//     );
-//   }
-//   return options;
-// };

@@ -79,6 +79,7 @@ function TableComponent() {
         }
       );
       console.log("Posting");
+      console.log(postObject);
       return response;
     },
     {
@@ -86,8 +87,7 @@ function TableComponent() {
         queryClient2.invalidateQueries("tableData");
         if (res.ok) {
           newRow.clearRow();
-        }
-        else {
+        } else {
           const data = await res.json();
           if (data.type && data.type == "NonActiveRoom") {
             if (data.message) {
@@ -95,26 +95,22 @@ function TableComponent() {
             }
           }
         }
-      }
+      },
     }
   );
-
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (Object.entries(newRow).length != 0) {
       if (newRow.customName === "" && CheckIfCustom()) {
-        alert("Custom item must have a name")
-      }
-      else if (newRow.typeID === "") {
+        alert("Custom item must have a name");
+      } else if (newRow.typeID === "") {
         alert("Please make sure to select an item");
-      }
-      else if (newRow.amount != "" && newRow.roomNumber != "") {
+      } else if (newRow.amount != "" && newRow.roomNumber != "") {
         addRow.mutate();
       }
     } else {
-      alert("Please fill the details for the new request")
+      alert("Please fill the details for the new request");
     }
   };
 
@@ -170,12 +166,14 @@ function TableComponent() {
     const isCustomType = CheckIfCustom();
     let addedCustomRequest;
     if (isCustomType) {
-      addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount, description: newRow.customName };
-    }
-    else {
+      addedCustomRequest = {
+        typeID: newRow.typeID,
+        amount: newRow.amount,
+        description: newRow.customName,
+      };
+    } else {
       addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
     }
-
 
     const houseHold_Custom_Request = [addedCustomRequest];
 
@@ -189,15 +187,17 @@ function TableComponent() {
   };
 
   const CheckIfCustom = () => {
-    const customTypeName = dataList?.find(obj => obj.typeID == newRow.typeID)?.name;
+    const customTypeName = dataList?.find(
+      (obj) => obj.typeID == newRow.typeID
+    )?.name;
 
-    return customTypeName && customTypeName === "CUSTOM"
-  }
+    return customTypeName && customTypeName === "CUSTOM";
+  };
 
   return (
     <>
       <span className="header">Task List</span>
-      {tasks && tasks.length > 0 ?
+      {tasks && tasks.length > 0 ? (
         <div className="container">
           <div
             style={{
@@ -244,15 +244,17 @@ function TableComponent() {
           />
           {isFetching && <p>Refreshing...</p>}
         </div>
-        :
+      ) : (
         <div className="container">
-          <div style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            fontSize: 50,
-            marginBottom: 50
-          }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: 50,
+              marginBottom: 50,
+            }}
+          >
             No tasks have found
           </div>
           <Form
@@ -265,7 +267,7 @@ function TableComponent() {
             setDataList={setDataList}
           />
         </div>
-      }
+      )}
     </>
   );
 }
