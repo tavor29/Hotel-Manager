@@ -39,6 +39,8 @@ function TableComponent() {
 
   const [tasks, setTasks] = useState([]);
 
+  const [dataList, setDataList] = useState([]);
+
   const setIsMarked = (id, typeID) => {
     deleteRow.mutate({ id, typeID });
   };
@@ -152,7 +154,17 @@ function TableComponent() {
     }
 
     //creating the grand children
-    const addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
+
+    const isCustomType = CheckIfCustom();
+    let addedCustomRequest;
+    if (isCustomType) {
+      addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount, description: newRow.customName};
+    }
+    else {
+      addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
+    }
+
+
     const houseHold_Custom_Request = [addedCustomRequest];
 
     // setting the grand child to his parent
@@ -163,6 +175,12 @@ function TableComponent() {
 
     return retVal;
   };
+
+  const CheckIfCustom = () => {
+    const customTypeName = dataList?.find(obj => obj.typeID == newRow.typeID)?.name;
+
+    return customTypeName && customTypeName === "CUSTOM"
+  }
 
   return (
     <>
@@ -209,6 +227,8 @@ function TableComponent() {
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
             newRow={newRow}
+            dataList={dataList}
+            setDataList={setDataList}
           />
           {isFetching && <p>Refreshing...</p>}
         </div>
@@ -223,13 +243,15 @@ function TableComponent() {
           }}>
             No tasks have found
           </div>
-            <Form
-              types={"Toiletries"}
-              addRow={addRow}
-              setNewRow={setNewRow}
-              handleSubmit={handleSubmit}
-              newRow={newRow}
-            />
+          <Form
+            types={"Toiletries"}
+            addRow={addRow}
+            setNewRow={setNewRow}
+            handleSubmit={handleSubmit}
+            newRow={newRow}
+            dataList={dataList}
+            setDataList={setDataList}
+          />
         </div>
       }
     </>
