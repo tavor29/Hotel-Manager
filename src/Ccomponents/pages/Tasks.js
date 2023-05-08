@@ -78,30 +78,43 @@ function TableComponent() {
           body: JSON.stringify(postObject),
         }
       );
-      console.log(postObject);
       console.log("Posting");
       return response;
     },
     {
       onSuccess: async (res) => {
         queryClient2.invalidateQueries("tableData");
-        const data = await res.json();
-        console.log(data);
-        if (data.type && data.type == "NonActiveRoom") {
-          if (data.message) {
-            alert(data.message);
-          }
-        } else {
-          alert("Please make sure to select an item");
+        if (res.ok) {
+          newRow.clearRow();
         }
-      },
+        else {
+          const data = await res.json();
+          if (data.type && data.type == "NonActiveRoom") {
+            if (data.message) {
+              alert(data.message);
+            }
+          }
+        }
+      }
     }
   );
 
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (newRow.amount != "" && newRow.roomNumber != "") {
-      addRow.mutate();
+    if (Object.entries(newRow).length != 0) {
+      if (newRow.customName === "" && CheckIfCustom()) {
+        alert("Custom item must have a name")
+      }
+      else if (newRow.typeID === "") {
+        alert("Please make sure to select an item");
+      }
+      else if (newRow.amount != "" && newRow.roomNumber != "") {
+        addRow.mutate();
+      }
+    } else {
+      alert("Please fill the details for the new request")
     }
   };
 
@@ -153,7 +166,17 @@ function TableComponent() {
     }
 
     //creating the grand children
-    const addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
+
+    const isCustomType = CheckIfCustom();
+    let addedCustomRequest;
+    if (isCustomType) {
+      addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount, description: newRow.customName };
+    }
+    else {
+      addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
+    }
+
+
     const houseHold_Custom_Request = [addedCustomRequest];
 
     // setting the grand child to his parent
@@ -166,17 +189,15 @@ function TableComponent() {
   };
 
   const CheckIfCustom = () => {
-    const customTypeName = dataList?.find(
-      (obj) => obj.typeID == newRow.typeID
-    )?.name;
+    const customTypeName = dataList?.find(obj => obj.typeID == newRow.typeID)?.name;
 
-    return customTypeName && customTypeName === "CUSTOM";
-  };
+    return customTypeName && customTypeName === "CUSTOM"
+  }
 
   return (
     <>
       <span className="header">Task List</span>
-      {tasks && tasks.length > 0 ? (
+      {tasks && tasks.length > 0 ?
         <div className="container">
           <div
             style={{
@@ -223,17 +244,15 @@ function TableComponent() {
           />
           {isFetching && <p>Refreshing...</p>}
         </div>
-      ) : (
+        :
         <div className="container">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: 50,
-              marginBottom: 50,
-            }}
-          >
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: 50,
+            marginBottom: 50
+          }}>
             No tasks have found
           </div>
           <Form
@@ -242,9 +261,11 @@ function TableComponent() {
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
             newRow={newRow}
+            dataList={dataList}
+            setDataList={setDataList}
           />
         </div>
-      )}
+      }
     </>
   );
 }
