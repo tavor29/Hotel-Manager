@@ -76,6 +76,7 @@ function TableComponent() {
           body: JSON.stringify(postObject),
         }
       );
+      console.log(postObject);
       console.log("Posting");
       return response;
     },
@@ -83,8 +84,8 @@ function TableComponent() {
       onSuccess: async (res) => {
         queryClient2.invalidateQueries("tableData");
         const data = await res.json();
-        console.log(data)
-        if (data.type && data.type == "NonActiveRoom") {
+        console.log(data);
+        if (data.type && data.type === "NonActiveRoom") {
           if (data.message) {
             alert(data.message);
           }
@@ -95,11 +96,9 @@ function TableComponent() {
     }
   );
 
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (newRow.amount != "" && newRow.roomNumber != "") {
+    if (newRow.amount !== "" && newRow.roomNumber !== "") {
       addRow.mutate();
     }
   };
@@ -152,7 +151,11 @@ function TableComponent() {
     }
 
     //creating the grand children
-    const addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
+    const addedCustomRequest = {
+      typeID: newRow.typeID,
+      amount: newRow.amount,
+      description: newRow.CustomName,
+    }; //customname
     const houseHold_Custom_Request = [addedCustomRequest];
 
     // setting the grand child to his parent
@@ -167,7 +170,7 @@ function TableComponent() {
   return (
     <>
       <span className="header">Task List</span>
-      {tasks && tasks.length > 0 ?
+      {tasks && tasks.length > 0 ? (
         <div className="container">
           <div
             style={{
@@ -212,26 +215,28 @@ function TableComponent() {
           />
           {isFetching && <p>Refreshing...</p>}
         </div>
-        :
+      ) : (
         <div className="container">
-          <div style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            fontSize: 50,
-            marginBottom: 50
-          }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: 50,
+              marginBottom: 50,
+            }}
+          >
             No tasks have found
           </div>
-            <Form
-              types={"Toiletries"}
-              addRow={addRow}
-              setNewRow={setNewRow}
-              handleSubmit={handleSubmit}
-              newRow={newRow}
-            />
+          <Form
+            types={"Toiletries"}
+            addRow={addRow}
+            setNewRow={setNewRow}
+            handleSubmit={handleSubmit}
+            newRow={newRow}
+          />
         </div>
-      }
+      )}
     </>
   );
 }
