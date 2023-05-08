@@ -116,9 +116,6 @@ function TableComponent() {
   const GetRequestObject = () => {
     //creating the parent
     let retVal = {};
-    const requestID = parseInt(
-      Date.now().toString() + Math.floor(Math.random() * 1000)
-    );
     const date = new Date();
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -133,14 +130,12 @@ function TableComponent() {
     });
     const status = "open";
 
-    retVal["requestID"] = requestID;
     retVal["requestDate"] = requestDate;
     retVal["requestHour"] = requestHour;
     retVal["status"] = status;
 
     //creating the children
     const houseHold_Request = {};
-    houseHold_Request["requestID"] = requestID;
 
     const requestInOrder = [];
 
@@ -149,12 +144,11 @@ function TableComponent() {
       const requestedHour = newRow.requestedHour;
 
       requestInOrder[0] = {
-        requestID,
         requestedDate,
         requestedHour,
       };
-    } else {
-      requestInOrder[0] = { requestID };
+
+      retVal["Request_In_Order"] = requestInOrder;
     }
 
     //creating the grand children
@@ -166,7 +160,6 @@ function TableComponent() {
 
     //setting the childredn to the parent
     retVal["HouseHold_Request"] = houseHold_Request;
-    retVal["Request_In_Order"] = requestInOrder;
 
     return retVal;
   };
@@ -174,50 +167,71 @@ function TableComponent() {
   return (
     <>
       <span className="header">Task List</span>
-      <div className="container">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            borderBottom: "1px solid black",
-            padding: "9px 0",
-          }}
-        >
-          <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
-          <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
-          <div style={{ flex: "1", textAlign: "center" }}>Name</div>
-          <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
-          <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
-          <div style={{ flex: "1", textAlign: "center", color: "red" }}>
-            Requested Date{" "}
+      {tasks && tasks.length > 0 ?
+        <div className="container">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              borderBottom: "1px solid black",
+              padding: "9px 0",
+            }}
+          >
+            <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
+            <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
+            <div style={{ flex: "1", textAlign: "center" }}>Name</div>
+            <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
+            <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
+            <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+              Requested Date{" "}
+            </div>
+            <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+              {" "}
+              Requested Time
+            </div>
+            <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
+            <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
           </div>
-          <div style={{ flex: "1", textAlign: "center", color: "red" }}>
-            {" "}
-            Requested Time
-          </div>
-          <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
-          <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
-        </div>
 
-        {tasks.map(
-          (item, index) =>
-            !item.isMarked && (
-              <HouseHoldTaskRow
-                item={item}
-                key={index}
-                setIsMarked={setIsMarked}
-              />
-            )
-        )}
-        <Form
-          types={"Toiletries"}
-          addRow={addRow}
-          setNewRow={setNewRow}
-          handleSubmit={handleSubmit}
-          newRow={newRow}
-        />
-        {isFetching && <p>Refreshing...</p>}
-      </div>
+          {tasks.map(
+            (item, index) =>
+              !item.isMarked && (
+                <HouseHoldTaskRow
+                  item={item}
+                  key={index}
+                  setIsMarked={setIsMarked}
+                />
+              )
+          )}
+          <Form
+            types={"Toiletries"}
+            addRow={addRow}
+            setNewRow={setNewRow}
+            handleSubmit={handleSubmit}
+            newRow={newRow}
+          />
+          {isFetching && <p>Refreshing...</p>}
+        </div>
+        :
+        <div className="container">
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: 50,
+            marginBottom: 50
+          }}>
+            No tasks have found
+          </div>
+            <Form
+              types={"Toiletries"}
+              addRow={addRow}
+              setNewRow={setNewRow}
+              handleSubmit={handleSubmit}
+              newRow={newRow}
+            />
+        </div>
+      }
     </>
   );
 }
