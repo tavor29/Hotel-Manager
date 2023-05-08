@@ -39,6 +39,8 @@ function TableComponent() {
 
   const [tasks, setTasks] = useState([]);
 
+  const [dataList, setDataList] = useState([]);
+
   const setIsMarked = (id, typeID) => {
     deleteRow.mutate({ id, typeID });
   };
@@ -85,7 +87,7 @@ function TableComponent() {
         queryClient2.invalidateQueries("tableData");
         const data = await res.json();
         console.log(data);
-        if (data.type && data.type === "NonActiveRoom") {
+        if (data.type && data.type == "NonActiveRoom") {
           if (data.message) {
             alert(data.message);
           }
@@ -98,7 +100,7 @@ function TableComponent() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (newRow.amount !== "" && newRow.roomNumber !== "") {
+    if (newRow.amount != "" && newRow.roomNumber != "") {
       addRow.mutate();
     }
   };
@@ -151,11 +153,7 @@ function TableComponent() {
     }
 
     //creating the grand children
-    const addedCustomRequest = {
-      typeID: newRow.typeID,
-      amount: newRow.amount,
-      description: newRow.CustomName,
-    }; //customname
+    const addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
     const houseHold_Custom_Request = [addedCustomRequest];
 
     // setting the grand child to his parent
@@ -165,6 +163,14 @@ function TableComponent() {
     retVal["HouseHold_Request"] = houseHold_Request;
 
     return retVal;
+  };
+
+  const CheckIfCustom = () => {
+    const customTypeName = dataList?.find(
+      (obj) => obj.typeID == newRow.typeID
+    )?.name;
+
+    return customTypeName && customTypeName === "CUSTOM";
   };
 
   return (
@@ -212,6 +218,8 @@ function TableComponent() {
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
             newRow={newRow}
+            dataList={dataList}
+            setDataList={setDataList}
           />
           {isFetching && <p>Refreshing...</p>}
         </div>
