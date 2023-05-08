@@ -9,6 +9,16 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
   const [type, setType] = useState("");
   const [customName, setCustomName] = useState("");
 
+  const clearRow = () =>{
+    setAmount("");
+    setrequestedDate("");
+    setrequestedHour("");
+    setRoomNumber("");
+    setType("");
+    setCustomName("");
+    setNewRow({});
+  }
+
   useEffect(() => {
     getData();
   }, []);
@@ -28,10 +38,11 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
         requestedHour,
         roomNumber,
         typeID: type,
-        customName
+        customName,
+        clearRow
       });
     }
-  }, [amount, requestedDate, requestedHour, roomNumber, type]);
+  }, [amount, requestedDate, requestedHour, roomNumber, type, customName]);
 
   const getData = async () => {
     try {
@@ -45,20 +56,6 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
     } catch (error) { }
   };
 
-  // const fetchTable = async () => {
-  //   try {
-  //     const res = await fetch(
-  //       "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomTypes"
-  //     );
-  //     if (res.ok) {
-  //       const json = await res.json();
-  //       Datalist(json);
-  //     }
-  //     return res.json();
-  //   } catch (error) {}
-  // };
-
-  // console.log(fetchTable);
 
   const getDateOptions = () => {
     const options = [];
@@ -111,7 +108,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
                   placeholder="Name"
                   style={{ textAlign: "center", width: "100%", height: "100%" }}
                   onChange={(e) => setType(e.target.value)}
-                  defaultValue="Select Item"
+                  value={ type === "" ? "Select Item" : dataList?.find(x => x.typeID === type)?.name}
                 >
                   <option disabled>Select Item</option>
                   {dataList.map((item) => (

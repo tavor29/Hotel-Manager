@@ -84,16 +84,18 @@ function TableComponent() {
     {
       onSuccess: async (res) => {
         queryClient2.invalidateQueries("tableData");
-        const data = await res.json();
-        console.log(data)
-        if (data.type && data.type == "NonActiveRoom") {
-          if (data.message) {
-            alert(data.message);
-          }
-        } else {
-          alert("Please make sure to select an item");
+        if (res.ok) {
+          newRow.clearRow();
         }
-      },
+        else {
+          const data = await res.json();
+          if (data.type && data.type == "NonActiveRoom") {
+            if (data.message) {
+              alert(data.message);
+            }
+          }
+        }
+      }
     }
   );
 
@@ -101,8 +103,18 @@ function TableComponent() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (newRow.amount != "" && newRow.roomNumber != "") {
-      addRow.mutate();
+    if (Object.entries(newRow).length != 0) {
+      if (newRow.customName === "" && CheckIfCustom()) {
+        alert("Custom item must have a name")
+      }
+      else if (newRow.typeID === "") {
+        alert("Please make sure to select an item");
+      }
+      else if (newRow.amount != "" && newRow.roomNumber != "") {
+        addRow.mutate();
+      }
+    } else {
+      alert("Please fill the details for the new request")
     }
   };
 
@@ -158,7 +170,7 @@ function TableComponent() {
     const isCustomType = CheckIfCustom();
     let addedCustomRequest;
     if (isCustomType) {
-      addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount, description: newRow.customName};
+      addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount, description: newRow.customName };
     }
     else {
       addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
