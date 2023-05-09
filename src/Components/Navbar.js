@@ -33,18 +33,40 @@ function Navbar() {
         </Link>
         <ul className={click ? "nav-menu active" : "nav-menu"}>
           <li className="nav-item">
-            <Link to="/" className="nav-links">
+            <Link to="/Tasks" className="nav-links">
               Home &nbsp;
               <img src={home} alt="home btn" width="30" height="35" />
             </Link>
           </li>
-
-          <li className="nav-item">
-            <Link to="/Tasks" className="nav-links">
-              Tasks &nbsp;
-              <img src={tasks} alt="home btn" width="30" height="35" />
-            </Link>
-          </li>
+          <div className="nav-links">
+            <div class="dropdown">
+              <button class="dropbtn">
+                Tasks &nbsp;
+                <img src={tasks} alt="home btn" width="30" height="35" />
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-content">
+                <a>
+                  <Link to="/ToiletryTasks">
+                    Toiletry&nbsp;
+                    <img src={tasks} alt="home btn" width="30" height="35" />
+                  </Link>
+                </a>
+                <a>
+                  <Link to="/RoomCleaningTasks">
+                    Room Cleaning&nbsp;
+                    <img src={tasks} alt="home btn" width="30" height="35" />
+                  </Link>
+                </a>
+                <a>
+                  <Link to="/RoomServiceTasks">
+                    Room Service&nbsp;
+                    <img src={tasks} alt="home btn" width="30" height="35" />
+                  </Link>
+                </a>
+              </div>
+            </div>
+          </div>
 
           <li className="nav-item">
             <Link to="/Chat" className="nav-links">

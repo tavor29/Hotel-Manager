@@ -6,9 +6,9 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "react-query";
-import "../../styles/TasksStyle.css";
-import HouseHoldTaskRow from "../../Components/HouseHoldTaskRow";
-import Form from "../../Components/AddTaskForm";
+import "../styles/TasksStyle.css";
+import HouseHoldTaskRow from "./HouseHoldTaskRow";
+import Form from "./AddTaskForm";
 
 const fetchTable = async () => {
   const res = await fetch(
