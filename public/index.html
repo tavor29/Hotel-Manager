@@ -10,9 +10,104 @@
       content="Web site created using create-react-app"
     />
    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-2q3N1VDLOdIlcif7zNTAjxQqK7V5Y5Y5O7VZ9C9ZkKzEoD+RRQU0B0yjKwW8G+xy2Q0d7t4Zz9Jh8tJavGqbHw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      // jquery ready start
+      $(document).ready(function () {
+        // jQuery code
+
+        //////////////////////// Prevent closing from click inside dropdown
+        $(document).on("click", ".dropdown-menu", function (e) {
+          e.stopPropagation();
+        });
+
+        // make it as accordion for smaller screens
+        if ($(window).width() < 992) {
+          $(".dropdown-menu a").click(function (e) {
+            e.preventDefault();
+            if ($(this).next(".submenu").length) {
+              $(this).next(".submenu").toggle();
+            }
+            $(".dropdown").on("hide.bs.dropdown", function () {
+              $(this).find(".submenu").hide();
+            });
+          });
+        }
+      }); // jquery end
+    </script>
+
+    <style type="text/css">
+      @media (min-width: 992px) {
+        .dropdown-menu .dropdown-toggle:after {
+          border-top: 0.3em solid transparent;
+          border-right: 0;
+          border-bottom: 0.3em solid transparent;
+          border-left: 0.3em solid;
+        }
 
    
+        .dropdown-menu li {
+          position: relative;
+        }
+        .nav-item .submenu {
+          display: none;
+          position: absolute;
+          left: 100%;
+          top: -7px;
+        }
+        .nav-item .submenu-left {
+          right: 100%;
+          left: auto;
+        }
+
+        .dropdown-menu > li:hover {
+          background-color: #f1f1f1;
+        }
+        .dropdown-menu > li:hover > .submenu {
+          display: block;
+        }
+      }
+    </style>
+    <style id="custom-cursor" type="text/css">
+      body button,
+      body [type="button"],
+      body input[type="reset"],
+      body input[type="submit"],
+      body [role="button"],
+      ::-webkit-search-cancel-button,
+      ::-webkit-search-decoration,
+      ::-webkit-scrollbar-button,
+      ::-webkit-file-upload-button,
+      [role^="button"],
+      .cc_pointer,
+      [type="search"]::-webkit-search-cancel-button,
+      a,
+      select,
+      [type="search"]::-webkit-search-decoration,
+      .paper-button,
+      .ytp-progress-bar-container,
+      input[type="submit"],
+      :link,
+      :visited,
+      a > *,
+      img,
+      ::-webkit-scrollbar-button,
+      .ogdlpmhglpejoiomcodnpjnfgcpmgale_pointer,
+      ::-webkit-file-upload-button,
+      .ytp-volume-panel,
+      #myogdlpmhglpejoiomcodnpjnfgcpmgale .icon,
+      body .custom-cursor-on-hover {
+        cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAA1xJREFUSEu11mtMU2cYwPF/y6V1gMwJnkYuMkGt1ToEUYFNdMGAyaLTWQnMRD4Z42WjLKbNCNjNLBt4K/O2kYVB4vwwYzRoXC0a2JzJkmqIo4g3vOBMQwUNBSyW6llKR8xKbbtkvN/OeZ/z/J7nvO+bcyT4jM+KiYuLF36NmjxdOeh4st9le1BhOIHLNy7Ua4lvYJmGCp0+e7ciOU/SfNHhbDpxJOPQSW6EmtA3bjywHoOunF2K6TMwXcrFfPr4/AMn6fj/AUU0phYB87muCQIEKaaL4ZjPuyYKANMFMJuZWKDNmvyXNCw80T3yvKHP/uirKdOSZc+c/U753f5uQyvuYGszusifrkYYgGf1TQyUjS2y4O1AvWgtCUlJWK44sf5pvZ+qzEnp7Xlk67T+sa7Xdr9QBJvMxfGaJgb8YRJ9CZq0RL6WReG+aqUWEWF0F/0DpKtBIYRxpzuV2BgH8YoUhiN38r3xy4dFpRVJjqePh5vP1u/YvvvqD36Byk2IHxWCaiHU/Ujn7S5O6cv5/N8A3LnrgSA6CnijmPa2y6iVTyC2CmNNo0Vb3bHYL1C1icfrCohTZUCPnaf7vqVLV86igIAkhvYOJ2qVG+QFGI2dFu2ebv9A9RY+njeTYysKYGgYce9BRO1WpB5gcAjkMggP9+kAaL8OahUgicZ4+LlFu2/EP1BWxFxlIteKS4iYFA2nzsCyHO/rCDRu3oY5s7wRxsNYtPvxD2xby9T0NI5lplO4cClcaPVWJkwLDLhGIDIiBMDTpH4jX2TPo3L1BrD1wJRYkMuD7fBX8wE78IRp17PmvXQasrJ5MzEl9MRjkUGBzZlEJGdwLX8pc5csnwBg9DRr+GlDPiWZuSCb9N+Q2qP8VraXPL/nYOzmjlVMVs+nP/99eHt26ECPHUzNFJVW8XNAwDO5q5SOD1agWpAFkbLgiChC6+/Yf2khZ08jXUEB/UaWpyXQkvcupHkOUZDR2wff1XPg4Ut0dXWMBAUMBqSOTj7JmsM3K1cheyseJOM+qt40nuS1Rzlnj+DD1yX3xI17XKMhLEHClndmUbl4CYJSCdKwV7UNDUFbO4OXLlN/6zq6hlaGAzX6mvpgZxGpCgW57pdUiyKK0WpEXsTEUNPXT+OLXu6F8jvzN7PPQSgsI84DAAAAAElFTkSuQmCC")
+            6 1,
+          pointer !important;
+      }
+      html,
+      body,
+      body select,
+      body .custom-cursor-default-hover {
+        cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAA3xJREFUSEutlX9M1GUcx1/P6dGBqMk0adBRQ37ElUms4WIWYj/NRKdHao7KBbU1vXOZ082IFlsJKrFsDXStuiWDU5e0pdMTDpAscO7QCykhPXDH7S47OOSHx53XuCDvhPO8xvPXd3s+7/fr83k+z/P5im3rGZo7T9bQZxcF18OHzldUMMIULrF7M46335oz03BxGoa2+fu6Lv92rOwojYBnKjii7AN2b3yN7VFRUq73zqW5NdGqO9F0dl+Va9WUAD7MQ5GVgTFzybidYFC6nS/3fNXnJGqH3Xb18N5K/vq/MKFSkvTcs5xb/gKRkmm3bdwijraOBC5dDtOdrfupRggOlmoZChUk1Ku4X5HM1zk5rJ41+w65iGBwWIZ5YKez+rv97VaTKaesht9DgYjR4B0bKHzvHT6KjQ0gFdNhRi5VVX9gumo5ZbF0vDvbTFehHlcwmBewVYlqRSYlWS8hvatA+hj2wVR+afGYW5p0lTab5eD+I7TfTeMFjPYhdQEnczchF5IgOQkpbvEIf7tUNJzWdzXqtAfmCIoLtTgnU3oBo+v9dRg3KVGkLApWtM9+ZB7tnTEcrzk8bLdaF48MW7s+O4Td1+E/gHotP+S8SHZ6JkiCVeHrIH0cwl+m/ozbZepsPWFo1mlKq6m+fenHvrYoSUtP4VzWMoiOCaGK0VARBtI0+iVb6Tb1OA6UqvSfa8n2bvlaFbyBJ1cJ8cl37gQHejzQ71binL7eqSnfVdt+qW1NxY8M+gPexPjKMyieSIf7ZMFNxyM6r0DHnwz0WCTaCxcx2G23yr/RMzyhgqI8Vic+xNHlK2HGzOAAey9oKrnpdqM2XaNOKuPaHg0DkzbZ+x7WoEiIw/j8UliQEhjQfwNO6+nRN1JvFmzUanEHivY7IvU6Hn40Fn18DHHLVk4u6byCp76J2gtt7CyroiVYnX6A/HykyWGUJMlRPZUB86L95bX18POvVPY62HKvE9YPMPaqCzIX8XH0fFi89F+A2w0NZ7hxqo5PPtVQHCzrgD0YA2xYspDyBx8g8skMkIWDwcDNY8fZ29dHUagje0IF+a8SkSjnfGoCSfJ46HfAkZMYHS4yvvgeRyjZT7im42K1ktYVT7NwxAVNRrqLvkUeqvGEUeFroF5LSVYa27ptWEwWsosP0TylgM2vMytSYHffoiTCzK57+bEESuAfBt89KIwKTOoAAAAASUVORK5CYII=")
+            0 0,
+          auto !important;
+      }
+    </style>
     <title>React App</title>
   </head>
   <body>
