@@ -1,6 +1,6 @@
 import React from "react";
 
-const HouseHoldTaskRow = ({ item, deleteFunc, setIsMarked }) => {
+const HouseHoldTaskRow = ({ item, setIsMarked }) => {
   const {
     requestID,
     amount,
@@ -10,7 +10,7 @@ const HouseHoldTaskRow = ({ item, deleteFunc, setIsMarked }) => {
     requestHour,
     requestedDate,
     requestedHour,
-    typeID
+    typeID,
   } = item; // item is passed from Tasks.js
 
   const date = new Date(requestDate);
@@ -33,7 +33,9 @@ const HouseHoldTaskRow = ({ item, deleteFunc, setIsMarked }) => {
     >
       <div style={{ flex: "1", textAlign: "center" }}>{requestID} </div>
       <div style={{ flex: "1", textAlign: "center" }}>{amount}</div>
-      <div style={{ flex: "1", textAlign: "center" }}>{name?.replace(/_/g, " ") || "N/A"}</div>
+      <div style={{ flex: "1", textAlign: "center" }}>
+        {name?.replace(/_/g, " ") || "N/A"}
+      </div>
       <div style={{ flex: "1", textAlign: "center" }}> {RequestDate} </div>
       <div style={{ flex: "1", textAlign: "center" }}> {RequestHour}</div>
       <div style={{ flex: "1", textAlign: "center" }}>

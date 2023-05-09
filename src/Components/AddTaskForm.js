@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Data from "../data/TaskData";
+
 function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
   const currentDate = new Date();
 
@@ -8,8 +10,9 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
   const [roomNumber, setRoomNumber] = useState("");
   const [type, setType] = useState("");
   const [customName, setCustomName] = useState("");
+  const [catagory, setCatagory] = useState("Room Cleaning");
 
-  const clearRow = () =>{
+  const clearRow = () => {
     setAmount("");
     setrequestedDate("");
     setrequestedHour("");
@@ -17,7 +20,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
     setType("");
     setCustomName("");
     setNewRow({});
-  }
+  };
 
   useEffect(() => {
     getData();
@@ -39,7 +42,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
         roomNumber,
         typeID: type,
         customName,
-        clearRow
+        clearRow,
       });
     }
   }, [amount, requestedDate, requestedHour, roomNumber, type, customName]);
@@ -53,9 +56,8 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
         const json = await res.json();
         setDataList(json);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
-
 
   const getDateOptions = () => {
     const options = [];
@@ -78,9 +80,11 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
   };
 
   const CheckIfCustom = () => {
-    const customTypeName = dataList?.find(obj => obj.typeID == type)?.name;  //returns the type in the datalist fetched from the server.
-    return customTypeName && customTypeName === "CUSTOM"
-  }
+    const customTypeName = Data[catagory]?.find(
+      (obj) => obj.typeID == type
+    )?.name; //returns the type in the datalist fetched from the server.
+    return customTypeName && customTypeName === "CUSTOM";
+  };
 
   return (
     <>
@@ -92,59 +96,87 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
               flexDirection: "row",
               borderBottom: "1px solid black",
               padding: "10px 0",
-              height: "100%"
+              height: "100%",
             }}
           >
-            <div style={{
-              width: "40%",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}>
+            <div style={{ width: "13%" }}>
+              <select //catagory
+                name="catagories"
+                placeholder="Select Category"
+                onChange={(e) => setCatagory(e.target.value)}
+                style={{ textAlign: "center", width: "100%", height: "100%" }}
+                value={catagory} //should be set to current category state
+              >
+                <option disabled>Select Category</option>
+                <option value="Room Cleaning">Room Cleaning</option>
+                <option value="Toiletries">Toiletries</option>
+                <option value="Bar">Bar</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Store">Store</option>
+              </select>
+            </div>
+
+            <div
+              style={{
+                width: "40%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-around",
+              }}
+            >
               <div style={{ width: CheckIfCustom() ? "45%" : "90%" }}>
                 <select
                   name="name"
                   placeholder="Name"
                   style={{ textAlign: "center", width: "100%", height: "100%" }}
-                  onChange={(e) => setType(e.target.value)}     //sets type to the chosen value (toiletpaper/towel/shampoo) 
-                  value={ type === "" ? "Select Item" : dataList?.find(x => x.typeID === type)?.name}   //returns the type in the datalist fetched from the server.
+                  onChange={(e) => setType(e.target.value)} //sets type to the chosen value (toiletpaper/towel/shampoo)
+                  value={
+                    type === ""
+                      ? "Select Item"
+                      : Data[catagory]?.find((x) => x.typeID === type)?.name
+                  } //returns the type in the datalist fetched from the server.
                 >
                   <option disabled>Select Item</option>
-                  {dataList.map((item) => (
+                  {Data[catagory].map((item) => (
                     <option value={item.typeID} key={item.typeID}>
                       {item.name.replace(/_/g, " ")}
                     </option>
                   ))}
                 </select>
               </div>
-              {
-                CheckIfCustom() ?
-                  <div style={{ width: "45%" }}>
-                    <input //Amount
-                      type="text"
-                      value={customName}
-                      placeholder="Item name"
-                      onChange={(e) => setCustomName(e.target.value)}
-                      style={{ textAlign: "center", width: "100%", height: "100%" }}
-                    />
-                  </div>
-                  :
-                  ""
-              }
+              {CheckIfCustom() ? (
+                <div style={{ width: "45%" }}>
+                  <input //Amount
+                    type="text"
+                    value={customName}
+                    placeholder="Item name"
+                    onChange={(e) => setCustomName(e.target.value)}
+                    style={{
+                      textAlign: "center",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
             </div>
-            <div style={{
-              width: "60%",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-            }}>
+            <div
+              style={{
+                width: "60%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+              }}
+            >
               <div style={{ width: "13%" }}>
                 <input //Amount
                   type="text"
                   value={amount}
                   placeholder="Amount"
                   onChange={(e) => setAmount(e.target.value)}
-                  style={{textAlign: "center", width: "100%", height: "100%" }}
+                  style={{ textAlign: "center", width: "100%", height: "100%" }}
                 />
               </div>
               <div style={{ width: "23%" }}>
@@ -153,7 +185,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
                   value={requestedDate}
                   placeholder="Requested Date"
                   onChange={(e) => setrequestedDate(e.target.value)}
-                  style={{textAlign: "center", width: "100%", height: "100%" }}
+                  style={{ textAlign: "center", width: "100%", height: "100%" }}
                 />
                 <datalist id="DateOptions">{getDateOptions()}</datalist>
               </div>
@@ -163,9 +195,8 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
                   value={requestedHour}
                   placeholder="Requested Time"
                   onChange={(e) => setrequestedHour(e.target.value)}
-                  style={{textAlign: "center", width: "100%", height: "100%" }}
+                  style={{ textAlign: "center", width: "100%", height: "100%" }}
                 />
-                {/* <datalist id="HourOptions">{getTimeOptions()}</datalist> */}
               </div>
               <div style={{ width: "18%" }}>
                 <input // roomNumber
@@ -173,10 +204,10 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
                   value={roomNumber}
                   placeholder="Room Number"
                   onChange={(e) => setRoomNumber(e.target.value)}
-                  style={{textAlign: "center", width: "100%", height: "100%" }}
+                  style={{ textAlign: "center", width: "100%", height: "100%" }}
                 />
               </div>
-              <div  style={{ width: "18%" }}>
+              <div style={{ width: "18%" }}>
                 <button type="submit" className="btn1" onClick={handleSubmit}>
                   Create Task
                 </button>
@@ -190,4 +221,3 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
 }
 
 export default AddTaskForm;
-

@@ -79,7 +79,6 @@ function TableComponent() {
         }
       );
       console.log("Posting");
-      console.log(postObject);
       return response;
     },
     {
