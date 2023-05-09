@@ -19,7 +19,8 @@ const fetchTable = async () => {
 
 const queryClient = new QueryClient();
 
-function TableComponent() {
+function TableComponent(catagory) {
+  // here I list the category name as props and then will have a function to go over requests only from the category and have the dropdown of items from this list
   const queryClient2 = useQueryClient();
 
   const { data, isLoading, isError, isFetching } = useQuery(
@@ -238,7 +239,7 @@ function TableComponent() {
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
             newRow={newRow}
-            dataList={dataList}
+            dataList={catagory}
             setDataList={setDataList}
           />
           {isFetching && <p>Refreshing...</p>}

@@ -80,7 +80,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
   };
 
   const CheckIfCustom = () => {
-    const customTypeName = Data[catagory]?.find(
+    const customTypeName = Data[dataList]?.find(
       (obj) => obj.typeID == type
     )?.name; //returns the type in the datalist fetched from the server.
     return customTypeName && customTypeName === "CUSTOM";
@@ -108,6 +108,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
                 value={catagory} //should be set to current category state
               >
                 <option disabled>Select Category</option>
+
                 <option value="Room Cleaning">Room Cleaning</option>
                 <option value="Toiletries">Toiletries</option>
                 <option value="Bar">Bar</option>
@@ -115,7 +116,6 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
                 <option value="Store">Store</option>
               </select>
             </div>
-
             <div
               style={{
                 width: "40%",
@@ -133,11 +133,11 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
                   value={
                     type === ""
                       ? "Select Item"
-                      : Data[catagory]?.find((x) => x.typeID === type)?.name
+                      : Data[dataList]?.find((x) => x.typeID === type)?.name
                   } //returns the type in the datalist fetched from the server.
                 >
                   <option disabled>Select Item</option>
-                  {Data[catagory].map((item) => (
+                  {Data[dataList].map((item) => (
                     <option value={item.typeID} key={item.typeID}>
                       {item.name.replace(/_/g, " ")}
                     </option>

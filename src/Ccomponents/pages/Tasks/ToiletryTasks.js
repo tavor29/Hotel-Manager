@@ -1,9 +1,10 @@
 import React from "react";
+import Tasks from "../../../Components/Tasks";
 
 export default function ToiletryTasks() {
   return (
     <>
-      <h1 className="Chat">Chat</h1>
+      <Tasks catagory={"Toiletries"} />
     </>
   );
 }
