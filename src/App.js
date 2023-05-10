@@ -4,7 +4,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
 // pages
-import Home from "./Ccomponents/pages/Home";
+import TasksHome from "./Ccomponents/pages/TasksHome";
 import Services from "./Ccomponents/pages/Services";
 import Tasks from "./Ccomponents/pages/Tasks";
 import Guestmanager from "./Ccomponents/pages/Guest-manager";
@@ -17,7 +17,7 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<TasksHome />} />
         <Route path="/services" element={<Services />} />
         <Route path="/Tasks" element={<Tasks />} />
         <Route path="/Guest_manager" element={<Guestmanager />} />

@@ -19,7 +19,7 @@ const fetchTable = async () => {
 
 const queryClient = new QueryClient();
 
-function TableComponent() {
+function TableComponent(category) {
   const queryClient2 = useQueryClient();
 
   const { data, isLoading, isError, isFetching } = useQuery(
