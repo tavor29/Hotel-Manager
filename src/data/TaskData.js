@@ -13,29 +13,23 @@ const TaskData = {
     { typeID: 11, name: "Pillow" },
     { typeID: 12, name: "CUSTOM" },
   ],
-  Bar: [
+  "Room Service": [
     { typeID: 13, name: "Coca Cola" },
     { typeID: 14, name: "Sprite" },
     { typeID: 15, name: "Heineken" },
     { typeID: 16, name: "Weihenstephan" },
     { typeID: 17, name: "Lemonade" },
-    { typeID: 18, name: "CUSTOM" },
-  ],
-  Restaurant: [
     { typeID: 19, name: "Pizza" },
     { typeID: 20, name: "Hamburger and Fries" },
     { typeID: 21, name: "Grilled Chicken Salad" },
     { typeID: 22, name: "Caesar Salad" },
     { typeID: 23, name: "Spaghetti and Meatballs" },
-    { typeID: 24, name: "CUSTOM" },
-  ],
-  Store: [
+    { typeID: 24, name: "Electronics" },
     { typeID: 25, name: "Wine Bottle" },
     { typeID: 26, name: "Beverages" },
     { typeID: 27, name: "Toiletries" },
     { typeID: 28, name: "Souvenirs" },
-    { typeID: 29, name: "Electronics" },
-    { typeID: 30, name: "CUSTOM" },
+    { typeID: 29, name: "CUSTOM" },
   ],
   "Room Cleaning": [
     { typeID: 31, name: "Only vacuum the floor" },

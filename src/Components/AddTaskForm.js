@@ -3,7 +3,6 @@ import Data from "../data/TaskData";
 
 function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
   const currentDate = new Date();
-  console.log(cat);
 
   const [amount, setAmount] = useState("");
   const [requestedDate, setrequestedDate] = useState("");
@@ -98,23 +97,6 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
               height: "100%",
             }}
           >
-            <div style={{ width: "13%" }}>
-              <select //catagory
-                name="catagories"
-                placeholder="Select Category"
-                onChange={(e) => setCatagory(e.target.value)}
-                style={{ textAlign: "center", width: "100%", height: "100%" }}
-                value={catagory} //should be set to current category state
-              >
-                <option disabled>Select Category</option>
-                <option value="Room Cleaning">Room Cleaning</option>
-                <option value="Toiletries">Toiletries</option>
-                <option value="Bar">Bar</option>
-                <option value="Restaurant">Restaurant</option>
-                <option value="Store">Store</option>
-              </select>
-            </div>
-
             <div
               style={{
                 width: "40%",
