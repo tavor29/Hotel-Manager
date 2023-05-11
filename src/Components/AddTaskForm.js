@@ -132,11 +132,11 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
                   value={
                     type === ""
                       ? "Select Item"
-                      : Data[dataList]?.find((x) => x.typeID === type)?.name
+                      : Data[catagory]?.find((x) => x.typeID === type)?.name
                   } //returns the type in the datalist fetched from the server.
                 >
                   <option disabled>Select Item</option>
-                  {Data[dataList].map((item) => (
+                  {Data[catagory].map((item) => (
                     <option value={item.typeID} key={item.typeID}>
                       {item.name.replace(/_/g, " ")}
                     </option>
