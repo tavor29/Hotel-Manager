@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useQuery,
   useQueryClient,
@@ -16,10 +16,11 @@ const fetchTable = async () => {
   );
   return res.json();
 };
+let cat = "";
 
-const queryClient = new QueryClient();
+const queryClient1 = new QueryClient();
 
-function TableComponent(category) {
+function TableComponent({ props }) {
   const queryClient2 = useQueryClient();
 
   const { data, isLoading, isError, isFetching } = useQuery(
@@ -195,6 +196,7 @@ function TableComponent(category) {
 
   return (
     <>
+      {console.log(cat)}
       <span className="header">Task List</span>
       {tasks && tasks.length > 0 ? (
         <div className="container">
@@ -257,7 +259,7 @@ function TableComponent(category) {
             No tasks have found
           </div>
           <Form
-            types={"Toiletries"}
+            type={cat}
             addRow={addRow}
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
@@ -271,9 +273,10 @@ function TableComponent(category) {
   );
 }
 
-export default function Tasks() {
+export default function Tasks(props) {
+  cat = props.category;
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient1}>
       <TableComponent />
     </QueryClientProvider>
   );

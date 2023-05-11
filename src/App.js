@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 // pages
 import TasksHome from "./Ccomponents/pages/TasksHome";
 import Services from "./Ccomponents/pages/Services";
-import Tasks from "./Ccomponents/pages/Tasks";
+import Tasks from "./Ccomponents/pages/TabTasks";
 import Guestmanager from "./Ccomponents/pages/Guest-manager";
 import Chat from "./Ccomponents/pages/Chat";
 import Inventory from "./Ccomponents/pages/Inventory"; //Create_Task
