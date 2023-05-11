@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useQuery,
   useQueryClient,
@@ -6,9 +6,9 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "react-query";
-import "../../styles/TasksStyle.css";
-import HouseHoldTaskRow from "../../Components/HouseHoldTaskRow";
-import Form from "../../Components/AddTaskForm";
+import "../styles/TasksStyle.css";
+import HouseHoldTaskRow from "./HouseHoldTaskRow";
+import Form from "./AddTaskForm";
 
 const fetchTable = async () => {
   const res = await fetch(
@@ -16,11 +16,11 @@ const fetchTable = async () => {
   );
   return res.json();
 };
-let cat = "";
 
-const queryClient1 = new QueryClient();
+const queryClient = new QueryClient();
 
-function TableComponent({ props }) {
+function TableComponent(catagory) {
+  // here I list the category name as props and then will have a function to go over requests only from the category and have the dropdown of items from this list
   const queryClient2 = useQueryClient();
 
   const { data, isLoading, isError, isFetching } = useQuery(
@@ -196,7 +196,6 @@ function TableComponent({ props }) {
 
   return (
     <>
-      {console.log(cat)}
       <span className="header">Task List</span>
       {tasks && tasks.length > 0 ? (
         <div className="container">
@@ -240,7 +239,7 @@ function TableComponent({ props }) {
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
             newRow={newRow}
-            dataList={dataList}
+            dataList={catagory}
             setDataList={setDataList}
           />
           {isFetching && <p>Refreshing...</p>}
@@ -259,7 +258,7 @@ function TableComponent({ props }) {
             No tasks have found
           </div>
           <Form
-            type={cat}
+            types={"Toiletries"}
             addRow={addRow}
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
@@ -273,10 +272,9 @@ function TableComponent({ props }) {
   );
 }
 
-export default function Tasks(props) {
-  cat = props.category;
+export default function Tasks() {
   return (
-    <QueryClientProvider client={queryClient1}>
+    <QueryClientProvider client={queryClient}>
       <TableComponent />
     </QueryClientProvider>
   );
