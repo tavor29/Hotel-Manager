@@ -9,7 +9,7 @@
 .container{
   font-weight: 250;
   display: flex;
-  height: 50vh;
+  height: 10vh;
   margin-left: 230px;
   margin-top: 90px;
   flex-direction: column;
