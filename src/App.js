@@ -4,9 +4,9 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
 // pages
-import Home from "./Ccomponents/pages/Home";
+import TasksHome from "./Ccomponents/pages/TasksHome";
 import Services from "./Ccomponents/pages/Services";
-import Tasks from "./Components/Tasks";
+import Tasks from "./Ccomponents/pages/TabTasks";
 import Guestmanager from "./Ccomponents/pages/Guest-manager";
 import Chat from "./Ccomponents/pages/Chat";
 import RoomCleaningTasks from "./Ccomponents/pages/Tasks/RoomCleaningTasks";
@@ -19,7 +19,7 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<TasksHome />} />
         <Route path="/services" element={<Services />} />
         <Route path="/Tasks" element={<Tasks />} />
         <Route path="/RoomCleaningTasks" element={<RoomCleaningTasks />} />

@@ -36,6 +36,16 @@
   cursor: pointer;
   background-color: #c9b296;
 }
+.btn1 {
+  padding: 8px 22px;
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  font-size: 20px;
+  color: #030303;
+  cursor: pointer;
+  background-color: #c9b296;
+}
 
 .btn-active {
   padding: 8px 22px;
