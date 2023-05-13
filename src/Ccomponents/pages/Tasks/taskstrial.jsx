@@ -12,7 +12,6 @@ export default function Tasks() {
       "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1002"
     );
     TableData = res.json();
-    console.log(TableData);
     return res.json();
   };
 

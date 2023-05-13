@@ -25,11 +25,11 @@ return (
       </TabPanel>
 
       <TabPanel>
-      <Tasks category={"RoomService"}/>
+      <Tasks category={"Room Service"}/>
       </TabPanel>
 
       <TabPanel>
-      <Tasks category={"RoomCleaning"}/>
+      <Tasks category={"Room Cleaning"}/>
       </TabPanel>
     </Tabs>
   </div>

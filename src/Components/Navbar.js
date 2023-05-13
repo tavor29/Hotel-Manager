@@ -7,7 +7,6 @@ import home from "../imgs/homeIcon.png";
 import inv from "../imgs/inventoryIcon.png";
 import mail from "../imgs/mailIcon.png";
 import services from "../imgs/servisesIcon.jpeg";
-import tasks from "../imgs/tasksIcon.png";
 import manager from "../imgs/managerIcon.png";
 
 function Navbar() {

@@ -37,4 +37,5 @@ const TaskData = {
     { typeID: 33, name: "CUSTOM" },
   ],
 };
+
 export default TaskData;

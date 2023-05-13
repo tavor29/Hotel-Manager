@@ -23,7 +23,6 @@ const queryClient = new QueryClient();
 
 function TableComponent() {
   const queryClient2 = useQueryClient();
-  console.log(cat);
   const { data, isLoading, isError, isFetching } = useQuery(
     "tableData",
     fetchTable,
@@ -223,7 +222,6 @@ function TableComponent() {
             <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
             <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
           </div>
-
           {tasks.map(
             (item, index) =>
               !item.isMarked && (
@@ -233,7 +231,8 @@ function TableComponent() {
                   setIsMarked={setIsMarked}
                 />
               )
-          )}
+          )}{" "}
+          {isFetching && <p>Refreshing...</p>}
           <Form
             types={"Toiletries"}
             addRow={addRow}
@@ -243,7 +242,6 @@ function TableComponent() {
             dataList={cat}
             setDataList={setDataList}
           />
-          {isFetching && <p>Refreshing...</p>}
         </div>
       ) : (
         <div className="container">
@@ -258,15 +256,6 @@ function TableComponent() {
           >
             No tasks have found
           </div>
-          <Form
-            types={"Toiletries"}
-            addRow={addRow}
-            setNewRow={setNewRow}
-            handleSubmit={handleSubmit}
-            newRow={newRow}
-            dataList={dataList}
-            setDataList={setDataList}
-          />
         </div>
       )}
     </>

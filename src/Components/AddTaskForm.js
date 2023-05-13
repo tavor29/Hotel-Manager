@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Data from "../data/TaskData";
 
-function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
+function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
   const currentDate = new Date();
+
+  console.log("Form33: " + Data[dataList][1].name);
 
   const [amount, setAmount] = useState("");
   const [requestedDate, setrequestedDate] = useState("");
@@ -10,7 +12,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
   const [roomNumber, setRoomNumber] = useState("");
   const [type, setType] = useState("");
   const [customName, setCustomName] = useState("");
-  const [catagory, setCatagory] = useState("Room Cleaning");
+  const [catagory, setCatagory] = useState("Toiletries");
 
   const clearRow = () => {
     setAmount("");
@@ -80,7 +82,9 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
   };
 
   const CheckIfCustom = () => {
-    const customTypeName = Data[cat]?.find((obj) => obj.typeID == type)?.name; //returns the type in the datalist fetched from the server.
+    const customTypeName = Data[dataList]?.find(
+      (obj) => obj.typeID == type
+    )?.name; //returns the type in the datalist fetched from the server.
     return customTypeName && customTypeName === "CUSTOM";
   };
 
@@ -114,11 +118,11 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
                   value={
                     type === ""
                       ? "Select Item"
-                      : Data[catagory]?.find((x) => x.typeID === type)?.name
+                      : Data[dataList]?.find((x) => x.typeID === type)?.name
                   } //returns the type in the datalist fetched from the server.
                 >
                   <option disabled>Select Item</option>
-                  {Data[catagory].map((item) => (
+                  {Data[dataList].map((item) => (
                     <option value={item.typeID} key={item.typeID}>
                       {item.name.replace(/_/g, " ")}
                     </option>
