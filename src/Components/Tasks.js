@@ -9,15 +9,21 @@ import {
 import "../styles/TasksStyle.css";
 import HouseHoldTaskRow from "./HouseHoldTaskRow";
 import Form from "./AddTaskForm";
+import Data from "../data/TaskData";
+let cat = "";
 
 const fetchTable = async () => {
   const res = await fetch(
     "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1002"
   );
-  return res.json();
+  let names = Data[cat].map((item) => item.name);
+  console.log(cat);
+  console.log("names: " + names);
+  let arr = await res.json();
+  arr = arr.filter((obj) => names.includes(obj.name)); //this filters the data sent through to the table
+  console.log("arr: " + arr);
+  return arr;
 };
-
-let cat = "";
 
 const queryClient = new QueryClient();
 
@@ -79,7 +85,8 @@ function TableComponent() {
           body: JSON.stringify(postObject),
         }
       );
-      console.log("Posting");
+      console.log("Posting...");
+      console.log("postObject: " + JSON.stringify(postObject));
       return response;
     },
     {
@@ -229,12 +236,12 @@ function TableComponent() {
                   item={item}
                   key={index}
                   setIsMarked={setIsMarked}
+                  dataList={cat}
                 />
               )
           )}{" "}
           {isFetching && <p>Refreshing...</p>}
-          <Form
-            types={"Toiletries"}
+          <Form //create task form
             addRow={addRow}
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
@@ -254,7 +261,7 @@ function TableComponent() {
               marginBottom: 50,
             }}
           >
-            No tasks have found
+            No tasks available
           </div>
         </div>
       )}

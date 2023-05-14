@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 // pages
 import TasksHome from "./Ccomponents/pages/TasksHome";
 import Services from "./Ccomponents/pages/Services";
-import Tasks from "./Ccomponents/pages/TabTasks";
+import TabTasks from "./Ccomponents/pages/TabTasks";
 import Guestmanager from "./Ccomponents/pages/Guest-manager";
 import Chat from "./Ccomponents/pages/Chat";
 import RoomCleaningTasks from "./Ccomponents/pages/Tasks/RoomCleaningTasks";
@@ -21,7 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<TasksHome />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/Tasks" element={<Tasks />} />
+        <Route path="/Tasks" element={<TabTasks />} />
         <Route path="/RoomCleaningTasks" element={<RoomCleaningTasks />} />
         <Route path="/RoomServiceTasks" element={<RoomServiceTasks />} />
         <Route path="/ToiletryTasks" element={<ToiletryTasks />} />

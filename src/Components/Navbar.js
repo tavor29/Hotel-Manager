@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "./Button";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import logo from "../imgs/servisologo.png";
@@ -8,6 +7,7 @@ import inv from "../imgs/inventoryIcon.png";
 import mail from "../imgs/mailIcon.png";
 import services from "../imgs/servisesIcon.jpeg";
 import manager from "../imgs/managerIcon.png";
+import Tasks from "../imgs/tasksIcon.png";
 
 function Navbar() {
   const [click, setClick] = useState(false);
@@ -32,9 +32,15 @@ function Navbar() {
         </Link>
         <ul className={click ? "nav-menu active" : "nav-menu"}>
           <li className="nav-item">
-            <Link to="/Tasks" className="nav-links">
+            <Link to="/" className="nav-links">
               Home &nbsp;
               <img src={home} alt="home btn" width="30" height="35" />
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/Tasks" className="nav-links">
+              Tasks &nbsp;
+              <img src={Tasks} alt="home btn" width="30" height="35" />
             </Link>
           </li>
 
@@ -65,8 +71,6 @@ function Navbar() {
               <img src={inv} alt="home btn" width="30" height="35" />
             </Link>
           </li>
-
-          <Button />
         </ul>
       </nav>
     </>

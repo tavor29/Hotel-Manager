@@ -4,15 +4,12 @@ import Data from "../data/TaskData";
 function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
   const currentDate = new Date();
 
-  console.log("Form33: " + Data[dataList][1].name);
-
   const [amount, setAmount] = useState("");
   const [requestedDate, setrequestedDate] = useState("");
   const [requestedHour, setrequestedHour] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
   const [type, setType] = useState("");
   const [customName, setCustomName] = useState("");
-  const [catagory, setCatagory] = useState("Toiletries");
 
   const clearRow = () => {
     setAmount("");
