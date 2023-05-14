@@ -36,6 +36,7 @@ const TaskData = {
     { typeID: 32, name: "Only change sheets" },
     { typeID: 33, name: "CUSTOM" },
   ],
+  CustomRequests: [],
 };
 
 export default TaskData;

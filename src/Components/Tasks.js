@@ -16,13 +16,23 @@ const fetchTable = async () => {
   const res = await fetch(
     "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1002"
   );
+
   let names = Data[cat].map((item) => item.name);
-  console.log(cat);
-  console.log("names: " + names);
+  let Allnames = [];
+  Object.keys(Data).forEach(function (key) {
+    Data[key].forEach((item) => Allnames.push(item.name));
+  });
+
   let arr = await res.json();
-  arr = arr.filter((obj) => names.includes(obj.name)); //this filters the data sent through to the table
-  console.log("arr: " + arr);
-  return arr;
+  let filteredArr = arr.filter((obj) => names.includes(obj.name)); // filters the data sent through to the table
+
+  if (cat === "CustomRequests") {
+    filteredArr = arr.filter((obj) => !Allnames.includes(obj.name));
+  } else if (filteredArr.length === 0) {
+    filteredArr = [];
+  }
+
+  return filteredArr;
 };
 
 const queryClient = new QueryClient();
@@ -87,6 +97,8 @@ function TableComponent() {
       );
       console.log("Posting...");
       console.log("postObject: " + JSON.stringify(postObject));
+      console.log(response);
+
       return response;
     },
     {

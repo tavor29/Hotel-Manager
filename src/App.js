@@ -9,9 +9,6 @@ import Services from "./Ccomponents/pages/Services";
 import TabTasks from "./Ccomponents/pages/TabTasks";
 import Guestmanager from "./Ccomponents/pages/Guest-manager";
 import Chat from "./Ccomponents/pages/Chat";
-import RoomCleaningTasks from "./Ccomponents/pages/Tasks/RoomCleaningTasks";
-import RoomServiceTasks from "./Ccomponents/pages/Tasks/RoomServiceTasks";
-import ToiletryTasks from "./Ccomponents/pages/Tasks/ToiletryTasks";
 import Inventory from "./Ccomponents/pages/Inventory"; //Create_Task
 import CreateTask from "./Ccomponents/pages/CreateTask";
 function App() {
@@ -22,9 +19,6 @@ function App() {
         <Route path="/" element={<TasksHome />} />
         <Route path="/services" element={<Services />} />
         <Route path="/Tasks" element={<TabTasks />} />
-        <Route path="/RoomCleaningTasks" element={<RoomCleaningTasks />} />
-        <Route path="/RoomServiceTasks" element={<RoomServiceTasks />} />
-        <Route path="/ToiletryTasks" element={<ToiletryTasks />} />
         <Route path="/Guest_manager" element={<Guestmanager />} />
         <Route path="/Inventory" element={<Inventory />} />
         <Route path="/Chat" element={<Chat />} />
