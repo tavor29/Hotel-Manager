@@ -169,7 +169,7 @@ function TableComponent() {
     const requestInOrder = [];
 
     if (newRow.requestedDate || newRow.requestedHour) {
-      const requestedDate = newRow.requestedDate;
+      const requestedDate = convertDateToRequiredFormat(newRow.requestedDate);
       const requestedHour = newRow.requestedHour;
 
       requestInOrder[0] = {
@@ -204,6 +204,18 @@ function TableComponent() {
 
     return retVal;
   };
+
+  const convertDateToRequiredFormat = (date) => {
+    const parts = date.split('/');
+    const day = parts[0];
+    const month = String(Number(parts[1])).padStart(2, "0");
+    const year = parts[2];
+    const formattedDate = `${year}/${month}/${day}`;
+  
+    return formattedDate;
+  };
+  
+  
 
   const CheckIfCustom = () => {
     const customTypeName = dataList?.find(
