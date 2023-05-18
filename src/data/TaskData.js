@@ -31,11 +31,7 @@ const TaskData = {
     { typeID: 28, name: "Souvenirs" },
     { typeID: 29, name: "CUSTOM" },
   ],
-  "Room Cleaning": [
-    { typeID: 31, name: "Only vacuum the floor" },
-    { typeID: 32, name: "Only change sheets" },
-    { typeID: 33, name: "CUSTOM" },
-  ],
+  "Room Cleaning": [{ typeID: 31, name: "Room Cleaning" }],
   CustomRequests: [],
 };
 
