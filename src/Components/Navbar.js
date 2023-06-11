@@ -52,8 +52,8 @@ function Navbar() {
           </li>
 
           <li className="nav-item">
-            <Link to="/services" className="nav-links">
-              Services &nbsp;
+            <Link to="/chat/:id" className="nav-links">
+              User Chat &nbsp;
               <img src={services} alt="home btn" width="36" height="35" />
             </Link>
           </li>
