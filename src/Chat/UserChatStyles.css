@@ -8,7 +8,7 @@
 .chat-page-container {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 700px; /* Increase the width of the chat container */
   height: 600px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -37,24 +37,18 @@
 }
 
 .btn {
-  padding: 8px 22px;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
   outline: none;
   border: none;
-  font-size: 20px;
-  color: #030303;
+  font-size: 16px;
+  font-weight: bold;
+  color: #181511;
   cursor: pointer;
   background-color: var(--primary);
+  transition: background-color 0.3s ease;
 }
-
 
 .btn:hover {
-  padding: 6px 18px;
-  transition: all 0.3s ease-out;
-  background-color: transparent;
-  color: #fff;
-  border-radius: 4px;
-  border: 2px solid var(--primary);
-  transition: all 0.3s ease-out;
+  background-color: #8d80c9;
 }
-

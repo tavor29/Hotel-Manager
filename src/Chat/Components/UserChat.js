@@ -72,10 +72,18 @@ const ChatPage = () => {
             value={newMessage}
             key={inputKey} // Reset the input value by updating the key
             rightButtons={[
-              <button key="send-button" onClick={handleSendMessage}>
+              <button
+                key="send-button"
+                className="btn"
+                onClick={handleSendMessage}
+              >
                 Send
               </button>,
-              <button key="receive-button" onClick={handleReceiveMessage}>
+              <button
+                key="receive-button"
+                className="btn"
+                onClick={handleReceiveMessage}
+              >
                 Receive fake Message
               </button>,
             ]}
