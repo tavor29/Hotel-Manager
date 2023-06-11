@@ -1,6 +1,5 @@
 .chat-list-item {
     display: flex;
-    align-items: center;
     padding: 12px;
     border-bottom: 1px solid #ccc;
     cursor: pointer;

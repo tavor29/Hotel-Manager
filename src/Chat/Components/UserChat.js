@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { MessageList, Input } from "react-chat-elements";
-import "../ChatStyles.css";
+import "../UserChatStyles.css";
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messageListRef = useRef(null);
+  const [inputKey, setInputKey] = useState(0);
 
   useEffect(() => {
     // Scroll to the bottom of the message list when new messages are added
@@ -26,6 +27,7 @@ const ChatPage = () => {
   };
 
   const handleSendMessage = () => {
+    console.log(newMessage.trim());
     if (newMessage.trim() !== "") {
       const message = {
         position: "right",
@@ -34,7 +36,8 @@ const ChatPage = () => {
         date: new Date(),
       };
       setMessages([...messages, message]);
-      setNewMessage(""); // Clear the input field
+      setNewMessage(""); // Clear the new message state
+      setInputKey((prevKey) => prevKey + 1); // Reset the input value by updating the key
     }
   };
 
@@ -67,6 +70,7 @@ const ChatPage = () => {
             onChange={handleInputChange}
             onKeyPress={handleInputKeyPress}
             value={newMessage}
+            key={inputKey} // Reset the input value by updating the key
             rightButtons={[
               <button key="send-button" onClick={handleSendMessage}>
                 Send

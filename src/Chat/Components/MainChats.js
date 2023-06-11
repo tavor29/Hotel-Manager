@@ -7,7 +7,7 @@ import "../MainChats.css";
 
 const MainMenu = () => {
   const navigate = useNavigate();
-  const [chats, setChats] = useState([
+  const [chats] = useState([
     {
       id: 1,
       avatar: logo,
@@ -35,6 +35,7 @@ const MainMenu = () => {
   ]);
 
   const [filteredChats, setFilteredChats] = useState(chats);
+  const [inputKey, setInputKey] = useState(0);
 
   const handleChatClick = (chatId) => {
     console.log("Clicked chat:", chatId);
@@ -43,7 +44,6 @@ const MainMenu = () => {
 
   const handleSearchChange = (event) => {
     const searchTerm = event.target.value;
-    // Filter chats based on the search term
     const filteredChats = chats.filter(
       (chat) =>
         chat.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -54,6 +54,7 @@ const MainMenu = () => {
 
   const handleSearchClear = () => {
     setFilteredChats(chats);
+    setInputKey((prevKey) => prevKey + 1);
   };
 
   return (
@@ -66,6 +67,7 @@ const MainMenu = () => {
             onChange={handleSearchChange}
             onClear={handleSearchClear}
             leftIcon={{ type: "search" }}
+            key={inputKey}
           />
         </div>
         <div className="main-menu-content">
@@ -73,14 +75,13 @@ const MainMenu = () => {
             className="chat-list"
             dataSource={filteredChats.map((chat) => ({
               ...chat,
-              avatar: <Avatar src={chat.avatar} alt="Avatar" />,
+              avatar: chat.avatar,
               date: chat.date.toLocaleString(),
               unread:
                 chat.unread > 0 ? (
                   <span className="unread-badge">{chat.unread}</span>
                 ) : null,
-
-              to: `/chat/${chat.id}`, // Use 'to' instead of 'href' for navigation
+              to: `/chat/${chat.id}`,
             }))}
             itemProps={{
               avatarFlexible: true,
@@ -91,6 +92,7 @@ const MainMenu = () => {
               <div
                 className="chat-list-item"
                 onClick={() => handleChatClick(chat.id)}
+                key={chat.id}
               >
                 <Avatar src={chat.avatar} alt="Avatar" />
                 <div className="chat-list-item-content">
