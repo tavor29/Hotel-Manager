@@ -45,9 +45,16 @@ function Navbar() {
           </li>
 
           <li className="nav-item">
-            <Link to="/Chat" className="nav-links">
+            <Link to="/Chats" className="nav-links">
               Chat &nbsp;
               <img src={mail} alt="home btn" width="36" height="35" />
+            </Link>
+          </li>
+
+          <li className="nav-item">
+            <Link to="/UserChat" className="nav-links">
+              User Chat
+              <img src={manager} alt="home btn" width="39" height="35" />
             </Link>
           </li>
 
@@ -55,13 +62,6 @@ function Navbar() {
             <Link to="/services" className="nav-links">
               Services &nbsp;
               <img src={services} alt="home btn" width="36" height="35" />
-            </Link>
-          </li>
-
-          <li className="nav-item">
-            <Link to="/Guest_manager" className="nav-links">
-              Guest Manager
-              <img src={manager} alt="home btn" width="39" height="35" />
             </Link>
           </li>
 
