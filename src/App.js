@@ -17,7 +17,7 @@ import Chat from "./Chat/Components/UserChat";
 function App() {
   return (
     <>
-      <Chat />
+      {/* <Chat /> */}
       <Navbar />
       <Routes>
         <Route path="/" element={<TasksHome />} />
