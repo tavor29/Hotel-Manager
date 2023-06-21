@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./Components/Navbar";
+import TopNavbar from "./Components/TopNavbar";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import SSEComponent from "./Listeners/SSEComponent";
@@ -18,6 +19,7 @@ function App() {
   return (
     <>
       {/* <Chat /> */}
+      <TopNavbar />
       <Navbar />
       <Routes>
         <Route path="/" element={<TasksHome />} />
