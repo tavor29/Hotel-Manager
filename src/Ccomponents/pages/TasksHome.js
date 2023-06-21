@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <div className="container">
-        <div className="tab-buttons">
+        {/* <div className="tab-buttons">
           <button className={"btn1"}>Guests</button>
           <button
             className={"btn1"}
@@ -23,7 +23,7 @@ export default function Home() {
           >
             Bookings
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );

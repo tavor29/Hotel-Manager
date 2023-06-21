@@ -206,16 +206,14 @@ function TableComponent() {
   };
 
   const convertDateToRequiredFormat = (date) => {
-    const parts = date.split('/');
+    const parts = date.split("/");
     const day = parts[0];
     const month = String(Number(parts[1])).padStart(2, "0");
     const year = parts[2];
     const formattedDate = `${year}/${month}/${day}`;
-  
+
     return formattedDate;
   };
-  
-  
 
   const CheckIfCustom = () => {
     const customTypeName = dataList?.find(

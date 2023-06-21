@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import logo from "../imgs/servisologo.png";
-import home from "../imgs/homeIcon.png";
-import inv from "../imgs/inventoryIcon.png";
-import mail from "../imgs/mailIcon.png";
-import services from "../imgs/servisesIcon.jpeg";
-import manager from "../imgs/managerIcon.png";
-import Tasks from "../imgs/tasksIcon.png";
+import { BsListUl, BsListOl, BsLayoutTextWindowReverse } from "react-icons/bs";
+import { BiCalendar, BiMessage, BiChat } from "react-icons/bi";
 
 function Navbar() {
   const [click, setClick] = useState(false);
@@ -15,21 +10,43 @@ function Navbar() {
 
   return (
     <>
-      <nav className="navbar">
-        <Link to="/" className="navbar-logo" onClick={handleClick}>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <img
-              src={logo}
-              alt=""
-              style={{
-                float: "left",
-                width: "60%",
-                height: "50%",
-                border: "4px",
-              }}
-            />
-          </div>
+      <div className="navbarr">
+        <Link to="/">
+          <button className="buttonBar">
+            <BsListUl className="barIcons" />
+            <h2 className="textBar">Spa menu</h2>
+          </button>
         </Link>
+        <button className="buttonBar">
+          <BiCalendar className="barIcons" />
+          <h2 className="textBar">Schedule</h2>
+        </button>
+        <Link to="/Tasks">
+          <button className="buttonBar">
+            <BsLayoutTextWindowReverse className="barIcons" />
+            <h2 className="textBar">Task list</h2>
+          </button>
+        </Link>
+
+        <button className="buttonBar">
+          <BsListOl className="barIcons" />
+          <h2 className="textBar">Orders</h2>
+        </button>
+
+        <Link to="/Chats">
+          <button className="buttonBar">
+            <BiChat className="barIcons" />
+            <h2 className="textBar">Chat</h2>
+          </button>
+        </Link>
+        <Link to="/chat/:id">
+          <button className="buttonBar">
+            <BiMessage className="barIcons" />
+            <h2 className="textBar">Chats</h2>
+          </button>
+        </Link>
+      </div>
+      {/* <nav className="navbar">
         <ul className={click ? "nav-menu active" : "nav-menu"}>
           <li className="nav-item">
             <Link to="/" className="nav-links">
@@ -72,7 +89,7 @@ function Navbar() {
             </Link>
           </li>
         </ul>
-      </nav>
+      </nav> */}
     </>
   );
 }
