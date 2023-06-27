@@ -6,6 +6,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "react-query";
+import { Input } from "react-chat-elements";
 import "../styles/TasksStyle.css";
 import HouseHoldTaskRow from "./HouseHoldTaskRow";
 import Form from "./AddTaskForm";
@@ -55,9 +56,26 @@ function TableComponent() {
   const [newRow, setNewRow] = useState({});
 
   const [tasks, setTasks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState([]);
 
   const [dataList, setDataList] = useState([]);
 
+  const [filteredChats, setFilteredChats] = useState(tasks);
+  const [inputKey, setInputKey] = useState(0);
+  useEffect(() => {
+    const filteredChats = tasks.filter(
+      (task) =>
+        task.requestID
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toString().toLowerCase()) ||
+        task.roomNumber
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toString().toLowerCase())
+    );
+    setFilteredChats(filteredChats);
+  }, [searchTerm, tasks]);
   const setIsMarked = (id, typeID) => {
     deleteRow.mutate({ id, typeID });
   };
@@ -223,17 +241,44 @@ function TableComponent() {
     return customTypeName && customTypeName === "CUSTOM";
   };
 
+  const handleSearchChange = (event) => {
+    const newSearchTerm = event.target.value;
+    setSearchTerm(newSearchTerm);
+  };
+
+  const handleSearchClear = () => {
+    setSearchTerm("");
+    setInputKey((prevKey) => prevKey + 1);
+  };
+
   return (
     <>
       <span className="header">Task List</span>
+
       {tasks && tasks.length > 0 ? (
         <div className="container">
+          <h2 style={{ marginLeft: "40px" }}>Search Bar</h2>
+          <Input
+            placeholder="Search Room Number or Request Id "
+            onChange={handleSearchChange}
+            onClear={handleSearchClear}
+            leftIcon={{ type: "search" }}
+            key={inputKey}
+            inputStyle={{
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              width: "100%",
+              boxSizing: "border-box",
+              marginLeft: "40px",
+            }}
+          />
           <div
             style={{
               display: "flex",
               flexDirection: "row",
               borderBottom: "1px solid black",
               padding: "9px 0",
+              marginTop: "50px",
             }}
           >
             <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
@@ -251,17 +296,29 @@ function TableComponent() {
             <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
             <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
           </div>
-          {tasks.map(
-            (item, index) =>
-              !item.isMarked && (
-                <HouseHoldTaskRow
-                  item={item}
-                  key={index}
-                  setIsMarked={setIsMarked}
-                  dataList={cat}
-                />
+          {searchTerm == ""
+            ? tasks.map(
+                (item, index) =>
+                  !item.isMarked && (
+                    <HouseHoldTaskRow
+                      item={item}
+                      key={index}
+                      setIsMarked={setIsMarked}
+                      dataList={cat}
+                    />
+                  )
               )
-          )}{" "}
+            : filteredChats.map(
+                (item, index) =>
+                  !item.isMarked && (
+                    <HouseHoldTaskRow
+                      item={item}
+                      key={index}
+                      setIsMarked={setIsMarked}
+                      dataList={cat}
+                    />
+                  )
+              )}{" "}
           {isFetching && <p>Refreshing...</p>}
           <Form //create task form
             addRow={addRow}
