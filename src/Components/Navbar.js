@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { BsListUl, BsListOl, BsLayoutTextWindowReverse } from "react-icons/bs";
 import { BiCalendar, BiMessage, BiChat } from "react-icons/bi";
 
 function Navbar() {
-  const [click, setClick] = useState(false);
-  const handleClick = () => setClick(!click);
-
   return (
     <>
       <div className="navbarr">
@@ -27,12 +24,12 @@ function Navbar() {
             <h2 className="textBar">Task list</h2>
           </button>
         </Link>
-
-        <button className="buttonBar">
-          <BsListOl className="barIcons" />
-          <h2 className="textBar">Orders</h2>
-        </button>
-
+        <Link to="/Inventory">
+          <button className="buttonBar">
+            <BsListOl className="barIcons" />
+            <h2 className="textBar">Inventory Mgr</h2>
+          </button>
+        </Link>
         <Link to="/Chats">
           <button className="buttonBar">
             <BiChat className="barIcons" />

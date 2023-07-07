@@ -10,7 +10,7 @@ import TasksHome from "./Ccomponents/pages/TasksHome";
 import Services from "./Ccomponents/pages/Services";
 import TabTasks from "./Ccomponents/pages/TabTasks";
 import Guestmanager from "./Ccomponents/pages/Guest-manager";
-import Inventory from "./Ccomponents/pages/Inventory";
+import Inventory from "./Inventory/InventoryMgr";
 import CreateTask from "./Ccomponents/pages/CreateTask";
 import ChatMain from "./Chat/Components/MainChats";
 import Chat from "./Chat/Components/UserChat";
