@@ -47,6 +47,9 @@
   cursor: pointer;
   background-color: #6e532b;
 }
+.tabs{
+  margin-right: 50px;
+}
 
 .tab-buttons{
 

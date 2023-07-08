@@ -1,5 +1,5 @@
 import React from "react";
-
+import "../mngrStyle.css";
 const Sidebar = ({ activeTab, changeTab }) => {
   return (
     <div className="Sidebar">

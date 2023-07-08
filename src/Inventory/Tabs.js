@@ -8,7 +8,7 @@ export default function TabTasks() {
   return (
     <div>
       <Tabs>
-        <div className="container">
+        <div className="tabs">
           <TabList>
             <Tab>
               {" "}

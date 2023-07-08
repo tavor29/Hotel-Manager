@@ -21,7 +21,7 @@ const NewItemTab = ({ inventory, formData, changeForm, addNewProduct }) => {
     errors.name = name.length === 0;
     errors.price = price.length === 0;
 
-    finalizeForm(true, product); // Allow form submission without image URL validation
+    finalizeForm(true, product);
 
     setFormErrors(errors);
   };

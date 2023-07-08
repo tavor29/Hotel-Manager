@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import MyRouter from "./MyRouter";
-import "../mngrStyle.css"; // Import the main CSS file
+import "../mngrStyle.css";
 
 const InventoryManagementApp = () => {
   const [activeTab, setActiveTab] = useState(1);

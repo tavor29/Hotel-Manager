@@ -1,6 +1,7 @@
 import React from "react";
 import NewItemTab from "./NewItemTab";
 import ProductsTab from "./ProductsTab";
+import "../mngrStyle.css";
 
 const MyRouter = ({
   activeTab,

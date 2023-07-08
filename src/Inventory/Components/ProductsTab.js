@@ -1,5 +1,6 @@
 import React from "react";
 import ProductTableRow from "./ProductTableRow";
+import "../mngrStyle.css";
 
 const ProductsTab = ({ inventory }) => {
   const renderTableRows = (inventory) => {
@@ -37,7 +38,7 @@ const ProductsTab = ({ inventory }) => {
 
   return (
     <div className="ProductsTab">
-      <h1>Available Products List</h1>
+      <h1>Products List</h1>
       <p>Showing all available products:</p>
       <table className="productTable">
         <tbody>{renderTableRows(inventory)}</tbody>

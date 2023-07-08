@@ -207,10 +207,11 @@ body {
   min-height: 80vh;
 }
 
-.Sidebar {
-  width: 100%;
-  max-width: 200px;
-  background: #eceff1;
+
+.Sidebar{
+  background-color: rgb(231, 209, 209);
+  height: 100%;
+  
 }
 
 .Sidebar ul {
@@ -258,6 +259,7 @@ body {
   cursor: pointer;
 }
 
+
 .MyRouter {
   width: 100%;
   box-shadow: -3px 0px 6px rgba(0, 0, 0, 0.16);
@@ -282,25 +284,15 @@ body {
 
 .sidebar-and-product-table {
   display: flex;
-  height: 100%; /* Set the height to 100% */
+  margin-left: 8px;
+  height: 210px;
+
 }
 
-.sidebar {
-  flex: 1;
-  background: #f0f0f0;
-  padding: 20px;
-  /* Add additional styling as needed */
-}
-
-.productTableRow {
-  flex: 1;
-  padding: 20px;
-  /* Add additional styling as needed */
-}
 
 .content {
   flex: 2;
-  padding: 20px;
+  margin-left: 30px;
   /* Add additional styling as needed */
 }
 
