@@ -13,15 +13,10 @@ const Sidebar = ({ activeTab, changeTab }) => {
         >
           Products
         </li>
+
         <li
           className={activeTab === 2 ? "active" : ""}
           onClick={() => changeTab(2)}
-        >
-          Categories
-        </li>
-        <li
-          className={activeTab === 3 ? "active" : ""}
-          onClick={() => changeTab(3)}
         >
           Item Archive
         </li>

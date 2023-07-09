@@ -11,7 +11,7 @@ function Navbar() {
         <Link to="/">
           <button className="buttonBar">
             <BsListUl className="barIcons" />
-            <h2 className="textBar">Spa menu</h2>
+            <h2 className="textBar">Main Menu</h2>
           </button>
         </Link>
         <button className="buttonBar">

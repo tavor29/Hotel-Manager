@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import SSEComponent from "./Listeners/SSEComponent";
 
 // pages
-import TasksHome from "./Ccomponents/pages/TasksHome";
+import TasksHome from "./Ccomponents/pages/Dashboard";
 import Services from "./Ccomponents/pages/Services";
 import TabTasks from "./Ccomponents/pages/TabTasks";
 import Guestmanager from "./Ccomponents/pages/Guest-manager";

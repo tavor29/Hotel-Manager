@@ -284,15 +284,15 @@ body {
 
 .sidebar-and-product-table {
   display: flex;
-  margin-left: 8px;
-  height: 210px;
+  margin-left: 17px;
+  height: 155px;
 
 }
 
 
 .content {
   flex: 2;
-  margin-left: 30px;
+  margin-left: 25px;
   /* Add additional styling as needed */
 }
 

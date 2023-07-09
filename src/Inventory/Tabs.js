@@ -1,6 +1,7 @@
 import React from "react";
 import "../App.css";
 // import Tasks from "../../Components/Tasks";
+import Main from "./Components/Main-Test";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -29,14 +30,14 @@ export default function TabTasks() {
           </TabList>
         </div>
         <TabPanel>
-          <div>{/* <Tasks category={"Toiletries"} /> */}</div>
+          <div>{/* <Main  /> */}</div>
         </TabPanel>
 
-        <TabPanel>{/* <Tasks category={"Room Service"} /> */}</TabPanel>
+        <TabPanel>{/* <Main tab={"Spa"} /> */}</TabPanel>
 
-        <TabPanel>{/* <Tasks category={"Room Cleaning"} /> */}</TabPanel>
+        <TabPanel>{/* <Main tab={"Facilities"} /> */}</TabPanel>
 
-        <TabPanel>{/* <Tasks category={"CustomRequests"} /> */}</TabPanel>
+        <TabPanel>{/* <HR tabs/> */}</TabPanel>
       </Tabs>
     </div>
   );

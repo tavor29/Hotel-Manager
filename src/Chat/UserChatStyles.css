@@ -1,18 +1,19 @@
 .container1 {
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
+  margin-left: 280px;
+  margin-top: 90px;
+  flex-direction: column;
 }
 
 .chat-page-container {
   display: flex;
   flex-direction: column;
-  width: 700px; /* Increase the width of the chat container */
-  height: 600px;
+  justify-content: center;
+  
+  height: 700px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  overflow: hidden;
 }
 
 .chat-page-header {
