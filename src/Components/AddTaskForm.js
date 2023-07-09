@@ -27,12 +27,12 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
 
   useEffect(() => {
     if (
-      amount != "" ||
-      requestedDate != "" ||
-      requestedHour != "" ||
-      roomNumber != "" ||
-      type != "" ||
-      customName != ""
+      amount !== "" ||
+      requestedDate !== "" ||
+      requestedHour !== "" ||
+      roomNumber !== "" ||
+      type !== "" ||
+      customName !== ""
     ) {
       setNewRow({
         amount,
@@ -80,7 +80,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList }) {
 
   const CheckIfCustom = () => {
     const customTypeName = Data[dataList]?.find(
-      (obj) => obj.typeID == type
+      (obj) => obj.typeID === type
     )?.name; //returns the type in the datalist fetched from the server.
     return customTypeName && customTypeName === "CUSTOM";
   };

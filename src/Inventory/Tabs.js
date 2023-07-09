@@ -1,7 +1,6 @@
 import React from "react";
 import "../App.css";
-// import Tasks from "../../Components/Tasks";
-import Main from "./Components/Main-Test";
+// import Main from "./Components/Main-Test";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";

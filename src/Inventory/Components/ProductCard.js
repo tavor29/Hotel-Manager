@@ -17,7 +17,7 @@ const ProductCard = ({ product }) => {
     if (product.price !== price) {
       setPrice(product.price);
     }
-  }, [product]);
+  }, [product, category, name, price]);
 
   return (
     <div className="ProductCard">

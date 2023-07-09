@@ -6,12 +6,12 @@ import { Routes, Route } from "react-router-dom";
 import SSEComponent from "./Listeners/SSEComponent";
 
 // pages
-import TasksHome from "./Ccomponents/pages/Dashboard";
+import Dashboard from "./Ccomponents/pages/Dashboard";
 import Services from "./Ccomponents/pages/Services";
 import TabTasks from "./Ccomponents/pages/TabTasks";
 import Guestmanager from "./Ccomponents/pages/Guest-manager";
 import Inventory from "./Inventory/InventoryMgr";
-import CreateTask from "./Ccomponents/pages/CreateTask";
+import Schedule from "./Ccomponents/pages/Schedule";
 import ChatMain from "./Chat/Components/MainChats";
 import Chat from "./Chat/Components/UserChat";
 
@@ -22,12 +22,12 @@ function App() {
       <TopNavbar />
       <Navbar />
       <Routes>
-        <Route path="/" element={<TasksHome />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/services" element={<Services />} />
         <Route path="/Tasks" element={<TabTasks />} />
         <Route path="/Guest_manager" element={<Guestmanager />} />
         <Route path="/Inventory" element={<Inventory />} />
-        <Route path="/Create_Task" element={<CreateTask />} />
+        <Route path="/Schedule" element={<Schedule />} />
         <Route path="/Chats" element={<ChatMain />} />
         <Route path="/chat/:id" element={<Chat />} />
       </Routes>

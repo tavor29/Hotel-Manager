@@ -14,10 +14,12 @@ function Navbar() {
             <h2 className="textBar">Main Menu</h2>
           </button>
         </Link>
-        <button className="buttonBar">
-          <BiCalendar className="barIcons" />
-          <h2 className="textBar">Schedule</h2>
-        </button>
+        <Link to="/Schedule">
+          <button className="buttonBar">
+            <BiCalendar className="barIcons" />
+            <h2 className="textBar">Schedule</h2>
+          </button>
+        </Link>
         <Link to="/Tasks">
           <button className="buttonBar">
             <BsLayoutTextWindowReverse className="barIcons" />

@@ -126,7 +126,7 @@ function TableComponent() {
           newRow.clearRow();
         } else {
           const data = await res.json();
-          if (data.type && data.type == "NonActiveRoom") {
+          if (data.type && data.type === "NonActiveRoom") {
             if (data.message) {
               alert(data.message);
             }
@@ -138,12 +138,12 @@ function TableComponent() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (Object.entries(newRow).length != 0) {
+    if (Object.entries(newRow).length !== 0) {
       if (newRow.customName === "" && CheckIfCustom()) {
         alert("Custom item must have a name");
       } else if (newRow.typeID === "") {
         alert("Please make sure to select an item");
-      } else if (newRow.amount != "" && newRow.roomNumber != "") {
+      } else if (newRow.amount !== "" && newRow.roomNumber !== "") {
         addRow.mutate();
       }
     } else {
@@ -235,7 +235,7 @@ function TableComponent() {
 
   const CheckIfCustom = () => {
     const customTypeName = dataList?.find(
-      (obj) => obj.typeID == newRow.typeID
+      (obj) => obj.typeID === newRow.typeID
     )?.name;
 
     return customTypeName && customTypeName === "CUSTOM";
@@ -296,7 +296,7 @@ function TableComponent() {
             <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
             <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
           </div>
-          {searchTerm == ""
+          {searchTerm === ""
             ? tasks.map(
                 (item, index) =>
                   !item.isMarked && (
