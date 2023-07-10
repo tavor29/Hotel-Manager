@@ -1,4 +1,4 @@
-import "../../styles/DashboardStyle.css";
+import "../../styles/Dash+SchedStyle.css";
 import React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -54,15 +54,6 @@ function Dashboard() {
   const formatDate = (date) => {
     const options = { year: "numeric", month: "short", day: "numeric" };
     return date.toLocaleDateString("en-US", options);
-  };
-
-  const getRandomDate = (startDate, endDate) => {
-    const start = startDate.getTime();
-    const end = endDate.getTime();
-    const randomTime = start + Math.random() * (end - start);
-    const randomDate = new Date(randomTime);
-
-    return randomDate.toISOString().split("T")[0];
   };
 
   const generateChartData = () => {

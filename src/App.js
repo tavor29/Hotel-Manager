@@ -7,7 +7,6 @@ import SSEComponent from "./Listeners/SSEComponent";
 
 // pages
 import Dashboard from "./Ccomponents/pages/Dashboard";
-import Services from "./Ccomponents/pages/Services";
 import TabTasks from "./Ccomponents/pages/TabTasks";
 import Guestmanager from "./Ccomponents/pages/Guest-manager";
 import Inventory from "./Inventory/InventoryMgr";
@@ -23,7 +22,6 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/services" element={<Services />} />
         <Route path="/Tasks" element={<TabTasks />} />
         <Route path="/Guest_manager" element={<Guestmanager />} />
         <Route path="/Inventory" element={<Inventory />} />

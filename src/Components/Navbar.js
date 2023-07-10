@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import { BsListUl, BsListOl, BsLayoutTextWindowReverse } from "react-icons/bs";
-import { BiCalendar, BiMessage, BiChat } from "react-icons/bi";
+import { BsListOl, BsLayoutTextWindowReverse } from "react-icons/bs";
+import { BiAlignLeft, BiCalendar, BiMessage, BiChat } from "react-icons/bi";
 
 function Navbar() {
   return (
@@ -10,8 +10,8 @@ function Navbar() {
       <div className="navbarr">
         <Link to="/">
           <button className="buttonBar">
-            <BsListUl className="barIcons" />
-            <h2 className="textBar">Main Menu</h2>
+            <BiAlignLeft className="barIcons" />
+            <h2 className="textBar">Dashboard</h2>
           </button>
         </Link>
         <Link to="/Schedule">

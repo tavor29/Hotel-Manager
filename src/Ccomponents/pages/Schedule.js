@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "../../styles/DashboardStyle.css";
+import "../../styles/Dash+SchedStyle.css";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 
@@ -94,6 +94,20 @@ export default function Schedule() {
     });
   };
 
+  const handleSelectEvent = (event) => {
+    const confirmDelete = window.confirm(
+      "Would you like to delete this reservation?"
+    );
+    if (confirmDelete) {
+      const updatedReservations = reservations.filter(
+        (res) => res.id !== event.id
+      );
+      setReservations(updatedReservations);
+    } else {
+      // Handle cancel action if needed
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewReservation((prev) => ({
@@ -159,6 +173,7 @@ export default function Schedule() {
             onEventDrop={handleEventDrop}
             onEventResize={handleEventResize}
             onSelectSlot={handleSelectSlot}
+            onSelectEvent={handleSelectEvent}
           />
           {newReservation && (
             <div className="modal">
