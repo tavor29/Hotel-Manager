@@ -167,7 +167,7 @@ export default function Schedule() {
             style={{ height: 600 }}
             eventPropGetter={eventStyleGetter}
             defaultView="month"
-            views={["month", "week"]}
+            views={["month", "week", "day"]}
             resizable
             selectable
             onEventDrop={handleEventDrop}

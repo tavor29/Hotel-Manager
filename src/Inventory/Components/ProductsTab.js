@@ -3,16 +3,10 @@ import ProductTableRow from "./ProductTableRow";
 import "../mngrStyle.css";
 
 const ProductsTab = ({ inventory }) => {
-  const renderTableRows = (inventory) => {
-    const categoryKeys = Object.keys(inventory.categories);
-    let listOfProducts = [];
+  console.log("productsTab: inventory: ", inventory);
 
-    for (let i = 0; i < categoryKeys.length; i++) {
-      let category = categoryKeys[i];
-      listOfProducts = listOfProducts.concat(inventory.categories[category]);
-    }
-
-    if (listOfProducts.length === 0) {
+  const renderTableRows = () => {
+    if (inventory.length === 0) {
       return (
         <div>
           <p>There are currently no items in the inventory</p>
@@ -28,8 +22,9 @@ const ProductsTab = ({ inventory }) => {
         </tr>,
       ];
 
-      for (let i = 0; i < listOfProducts.length; i++) {
-        rows.push(<ProductTableRow key={i} product={listOfProducts[i]} />);
+      for (const key in inventory) {
+        console.log(key);
+        rows.push(<ProductTableRow product={inventory[key]} />);
       }
 
       return rows;

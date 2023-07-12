@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../mngrStyle.css";
 import ProductCard from "./ProductCard";
 
-const NewItemTab = ({ inventory, formData, changeForm, addNewProduct }) => {
+const NewItemTab = ({ items, formData, changeForm, addNewProduct }) => {
   const [formErrors, setFormErrors] = useState({
     category: false,
     name: false,
@@ -34,17 +34,6 @@ const NewItemTab = ({ inventory, formData, changeForm, addNewProduct }) => {
     } else {
       addNewProduct(product);
     }
-  };
-
-  const renderCategorySelections = (inventory) => {
-    const categoryKeys = Object.keys(inventory.categories);
-    const capitalize = (string) => {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-
-    return categoryKeys.map((categoryKey) => (
-      <option key={categoryKey}>{capitalize(categoryKey)}</option>
-    ));
   };
 
   const updateForm = () => {
@@ -82,8 +71,13 @@ const NewItemTab = ({ inventory, formData, changeForm, addNewProduct }) => {
             value={formData.category}
             onChange={updateForm}
           >
-            <option></option>
-            {renderCategorySelections(inventory)}
+            <option>Hotel Activities</option>
+            <option>Hotel Facilities</option>
+            <option>Spa Therapies</option>
+            <option>Food Menu</option>
+            <option>Drinks Menu</option>
+            <option>Alcohol Menu</option>
+            <option>Additional Items Menu</option>
           </select>
         </p>
         <p>
@@ -98,7 +92,7 @@ const NewItemTab = ({ inventory, formData, changeForm, addNewProduct }) => {
           />
         </p>
         <p>
-          <label>Price per Unit</label>
+          <label>Price</label>
           <input
             className={formErrors.price ? "formCheck-err" : ""}
             type="number"

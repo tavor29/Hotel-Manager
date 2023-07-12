@@ -15,7 +15,7 @@ const MyRouter = ({
       case 0:
         return (
           <NewItemTab
-            inventory={inventory}
+            items={inventory}
             formData={newItemFormData}
             changeForm={changeNewItemForm}
             addNewProduct={addNewProduct}

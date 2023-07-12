@@ -23,9 +23,12 @@ const fetchTable = async () => {
   Object.keys(Data).forEach(function (key) {
     Data[key].forEach((item) => Allnames.push(item.name));
   });
+  console.log("res0 :", res);
 
   let arr = await res.json();
+  console.log("arr :", arr);
   let filteredArr = arr.filter((obj) => names.includes(obj.name)); // filters the data sent through to the table
+  console.log("filteredArr :", filteredArr);
 
   if (cat === "CustomRequests") {
     filteredArr = arr.filter((obj) => !Allnames.includes(obj.name));

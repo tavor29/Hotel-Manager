@@ -1,25 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import MyRouter from "./MyRouter";
 import "../mngrStyle.css";
 
 const InventoryManagementApp = ({ tab }) => {
   const [activeTab, setActiveTab] = useState(1);
-  const [inventory, setInventory] = useState({
-    categories: {
-      Spa: [],
-      Menu: [
-        {
-          category: "Menu",
-          name: "Chips",
-          price: "4.99",
-          imageURL:
-            "https://cdn.shopify.com/s/files/1/0797/0169/products/mockup-c6d64730_1024x1024.jpg",
-        },
-      ],
-      Facilities: [],
-    },
-  });
+  // const [inventory, setInventory] = useState(null);
+
   const [newItemForm, setNewItemForm] = useState({
     category: "",
     name: "",
@@ -56,22 +43,7 @@ const InventoryManagementApp = ({ tab }) => {
   };
 
   const addNewProduct = (product) => {
-    setNewItemForm({ category: "", name: "", price: "", imageURL: "" });
-
-    const decapitalize = (string) => {
-      return string.charAt(0).toLowerCase() + string.slice(1);
-    };
-
-    const updatedInventory = { ...inventory };
-    const category = decapitalize(product.category);
-
-    if (!updatedInventory.categories[category]) {
-      updatedInventory.categories[category] = [];
-    }
-
-    updatedInventory.categories[category].push(product);
-
-    setInventory(updatedInventory);
+    // here will be http post
   };
 
   return (
@@ -79,10 +51,11 @@ const InventoryManagementApp = ({ tab }) => {
       <div className="sidebar-and-product-table">
         <Sidebar activeTab={activeTab} changeTab={changeActiveTab} />
       </div>
+      {/* {console.log("main-test tab: " + tab)} */}
       <div className="content">
         <MyRouter
           activeTab={activeTab}
-          inventory={inventory}
+          inventory={tab}
           newItemFormData={newItemForm}
           changeNewItemForm={changeNewItemForm}
           addNewProduct={addNewProduct}
