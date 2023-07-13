@@ -10,6 +10,10 @@ import {
   YAxis,
   Tooltip,
   Legend,
+  LineChart,
+  Line,
+  CartesianGrid,
+  ResponsiveContainer,
 } from "recharts";
 
 function Dashboard() {
@@ -34,13 +38,13 @@ function Dashboard() {
       const checkOutDate = new Date(
         checkInDate.getFullYear(),
         checkInDate.getMonth(),
-        checkInDate.getDate() + Math.floor(Math.random() * 10) + 1
+        checkInDate.getDate() + Math.floor(Math.random() * 15) + 1
       );
 
       const booking = {
         id: i,
         guestName: `Guest ${i}`,
-        roomNumber: Math.floor(Math.random() * 100) + 1,
+        roomNumber: Math.floor(Math.random() * 80) + 1,
         checkInDate: formatDate(checkInDate),
         checkOutDate: formatDate(checkOutDate),
       };
@@ -63,10 +67,14 @@ function Dashboard() {
     bookings.forEach((booking) => {
       if (!roomNumbers.includes(booking.roomNumber)) {
         roomNumbers.push(booking.roomNumber);
-        bookingsCount.push(1);
+        const exaggeratedCount = Math.floor(Math.random() * 50) + 1; // Generate random exaggerated count between 1 and 50
+        bookingsCount.push(exaggeratedCount);
       } else {
         const index = roomNumbers.indexOf(booking.roomNumber);
-        bookingsCount[index]++;
+        const existingCount = bookingsCount[index];
+        const exaggeratedCount =
+          existingCount + Math.floor(Math.random() * 10) + 1; // Increase the existing count by a random exaggerated value between 1 and 10
+        bookingsCount[index] = exaggeratedCount;
       }
     });
 
@@ -81,14 +89,37 @@ function Dashboard() {
   const generatePieChartData = () => {
     const guestNames = bookings.map((booking) => booking.guestName);
     const uniqueGuestNames = [...new Set(guestNames)];
-    const bookingCount = bookings.length;
 
     const data = uniqueGuestNames.map((guestName) => {
-      const count = guestNames.filter((name) => name === guestName).length;
-      const percentage = ((count / bookingCount) * 100).toFixed(2);
+      const totalHours = bookings
+        .filter((booking) => booking.guestName === guestName)
+        .reduce((acc, booking) => {
+          const checkInDate = new Date(booking.checkInDate);
+          const checkOutDate = new Date(booking.checkOutDate);
+          const hours = Math.abs(checkOutDate - checkInDate) / 36e5; // Calculate total hours of stay
+          return acc + hours;
+        }, 0);
+
       return {
         guestName,
-        percentage,
+        totalHours,
+      };
+    });
+
+    return data;
+  };
+
+  const generateLineChartData = () => {
+    const bookingDates = bookings.map((booking) => booking.checkInDate);
+    const uniqueBookingDates = [...new Set(bookingDates)];
+
+    const data = uniqueBookingDates.map((date) => {
+      const count = bookingDates.filter(
+        (bookingDate) => bookingDate === date
+      ).length;
+      return {
+        date: formatDate(new Date(date)),
+        count,
       };
     });
 
@@ -97,36 +128,49 @@ function Dashboard() {
 
   return (
     <>
-      <h1 className="header1">Hotel Manager Dashboard</h1>
       <div className="container">
+        <h1 className="header1">Hotel Manager Dashboard</h1>
         <div className="Dashboard">
           <div className="ChartsContainer">
             <div className="Chart">
-              <h2>Room Bookings</h2>
+              <h2>Number of Room Bookings</h2>
               <BarChart width={500} height={300} data={generateChartData()}>
                 <XAxis dataKey="roomNumber" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="count" fill="#8884d8" />
+                <Bar dataKey="count" fill="#b48c7a" />
               </BarChart>
             </div>
             <div className="Chart">
-              <h2>Guests</h2>
+              <h2>Guest's Total Stay (hours)</h2>
               <PieChart width={500} height={300}>
                 <Pie
                   data={generatePieChartData()}
-                  dataKey="count"
-                  nameKey="name"
+                  dataKey="totalHours"
+                  nameKey="guestName"
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
-                  fill="#8884d8"
-                  label
+                  outerRadius={70}
+                  fill="#d1bfa6"
                 />
                 <Tooltip />
-                <Legend />
+                <Legend iconSize={0.1} verticalAlign="bottom" height={120} />
               </PieChart>
+            </div>
+
+            <div className="Chart">
+              <h2>Booking Trends</h2>
+              <ResponsiveContainer width="90%" height={300}>
+                <LineChart data={generateLineChartData()}>
+                  <Line type="monotone" dataKey="count" stroke="#b48c7a" />
+                  <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </div>
           <table>

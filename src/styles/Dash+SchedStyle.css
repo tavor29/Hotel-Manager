@@ -1,5 +1,5 @@
 .Dashboard {
-    margin-left: 50px;
+    margin-left: 20px;
   }
   .Schedule {
     margin-left: 50px;
@@ -9,8 +9,8 @@
   
   .header1 {
     font-size: 45px;
-    margin-bottom: 45px;
-    margin-left: 700px;
+    margin-bottom: 105px;
+    margin-left: 500px;
 
   }
   
@@ -54,9 +54,12 @@
     width: 400px;
   }
   
-  .modal h2 {
+   .Dashboard h2 {
     margin-top: 0;
+    margin-left: 40px;
+
   }
+
   
   .modal div {
     margin-bottom: 10px;
