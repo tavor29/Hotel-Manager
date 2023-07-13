@@ -17,8 +17,10 @@ const ProductsTab = ({ inventory }) => {
         <tr key="table-header">
           <th>Product Name</th>
           <th>Price</th>
+          <th>Description</th>
           <th>Category</th>
           <th>Image</th>
+          <th>In-Stock</th>
         </tr>,
       ];
 
@@ -38,6 +40,9 @@ const ProductsTab = ({ inventory }) => {
       <table className="productTable">
         <tbody>{renderTableRows(inventory)}</tbody>
       </table>
+      <button type="button" className="saveBtn" onClick={""}>
+        save changes
+      </button>
     </div>
   );
 };

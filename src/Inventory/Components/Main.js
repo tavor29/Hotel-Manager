@@ -43,7 +43,31 @@ const InventoryManagementApp = ({ tab }) => {
   };
 
   const addNewProduct = (product) => {
-    // here will be http post
+    (async () => {
+      console.log("add product: " + product.category);
+
+      const res = await fetch(
+        "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHotelServices?hotelID=1002",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(product),
+        }
+      );
+      console.log("promise: " + res);
+      console.log("product: " + JSON.stringify(product));
+
+      if (res) {
+        console.log("Posting...");
+      }
+      if (res.ok) {
+        console.log("Success");
+      } else {
+        console.log("Failed to Post");
+      }
+    })();
   };
 
   return (

@@ -23,6 +23,8 @@ const MyRouter = ({
         );
       case 1:
         return <ProductsTab inventory={inventory} />;
+      case 2:
+        return <h2>deleted items</h2>;
       default:
         return null;
     }
