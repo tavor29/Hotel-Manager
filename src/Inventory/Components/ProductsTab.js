@@ -13,23 +13,24 @@ const ProductsTab = ({ inventory }) => {
         </div>
       );
     } else {
-      let rows = [
-        <tr key="table-header">
-          <th>Product Name</th>
-          <th>Price</th>
-          <th>Description</th>
-          <th>Category</th>
-          <th>Image</th>
-          <th>In-Stock</th>
-        </tr>,
-      ];
+      const headers = Object.keys(inventory[0]);
 
-      for (const key in inventory) {
-        console.log(key);
-        rows.push(<ProductTableRow product={inventory[key]} />);
-      }
+      const headerRow = headers.map((header) => <th key={header}>{header}</th>);
 
-      return rows;
+      const rows = inventory.map((product, index) => (
+        <ProductTableRow key={index} product={product} />
+      ));
+
+      return (
+        <>
+          <tr>
+            {headerRow}
+            <th> In-Stock</th>
+            <th>Delete Item</th>
+          </tr>
+          {rows}
+        </>
+      );
     }
   };
 
@@ -38,7 +39,7 @@ const ProductsTab = ({ inventory }) => {
       <h1>Products List</h1>
       <p>Showing all available products:</p>
       <table className="productTable">
-        <tbody>{renderTableRows(inventory)}</tbody>
+        <tbody>{renderTableRows()}</tbody>
       </table>
       <button type="button" className="saveBtn" onClick={""}>
         save changes

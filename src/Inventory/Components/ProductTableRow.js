@@ -2,26 +2,47 @@ import React from "react";
 import "../mngrStyle.css";
 
 const ProductTableRow = ({ product }) => {
-  return (
-    //headers need to be functional like we made them in new items tab
-    <tr>
-      <td>{product.name}</td>
-      <td>${product.price}</td>
-      {console.log("desc: " + product.description)}
-      <td>
-        {product.description && product.description.length > 20
-          ? product.description.substring(0, 150) + "..."
-          : product.description}
-      </td>
+  const [checked, setChecked] = React.useState(true);
 
-      <td>{product.category}</td>
+  const renderTableRows = (product) => {
+    const headers = Object.keys(product);
+    let values = [];
+
+    for (let i = 0; i < headers.length; i++) {
+      const header = headers[i];
+
+      if (header.includes("description")) {
+        const Description =
+          product[header] && product[header].length > 20
+            ? product[header].substring(0, 150) + "..."
+            : product[header];
+
+        values.push(<td key={header}>{Description}</td>);
+      } else if (header.includes("URL")) {
+        values.push(
+          <td key={header}>
+            <a target="_blank" rel="noreferrer" href={product[header]}>
+              View
+            </a>
+          </td>
+        );
+      } else {
+        values.push(<td key={header}>{product[header]}</td>);
+      }
+    }
+
+    return values;
+  };
+
+  return (
+    <tr>
+      {renderTableRows(product)}
       <td>
-        <a target="_blank" rel="noreferrer" href={product.imageURL}>
-          View
-        </a>
-      </td>
-      <td>
-        <input type="checkbox" checked />
+        <input
+          type="checkbox"
+          defaultChecked={checked}
+          onChange={() => setChecked((state) => !state)}
+        />
       </td>
       <td className="deleteButton">
         <button type="button" onClick={""}>

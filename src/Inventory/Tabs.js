@@ -6,6 +6,7 @@ import "react-tabs/style/react-tabs.css";
 
 export default function TabTasks() {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchJSON = async () => {
     try {
@@ -15,11 +16,13 @@ export default function TabTasks() {
       if (response.status === 200) {
         setData(await response.json());
       } else {
-        setData(null);
+        setData([]);
       }
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching JSON data:", error);
-      setData(null);
+      setData([]);
+      setLoading(false);
     }
   };
 
@@ -47,8 +50,18 @@ export default function TabTasks() {
     fetchJSON();
   }, []);
 
-  if (data === null) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div style={{ marginLeft: "40px" }}>
+        <h2 style={{ fontSize: "40px" }}>Loading...</h2>
+      </div>
+    );
+  } else if (data.length === 0) {
+    return (
+      <div style={{ marginLeft: "40px" }}>
+        <h2 style={{ fontSize: "40px" }}>Connection to Server Failed</h2>
+      </div>
+    );
   } else {
     const {
       hotelActivities,
@@ -59,7 +72,6 @@ export default function TabTasks() {
       alcoholMenu,
       additionalItemsMenu,
     } = saveObjectLists(data);
-    // console.log("hotelActivities: " + hotelActivities);
 
     return (
       <div>
