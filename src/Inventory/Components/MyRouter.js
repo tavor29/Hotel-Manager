@@ -9,6 +9,7 @@ const MyRouter = ({
   newItemFormData,
   changeNewItemForm,
   addNewProduct,
+  deleteProduct,
 }) => {
   const route = (activeTab) => {
     switch (activeTab) {
@@ -22,7 +23,9 @@ const MyRouter = ({
           />
         );
       case 1:
-        return <ProductsTab inventory={inventory} />;
+        return (
+          <ProductsTab inventory={inventory} deleteProduct={deleteProduct} />
+        );
       case 2:
         return <h2>deleted items</h2>;
       default:

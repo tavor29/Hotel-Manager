@@ -2,8 +2,8 @@ import React from "react";
 import ProductTableRow from "./ProductTableRow";
 import "../mngrStyle.css";
 
-const ProductsTab = ({ inventory }) => {
-  console.log("productsTab: inventory: ", inventory);
+const ProductsTab = ({ inventory, deleteProduct }) => {
+  // console.log("productsTab: inventory: ", inventory);
 
   const renderTableRows = () => {
     if (inventory.length === 0) {
@@ -18,7 +18,11 @@ const ProductsTab = ({ inventory }) => {
       const headerRow = headers.map((header) => <th key={header}>{header}</th>);
 
       const rows = inventory.map((product, index) => (
-        <ProductTableRow key={index} product={product} />
+        <ProductTableRow
+          key={index}
+          product={product}
+          deleteProduct={deleteProduct}
+        />
       ));
 
       return (
@@ -41,9 +45,9 @@ const ProductsTab = ({ inventory }) => {
       <table className="productTable">
         <tbody>{renderTableRows()}</tbody>
       </table>
-      <button type="button" className="saveBtn" onClick={""}>
+      {/* <button type="button" className="saveBtn" onClick={""}>
         save changes
-      </button>
+      </button> */}
     </div>
   );
 };

@@ -70,6 +70,31 @@ const InventoryManagementApp = ({ tab }) => {
     })();
   };
 
+  const deleteProduct = (productId) => {
+    (async () => {
+      try {
+        const res = await fetch(
+          `http://proj.ruppin.ac.il/cgroup97/test2/api/DeleteHotelService?hotelID=1002&serviceID=${productId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (res.ok) {
+          console.log("Product deleted successfully");
+        } else {
+          console.log("Failed to delete product");
+        }
+      } catch (error) {
+        console.log("Error deleting product:", error);
+      }
+    })();
+    console.log("main product id :", productId);
+  };
+
   return (
     <div className="InventoryManagementApp">
       <div className="sidebar-and-product-table">
@@ -83,6 +108,7 @@ const InventoryManagementApp = ({ tab }) => {
           newItemFormData={newItemForm}
           changeNewItemForm={changeNewItemForm}
           addNewProduct={addNewProduct}
+          deleteProduct={deleteProduct}
         />
       </div>
     </div>

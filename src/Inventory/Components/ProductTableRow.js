@@ -1,7 +1,7 @@
 import React from "react";
 import "../mngrStyle.css";
 
-const ProductTableRow = ({ product }) => {
+const ProductTableRow = ({ product, deleteProduct }) => {
   const [checked, setChecked] = React.useState(true);
 
   const renderTableRows = (product) => {
@@ -33,6 +33,11 @@ const ProductTableRow = ({ product }) => {
 
     return values;
   };
+  const handleSubmit = () => {
+    const id =
+      product.ID || product.placeID || product.therapyID || product.facilityID;
+    deleteProduct(id);
+  };
 
   return (
     <tr>
@@ -45,7 +50,7 @@ const ProductTableRow = ({ product }) => {
         />
       </td>
       <td className="deleteButton">
-        <button type="button" onClick={""}>
+        <button type="button" onClick={handleSubmit}>
           Delete
         </button>
       </td>
