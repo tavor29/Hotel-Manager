@@ -29,7 +29,7 @@ function App() {
         <Route path="/Chats" element={<ChatMain />} />
         <Route path="/chat/:id" element={<Chat />} />
       </Routes>
-      <SSEComponent />
+      {/* <SSEComponent /> */}
     </>
   );
 }

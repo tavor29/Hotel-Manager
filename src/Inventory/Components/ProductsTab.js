@@ -2,7 +2,7 @@ import React from "react";
 import ProductTableRow from "./ProductTableRow";
 import "../mngrStyle.css";
 
-const ProductsTab = ({ inventory, deleteProduct }) => {
+const ProductsTab = ({ inventory, deleteProduct, showDeleted }) => {
   // console.log("productsTab: inventory: ", inventory);
 
   const renderTableRows = () => {
@@ -17,7 +17,15 @@ const ProductsTab = ({ inventory, deleteProduct }) => {
 
       const headerRow = headers.map((header) => <th key={header}>{header}</th>);
 
-      const rows = inventory.map((product, index) => (
+      let filteredProduts;
+      if(showDeleted){
+         filteredProduts = inventory?.filter(obj => obj.isDeleted);
+
+      } else {
+         filteredProduts = inventory?.filter(obj => !obj.isDeleted);
+      }
+
+      const rows = filteredProduts.map((product, index) => (
         <ProductTableRow
           key={index}
           product={product}
