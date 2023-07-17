@@ -1,0 +1,57 @@
+.offscreen{
+    display: none;
+  }
+  .registerPage{
+    position: relative;
+    border-style: inset;
+    width: fit-content;
+    top: 50;
+  }
+  .regImg{
+    position: relative;
+    opacity: 0.4;
+  }
+  .registerDetails{
+    position: absolute;
+    top: 10%;
+    width: 100%;
+    color: black;
+    font-family: Arial;
+    text-align: center;
+    font-size: large;
+  }
+  .success{
+    position: absolute;
+    border-style: inset;
+    background-color: #D3B9B3;
+    color: #F0E8E6;
+    text-align: center;
+    top: 35%;
+    left: 40%;
+  }
+  
+  .otp-field-container{
+    align-items: center;
+    justify-items: center;
+  }
+  .otp-field{
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    align-items: center;
+    font-size: 30px;
+    font-family: "Lato", sans-serif;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    font-weight: 300;
+  }
+  .btn{
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    align-items: center;
+    font-size: 18px;
+    font-family: "Lato", sans-serif;
+    text-align: center;
+    width: fit-content;
+  }
