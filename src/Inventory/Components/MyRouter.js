@@ -27,7 +27,9 @@ const MyRouter = ({
           <ProductsTab inventory={inventory} deleteProduct={deleteProduct} />
         );
       case 2:
-        return <h2>deleted items</h2>;
+        return (
+          <ProductsTab inventory={inventory} deleteProduct={deleteProduct} showDeleted={true}/>
+        )
       default:
         return null;
     }
