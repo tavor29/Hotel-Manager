@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Components/Navbar";
 import TopNavbar from "./Components/TopNavbar";
 import "./App.css";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-import SSEComponent from "./Listeners/SSEComponent";
+import { Routes, Route, useNavigate } from "react-router-dom";
+// import SSEComponent from "./Listeners/SSEComponent";
 
 // pages
 import Dashboard from "./Ccomponents/pages/Dashboard";
@@ -27,26 +27,25 @@ function App() {
 
   useEffect(() => {
     // Check if the user is logged in by looking for the token in local storage
-    const userLoggedIn = localStorage.getItem("token");
-    setIsLoggedIn(Boolean(userLoggedIn));
+    const userLoggedIn = localStorage.getItem("isLoggedIn");
+    if (userLoggedIn) {
+      setIsLoggedIn(true);
+      setUsername(userLoggedIn); // Retrieve the username from localStorage
+    }
   }, []);
 
   // Basic login function for demonstration purposes
-  const handleLogin = (username, password) => {
-    if (username === "123" && password === "123") {
-      localStorage.setItem("token", "abc123");
-
-      setUsername(username);
-      setIsLoggedIn(true);
-      navigate("/");
-    } else {
-      setIsLoggedIn(false);
-    }
+  const handleLogin = (username) => {
+    // Save the login status to localStorage
+    localStorage.setItem("isLoggedIn", username);
+    setUsername(username); // Store the entered username in the state
+    setIsLoggedIn(true);
+    navigate("/"); // Redirect the user to the Dashboard after successful login
   };
 
   // Basic logout function
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("isLoggedIn");
     setUsername(""); // Reset the username state
     setIsLoggedIn(false);
     navigate("/");

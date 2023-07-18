@@ -53,7 +53,7 @@ const RoomServiceTaskRow = ({ item, setIsMarked, dataList }) => {
 
       <div style={{ flex: "1", textAlign: "center" }}>
         <button
-          onClick={() => setIsMarked(requestID, ID)}
+          onClick={() => setIsMarked(requestID, itemsCount)}
           style={{
             backgroundColor: "#4CAF50",
             border: "none",

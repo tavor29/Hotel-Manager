@@ -10,8 +10,14 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
   const [roomNumber, setRoomNumber] = useState("");
   const [type, setType] = useState("");
   const [customName, setCustomName] = useState("");
-  const [dataList, setDataList] = useState([])
-  const [isCustom, setIsCustom] = useState(false)
+  const [changes, setChanges] = useState("");
+  const [dataList, setDataList] = useState([]);
+  const [isCustom, setIsCustom] = useState(false);
+
+  const [roomServiceType, setRoomServiceType] = useState(null);
+  const [price, setPrice] = useState(null);
+
+
 
 
   const clearRow = () => {
@@ -28,14 +34,30 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
     getData();
   }, []);
 
+
+  const handleSetType = (value) => {
+    if (cat === "Room Service") {
+      const obj = dataList?.filter(obj => obj.ID == value)[0];
+
+      setRoomServiceType(obj.type);
+      setPrice(obj.price)
+      setType(value)
+
+    } else {
+      setType(value)
+    }
+  }
+
   useEffect(() => {
+
     if (
       amount !== "" ||
       requestedDate !== "" ||
       requestedHour !== "" ||
       roomNumber !== "" ||
       type !== "" ||
-      customName !== ""
+      customName !== "" ||
+      changes !== ""
     ) {
       setNewRow({
         amount,
@@ -44,10 +66,13 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
         roomNumber,
         typeID: type,
         customName,
+        changes,
+        price,
+        roomServiceType,
         clearRow,
       });
     }
-  }, [amount, requestedDate, requestedHour, roomNumber, type, customName]);
+  }, [amount, requestedDate, requestedHour, roomNumber, type, customName, changes, roomServiceType, price]);
 
   const getData = async () => {
     let url = "";
@@ -67,7 +92,7 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
         console.log("dataList:" + JSON.stringify(json))
         setDataList(json);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const getDateOptions = () => {
@@ -91,13 +116,13 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
   };
 
   useEffect(() => {
-    if(type == 12){
+    if (type == 12) {
       setIsCustom(true)
     } else {
       setIsCustom(false)
     }
   }, [type])
-  
+
 
   return (
     <>
@@ -115,13 +140,14 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
             >
               <div
                 style={{
-                  width: "40%",
+                  width: cat === "Room Service" ? "60" : "40%",
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "space-around",
+                  justifyContent: cat === "Room Service" ? "space-between" : "space-around",
+                  flex: 1
                 }}
               >
-                <div style={{ width: isCustom ? "45%" : "90%" }}>
+                <div style={{ width: isCustom || cat === "Room Service" ? "45%" : "90%" }}>
                   <select
                     name="name"
                     placeholder="Name"
@@ -130,16 +156,20 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
                       width: "100%",
                       height: "100%",
                     }}
-                    onChange={(e) => setType(e.target.value)} //sets type to the chosen value (toiletpaper/towel/shampoo)
+                    onChange={(e) => handleSetType(e.target.value)} //sets type to the chosen value (toiletpaper/towel/shampoo)
                     value={
                       type === ""
                         ? "Select Item"
-                        : dataList?.find((x) => x.typeID === type)?.name
+                        :
+                        cat !== "Room Service" ?
+                          dataList?.find((x) => x.typeID === type)?.name
+                          :
+                          dataList?.find((x) => x.ID === type)?.name
                     } //returns the type in the datalist fetched from the server.
                   >
                     <option disabled>Select Item</option>
                     {dataList?.map((item) => (
-                      <option value={item.typeID} key={item.typeID}>
+                      <option value={cat === "Room Service" ? item.ID : item.typeID} key={cat === "Room Service" ? item.ID : item.typeID}>
                         {item.name.replace(/_/g, " ")}
                       </option>
                     ))}
@@ -147,7 +177,7 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
                 </div>
                 {isCustom ? (
                   <div style={{ width: "45%" }}>
-                    <input //Amount
+                    <input //item name in case of custom
                       type="text"
                       value={customName}
                       placeholder="Item name"
@@ -162,10 +192,28 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
                 ) : (
                   ""
                 )}
+                {
+                  cat === "Room Service" ?
+                    <div style={{ width: "45%" }}>
+                      <input //changes in case of room service
+                        type="text"
+                        value={changes}
+                        placeholder="Changes"
+                        onChange={(e) => setChanges(e.target.value)}
+                        style={{
+                          textAlign: "center",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      />
+                    </div>
+                    :
+                    <></>
+                }
               </div>
               <div
                 style={{
-                  width: "60%",
+                  width: cat === "Room Service" ? "45%" : "60%",
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-evenly",
@@ -184,33 +232,39 @@ function AddTaskForm({ setNewRow, handleSubmit, cat }) {
                     }}
                   />
                 </div>
-                <div style={{ width: "23%" }}>
-                  <input // DateOptions
-                    list="DateOptions"
-                    value={requestedDate}
-                    placeholder="Requested Date"
-                    onChange={(e) => setrequestedDate(e.target.value)}
-                    style={{
-                      textAlign: "center",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  />
-                  <datalist id="DateOptions">{getDateOptions()}</datalist>
-                </div>
-                <div style={{ width: "18%" }}>
-                  <input //HourOptions
-                    type="time"
-                    value={requestedHour}
-                    placeholder="Requested Time"
-                    onChange={(e) => setrequestedHour(e.target.value)}
-                    style={{
-                      textAlign: "center",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  />
-                </div>
+                {cat !== "Room Service" ?
+                  <>
+                    <div style={{ width: "23%" }}>
+                      <input // DateOptions
+                        list="DateOptions"
+                        value={requestedDate}
+                        placeholder="Requested Date"
+                        onChange={(e) => setrequestedDate(e.target.value)}
+                        style={{
+                          textAlign: "center",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      />
+                      <datalist id="DateOptions">{getDateOptions()}</datalist>
+                    </div>
+                    <div style={{ width: "18%" }}>
+                      <input //HourOptions
+                        type="time"
+                        value={requestedHour}
+                        placeholder="Requested Time"
+                        onChange={(e) => setrequestedHour(e.target.value)}
+                        style={{
+                          textAlign: "center",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      />
+                    </div>
+                  </>
+                  :
+                  <></>
+                }
                 <div style={{ width: "18%" }}>
                   <input // roomNumber
                     type="text"
