@@ -5,11 +5,14 @@
     position: relative;
     border-style: inset;
     width: fit-content;
+    width: 100%;
     top: 50;
   }
   .regImg{
     position: relative;
     opacity: 0.4;
+    width: 100%;
+
   }
   .registerDetails{
     position: absolute;

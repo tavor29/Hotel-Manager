@@ -55,9 +55,9 @@ const Login = ({ handleLogin }) => {
             >
               {errMsg}
             </p>
-            <h1>Sign In:</h1>
+            <h1>Sign In</h1>
             <form onSubmit={handleSubmit}>
-              <label htmlFor="username">User name:</label>
+              <label htmlFor="username">Username:</label>
               <br />
               <input
                 type="text"
@@ -84,11 +84,12 @@ const Login = ({ handleLogin }) => {
               <br />
               <button className="btn">Sign In</button>
             </form>
+
+            <p onClick={() => navigate("/ForgotPass")}>Forgot Password?</p>
             <p onClick={() => navigate("/Register")}>
-              Need an Account?
+              Create An Account
               <br />
             </p>
-            <p onClick={() => navigate("/ForgotPass")}>Forgot password?</p>
           </div>
         </section>
       )}
