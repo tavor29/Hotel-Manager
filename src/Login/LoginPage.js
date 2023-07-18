@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import logo1 from "../imgs/logo2.jpg";
 import { useNavigate } from "react-router-dom";
 import "./LoginStyles.css";
@@ -6,94 +6,100 @@ import "./LoginStyles.css";
 const Login = ({ handleLogin }) => {
   const userRef = useRef();
   const errRef = useRef();
+  const navigate = useNavigate();
 
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
-
-  const [goToContact, setGoToContact] = useState(false);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
-
-  useEffect(() => {
-    setErrMsg("");
-  }, [user, pwd]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Call the handleLogin function to attempt login
-    handleLogin(user, pwd);
+    if (user.trim() === "" || pwd.trim() === "") {
+      setErrMsg("Please enter both username and password.");
+      return;
+    }
+
+    setIsLoading(true);
+    setErrMsg("");
+
+    try {
+      const response = await fetch(
+        "http://proj.ruppin.ac.il/cgroup97/test2/api/login",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: user,
+            password: pwd,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+
+      if (response.ok) {
+        handleLogin(user, pwd);
+      } else {
+        const message = await response.text();
+        const object = JSON.parse(message);
+        setErrMsg(object.message);
+      }
+    } catch (error) {
+      setErrMsg("Either the email or the password is wrong.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <>
-      {success ? (
-        <section className="success">
-          <h1 style={{ padding: 20 }}>You are logged in!</h1>
+    <section className="registerPage">
+      <img className="regImg" src={logo1} alt="" />
+      <div className="registerDetails">
+        {errMsg && (
+          <p ref={errRef} className="errmsg" aria-live="assertive">
+            {errMsg}
+          </p>
+        )}
+        <h1>Sign In:</h1>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="username">User name:</label>
           <br />
-          <button
-            onClick={() => setGoToContact(true)}
-            style={{ paddingBottom: 20 }}
-          >
-            Go to Home
+          <input
+            type="text"
+            id="username"
+            ref={userRef}
+            autoComplete="off"
+            basename
+            onChange={(e) => setUser(e.target.value)}
+            value={user}
+            required
+          />
+          <br />
+          <br />
+          <label htmlFor="password">Password:</label>
+          <br />
+          <input
+            type="password"
+            id="password"
+            onChange={(e) => setPwd(e.target.value)}
+            value={pwd}
+            required
+          />
+          <br />
+          <br />
+          <button className="btn" disabled={isLoading}>
+            {isLoading ? "Signing In..." : "Sign In"}
           </button>
-        </section>
-      ) : (
-        <section className="registerPage">
-          <img className="regImg" src={logo1} alt="" />
-          <div className="registerDetails">
-            <p
-              ref={errRef}
-              className={errMsg ? "errmsg" : "offscreen"}
-              aria-live="assertive"
-            >
-              {errMsg}
-            </p>
-            <h1>Sign In</h1>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="username">Username:</label>
-              <br />
-              <input
-                type="text"
-                id="username"
-                ref={userRef}
-                autoComplete="off"
-                basename
-                onChange={(e) => setUser(e.target.value)}
-                value={user}
-                required
-              ></input>
-              <br />
-              <br />
-              <label htmlFor="password">Password:</label>
-              <br />
-              <input
-                type="password"
-                id="password"
-                onChange={(e) => setPwd(e.target.value)}
-                value={pwd}
-                required
-              ></input>
-              <br />
-              <br />
-              <button className="btn">Sign In</button>
-            </form>
-
-            <p onClick={() => navigate("/ForgotPass")}>Forgot Password?</p>
-            <p onClick={() => navigate("/Register")}>
-              Create An Account
-              <br />
-            </p>
-          </div>
-        </section>
-      )}
-    </>
+        </form>
+        <p onClick={() => navigate("/Register")}>
+          Need an Account?
+          <br />
+        </p>
+        <p onClick={() => navigate("/ForgotPass")}>Forgot password?</p>
+      </div>
+    </section>
   );
 };
 
