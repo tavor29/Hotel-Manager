@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Components/Navbar";
 import TopNavbar from "./Components/TopNavbar";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import SSEComponent from "./Listeners/SSEComponent";
 
 // pages
@@ -22,6 +22,8 @@ import Validator from "./Login/Validator";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState(""); // Add username state
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if the user is logged in by looking for the token in local storage
@@ -31,11 +33,11 @@ function App() {
 
   // Basic login function for demonstration purposes
   const handleLogin = (username, password) => {
-    // In a real application, you would make an API call to authenticate the user and get the token
-    // For now, we'll just set a dummy token "abc123" if the username and password match.
-    if (username === "asdd" && password === "asd") {
+    if (username === "123" && password === "123") {
       localStorage.setItem("token", "abc123");
+      setUsername(username); // Store the entered username in the state
       setIsLoggedIn(true);
+      navigate("/"); // Redirect the user to the Dashboard after successful login
     } else {
       setIsLoggedIn(false);
     }
@@ -44,37 +46,40 @@ function App() {
   // Basic logout function
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setUsername(""); // Reset the username state
     setIsLoggedIn(false);
+    navigate("/"); // Redirect the user to the login page after logout
   };
 
   return (
     <>
-      <Routes>
-        {isLoggedIn ? (
-          <>
-            <TopNavbar />
-            <Navbar />
-
-            <Route path="/Dashboard" element={<Dashboard />} />
+      {isLoggedIn ? (
+        <>
+          <TopNavbar name={username} handleLogout={handleLogout} />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
             <Route path="/Tasks" element={<TabTasks />} />
             <Route path="/Guest_manager" element={<Guestmanager />} />
             <Route path="/Inventory" element={<Inventory />} />
             <Route path="/Schedule" element={<Schedule />} />
             <Route path="/Chats" element={<ChatMain />} />
             <Route path="/chat/:id" element={<Chat />} />
-            <button onClick={handleLogout}>Logout</button>
-          </>
-        ) : (
-          <>
+          </Routes>
+        </>
+      ) : (
+        <>
+          <Routes>
             <Route path="/" element={<LoginPage handleLogin={handleLogin} />} />
             <Route path="/ForgotPass" element={<ForgotPass />} />
             <Route path="/Register" element={<Register />} />
             <Route path="/PassReset" element={<PassReset />} />
             <Route path="/Validator" element={<Validator />} />
-          </>
-        )}
-      </Routes>
-      <SSEComponent />
+          </Routes>
+        </>
+      )}
+
+      {/* <SSEComponent /> */}
     </>
   );
 }
