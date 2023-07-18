@@ -265,7 +265,6 @@ function TableComponent() {
   return (
     <>
       <span className="header">Task List</span>
-      {console.log("tasks: " + JSON.stringify(tasks))}
 
       {tasks && tasks.length > 0 ? (
         <div className="container">
@@ -318,7 +317,6 @@ function TableComponent() {
             <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
             <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
           </div>
-          {console.log("tasks: " + JSON.stringify(tasks))}
           {searchTerm === ""
             ? tasks.map((item, index) =>
                 !item.isMarked && cat === "Room Service" ? (
@@ -360,8 +358,6 @@ function TableComponent() {
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
             newRow={newRow}
-            dataList={[]}
-            setDataList={setDataList}
             cat={cat}
           />
         </div>

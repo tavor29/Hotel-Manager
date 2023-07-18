@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Data from "../data/TaskData";
 
-function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
+function AddTaskForm({ setNewRow, handleSubmit, cat }) {
   const currentDate = new Date();
 
   const [amount, setAmount] = useState("");
@@ -10,6 +10,9 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
   const [roomNumber, setRoomNumber] = useState("");
   const [type, setType] = useState("");
   const [customName, setCustomName] = useState("");
+  const [dataList, setDataList] = useState([])
+  const [isCustom, setIsCustom] = useState(false)
+
 
   const clearRow = () => {
     setAmount("");
@@ -61,6 +64,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
       const json = await res.json();
 
       if (res.ok) {
+        console.log("dataList:" + JSON.stringify(json))
         setDataList(json);
       }
     } catch (error) {}
@@ -86,12 +90,14 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
     return options;
   };
 
-  const CheckIfCustom = () => {
-    const customTypeName = dataList?.find(
-      (obj) => obj.typeID && obj.typeID === type
-    )?.name; //returns the type in the datalist fetched from the server.
-    return customTypeName && customTypeName === "CUSTOM";
-  };
+  useEffect(() => {
+    if(type == 12){
+      setIsCustom(true)
+    } else {
+      setIsCustom(false)
+    }
+  }, [type])
+  
 
   return (
     <>
@@ -115,7 +121,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
                   justifyContent: "space-around",
                 }}
               >
-                <div style={{ width: CheckIfCustom() ? "45%" : "90%" }}>
+                <div style={{ width: isCustom ? "45%" : "90%" }}>
                   <select
                     name="name"
                     placeholder="Name"
@@ -139,7 +145,7 @@ function AddTaskForm({ setNewRow, handleSubmit, dataList, setDataList, cat }) {
                     ))}
                   </select>
                 </div>
-                {CheckIfCustom() ? (
+                {isCustom ? (
                   <div style={{ width: "45%" }}>
                     <input //Amount
                       type="text"
