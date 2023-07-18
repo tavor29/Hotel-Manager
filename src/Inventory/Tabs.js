@@ -110,38 +110,31 @@ export default function TabTasks() {
           </div>
           {/* {console.log("tabs: " + hotelActivities)} */}
           <TabPanel>
-            {" "}
-            <Main tab={hotelActivities} />
+            <Main tab={hotelActivities} category={"hotelActivities"} />
           </TabPanel>
 
           <TabPanel>
-            {" "}
-            <Main tab={hotelFacilities} />{" "}
+            <Main tab={hotelFacilities} category={"hotelFacilities"} />
           </TabPanel>
 
           <TabPanel>
-            {" "}
-            <Main tab={spaTherapies} />{" "}
+            <Main tab={spaTherapies} category={"spaTherapies"} />
           </TabPanel>
 
           <TabPanel>
-            {" "}
-            <Main tab={foodMenu} />{" "}
+            <Main tab={foodMenu} category={"foodMenu"} />
           </TabPanel>
 
           <TabPanel>
-            {" "}
-            <Main tab={drinksMenu} />{" "}
+            <Main tab={drinksMenu} category={"drinksMenu"} />
           </TabPanel>
 
           <TabPanel>
-            {" "}
-            <Main tab={alcoholMenu} />{" "}
+            <Main tab={alcoholMenu} category={"alcoholMenu"} />
           </TabPanel>
 
           <TabPanel>
-            {" "}
-            <Main tab={additionalItemsMenu} />{" "}
+            <Main tab={additionalItemsMenu} category={"additionalItemsMenu"} />
           </TabPanel>
         </Tabs>
       </div>

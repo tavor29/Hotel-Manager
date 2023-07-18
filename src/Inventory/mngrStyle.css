@@ -6,7 +6,6 @@ body {
   margin: 0;
 }
 
-
 .ProductsTab {
   box-sizing: border-box;
   width: 100%;
@@ -183,8 +182,8 @@ body {
 }
 
 #description {
-  height: 40px;
-  width: 195px;
+  height: 85px;
+  width: 285px;
 }
 .InventoryManagementApp {
   min-height: 80vh;

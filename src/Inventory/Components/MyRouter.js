@@ -1,6 +1,7 @@
 import React from "react";
 import NewItemTab from "./NewItemTab";
 import ProductsTab from "./ProductsTab";
+import EditProduct from "./EditProduct";
 import "../mngrStyle.css";
 
 const MyRouter = ({
@@ -10,6 +11,7 @@ const MyRouter = ({
   changeNewItemForm,
   addNewProduct,
   deleteProduct,
+  category,
 }) => {
   const route = (activeTab) => {
     switch (activeTab) {
@@ -20,16 +22,36 @@ const MyRouter = ({
             formData={newItemFormData}
             changeForm={changeNewItemForm}
             addNewProduct={addNewProduct}
+            category={category}
           />
         );
       case 1:
         return (
-          <ProductsTab inventory={inventory} deleteProduct={deleteProduct} />
+          <ProductsTab
+            inventory={inventory}
+            deleteProduct={deleteProduct}
+            category={category}
+          />
         );
       case 2:
         return (
-          <ProductsTab inventory={inventory} deleteProduct={deleteProduct} showDeleted={true}/>
-        )
+          <ProductsTab
+            inventory={inventory}
+            deleteProduct={deleteProduct}
+            showDeleted={true}
+            category={category}
+          />
+        );
+      case 3:
+        return (
+          <EditProduct
+            items={inventory}
+            formData={newItemFormData}
+            changeForm={changeNewItemForm}
+            addNewProduct={addNewProduct}
+            category={category}
+          />
+        );
       default:
         return null;
     }

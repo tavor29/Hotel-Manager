@@ -7,6 +7,9 @@ const Sidebar = ({ activeTab, changeTab }) => {
         <li className="add-new-item" onClick={() => changeTab(0)}>
           <span>Add New Item</span>
         </li>
+        <li onClick={() => changeTab(3)}>
+          <span>Edit Existing Item</span>
+        </li>
         <li
           className={activeTab === 1 ? "active" : ""}
           onClick={() => changeTab(1)}

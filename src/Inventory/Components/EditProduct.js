@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../mngrStyle.css";
 
-const NewItemTab = ({ items, addNewProduct, category }) => {
-  //this component creates a new item based on the items given as the argument
+const EditProduct = ({ items, addNewProduct, category }) => {
+  const [selectedProduct, setSelectedProduct] = useState("");
   const [newformData, setFormData] = useState({});
+
+  useEffect(() => {
+    // When the component mounts or selectedProduct changes, set the formData state
+    // with the existing item data of the selected product, if available.
+    if (selectedProduct !== "") {
+      const selectedData = items.find((item) => item.name === selectedProduct);
+      setFormData(selectedData || {});
+    }
+  }, [selectedProduct, items]);
 
   const handleChange = (e) => {
     setFormData((prevData) => ({
@@ -12,11 +21,8 @@ const NewItemTab = ({ items, addNewProduct, category }) => {
     }));
   };
 
-  const handleTypeSelect = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      type: e.target.value,
-    }));
+  const handleProductSelect = (e) => {
+    setSelectedProduct(e.target.value);
   };
 
   const renderTypeSelect = (uniqueValues) => {
@@ -25,7 +31,7 @@ const NewItemTab = ({ items, addNewProduct, category }) => {
         <label>Type</label>
         <select
           id="type"
-          onChange={handleTypeSelect}
+          onChange={handleChange}
           value={newformData["type"] || ""}
         >
           <option value="">Select a type</option>
@@ -39,17 +45,11 @@ const NewItemTab = ({ items, addNewProduct, category }) => {
     );
   };
 
-  const getKeys = (items) => {
+  const getKeys = (item) => {
     let inputs = [];
     let typeUniqueValues = [];
 
-    if (category === "hotelFacilities") {
-      // Get unique values for the "type" attribute
-      typeUniqueValues = [...new Set(items.map((item) => item.type))];
-      inputs.push(renderTypeSelect(typeUniqueValues));
-    }
-
-    for (const element in items[0]) {
+    for (const element in item) {
       if (element.toLowerCase().includes("price")) {
         inputs.push(
           <p key={element}>
@@ -99,6 +99,12 @@ const NewItemTab = ({ items, addNewProduct, category }) => {
       }
     }
 
+    if (category === "hotelFacilities") {
+      // Get unique values for the "type" attribute
+      typeUniqueValues = [...new Set(items.map((item) => item.type))];
+      inputs.push(renderTypeSelect(typeUniqueValues));
+    }
+
     return <div id="newItemForm-inputs">{inputs}</div>;
   };
 
@@ -109,14 +115,23 @@ const NewItemTab = ({ items, addNewProduct, category }) => {
   return (
     <div className="NewItemTab">
       <div className="newItem-input">
-        <h1>Add A New Item</h1>
+        <h1>Edit Product</h1>
 
-        {getKeys(items)}
+        <select value={selectedProduct} onChange={handleProductSelect}>
+          <option value="">Select a product</option>
+          {items.map((item) => (
+            <option key={item.name} value={item.name}>
+              {item.name}
+            </option>
+          ))}
+        </select>
 
-        <button onClick={handleSubmit}>Add To Inventory</button>
+        {selectedProduct && getKeys(newformData)}
+
+        <button onClick={handleSubmit}>Update Product</button>
       </div>
     </div>
   );
 };
 
-export default NewItemTab;
+export default EditProduct;

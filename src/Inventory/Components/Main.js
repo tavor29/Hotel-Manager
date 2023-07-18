@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar";
 import MyRouter from "./MyRouter";
 import "../mngrStyle.css";
 
-const InventoryManagementApp = ({ tab }) => {
+const InventoryManagementApp = ({ tab, category }) => {
   const [activeTab, setActiveTab] = useState(1);
   // const [inventory, setInventory] = useState(null);
 
@@ -109,6 +109,7 @@ const InventoryManagementApp = ({ tab }) => {
           changeNewItemForm={changeNewItemForm}
           addNewProduct={addNewProduct}
           deleteProduct={deleteProduct}
+          category={category}
         />
       </div>
     </div>

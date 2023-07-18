@@ -1,7 +1,7 @@
 import React from "react";
 import "../mngrStyle.css";
 
-const ProductTableRow = ({ product, deleteProduct }) => {
+const ProductTableRow = ({ product, deleteProduct, category }) => {
   const [checked, setChecked] = React.useState(true);
 
   const renderTableRows = (product) => {
@@ -10,6 +10,15 @@ const ProductTableRow = ({ product, deleteProduct }) => {
 
     for (let i = 0; i < headers.length; i++) {
       const header = headers[i];
+
+      if (
+        header === "isDeleted" ||
+        header.includes("ID") ||
+        (header === "type" && category !== "hotelFacilities")
+      ) {
+        // Skip these properties to the table row
+        continue;
+      }
 
       if (header.includes("description")) {
         const Description =
@@ -33,6 +42,7 @@ const ProductTableRow = ({ product, deleteProduct }) => {
 
     return values;
   };
+
   const handleSubmit = () => {
     const id =
       product.ID || product.placeID || product.therapyID || product.facilityID;
