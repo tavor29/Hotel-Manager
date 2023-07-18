@@ -35,9 +35,10 @@ function App() {
   const handleLogin = (username, password) => {
     if (username === "123" && password === "123") {
       localStorage.setItem("token", "abc123");
-      setUsername(username); // Store the entered username in the state
+
+      setUsername(username);
       setIsLoggedIn(true);
-      navigate("/"); // Redirect the user to the Dashboard after successful login
+      navigate("/");
     } else {
       setIsLoggedIn(false);
     }
@@ -48,7 +49,7 @@ function App() {
     localStorage.removeItem("token");
     setUsername(""); // Reset the username state
     setIsLoggedIn(false);
-    navigate("/"); // Redirect the user to the login page after logout
+    navigate("/");
   };
 
   return (

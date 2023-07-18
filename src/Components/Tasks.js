@@ -11,23 +11,31 @@ import "../styles/TasksStyle.css";
 import HouseHoldTaskRow from "./HouseHoldTaskRow";
 import Form from "./AddTaskForm";
 import Data from "../data/TaskData";
+import RoomServiceTaskRow from "./RoomServiceTaskRow";
 let cat = "";
 
 const fetchTable = async () => {
-  const res = await fetch(
-    "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1002"
-  );
+  let url = "";
+
+  if (cat === "Room Service") {
+    url =
+      "http://proj.ruppin.ac.il/cgroup97/test2/api/GetRoomServiceRequest?hotelID=1002";
+  } else
+    url =
+      "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1002";
+
+  const res = await fetch(url);
 
   let names = Data[cat].map((item) => item.name);
   let Allnames = [];
   Object.keys(Data).forEach(function (key) {
     Data[key].forEach((item) => Allnames.push(item.name));
   });
-  console.log("res0 :", res);
 
   let arr = await res.json();
   console.log("arr :", arr);
-  let filteredArr = arr.filter((obj) => names.includes(obj.name)); // filters the data sent through to the table
+
+  let filteredArr = arr; // filters the data sent through to the table
   console.log("filteredArr :", filteredArr);
 
   if (cat === "CustomRequests") {
@@ -257,6 +265,7 @@ function TableComponent() {
   return (
     <>
       <span className="header">Task List</span>
+      {console.log("tasks: " + JSON.stringify(tasks))}
 
       {tasks && tasks.length > 0 ? (
         <div className="container">
@@ -289,38 +298,61 @@ function TableComponent() {
             <div style={{ flex: "1", textAlign: "center" }}>Name</div>
             <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
             <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
-            <div style={{ flex: "1", textAlign: "center", color: "red" }}>
-              Requested Date{" "}
-            </div>
-            <div style={{ flex: "1", textAlign: "center", color: "red" }}>
-              {" "}
-              Requested Time
-            </div>
+            {cat === "Room Service" ? (
+              <>
+                <div style={{ flex: "1", textAlign: "center" }}>Price</div>
+                <div style={{ flex: "1", textAlign: "center" }}>Changes</div>
+              </>
+            ) : (
+              <>
+                <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+                  Requested Date{" "}
+                </div>
+                <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+                  {" "}
+                  Requested Time
+                </div>
+              </>
+            )}
+
             <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
             <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
           </div>
+          {console.log("tasks: " + JSON.stringify(tasks))}
           {searchTerm === ""
-            ? tasks.map(
-                (item, index) =>
-                  !item.isMarked && (
-                    <HouseHoldTaskRow
-                      item={item}
-                      key={index}
-                      setIsMarked={setIsMarked}
-                      dataList={cat}
-                    />
-                  )
+            ? tasks.map((item, index) =>
+                !item.isMarked && cat === "Room Service" ? (
+                  <RoomServiceTaskRow
+                    item={item}
+                    key={index}
+                    setIsMarked={setIsMarked}
+                    dataList={cat}
+                  />
+                ) : (
+                  <HouseHoldTaskRow
+                    item={item}
+                    key={index}
+                    setIsMarked={setIsMarked}
+                    dataList={cat}
+                  />
+                )
               )
-            : filteredChats.map(
-                (item, index) =>
-                  !item.isMarked && (
-                    <HouseHoldTaskRow
-                      item={item}
-                      key={index}
-                      setIsMarked={setIsMarked}
-                      dataList={cat}
-                    />
-                  )
+            : filteredChats.map((item, index) =>
+                !item.isMarked && cat === "Room Service" ? (
+                  <RoomServiceTaskRow
+                    item={item}
+                    key={index}
+                    setIsMarked={setIsMarked}
+                    dataList={cat}
+                  />
+                ) : (
+                  <HouseHoldTaskRow
+                    item={item}
+                    key={index}
+                    setIsMarked={setIsMarked}
+                    dataList={cat}
+                  />
+                )
               )}{" "}
           {isFetching && <p>Refreshing...</p>}
           <Form //create task form
@@ -328,8 +360,9 @@ function TableComponent() {
             setNewRow={setNewRow}
             handleSubmit={handleSubmit}
             newRow={newRow}
-            dataList={cat}
+            dataList={[]}
             setDataList={setDataList}
+            cat={cat}
           />
         </div>
       ) : (

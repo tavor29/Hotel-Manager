@@ -6,8 +6,6 @@ const EditProduct = ({ items, addNewProduct, category }) => {
   const [newformData, setFormData] = useState({});
 
   useEffect(() => {
-    // When the component mounts or selectedProduct changes, set the formData state
-    // with the existing item data of the selected product, if available.
     if (selectedProduct !== "") {
       const selectedData = items.find((item) => item.name === selectedProduct);
       setFormData(selectedData || {});
