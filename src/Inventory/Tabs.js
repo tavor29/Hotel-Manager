@@ -77,7 +77,7 @@ export default function TabTasks() {
       <div>
         <Tabs>
           <div className="tabs">
-            <TabList>
+            <TabList style={{display:"flex", justifyContent:"space-evenly"}}>
               <Tab>
                 {" "}
                 <button className={"btn1"}>Hotel Activities</button>

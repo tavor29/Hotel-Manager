@@ -115,7 +115,7 @@ const EditProduct = ({ items, addOrUpdateNewProduct, category }) => {
       <div className="newItem-input">
         <h1>Edit Product</h1>
 
-        <select value={selectedProduct} onChange={handleProductSelect}>
+        <select value={selectedProduct} onChange={handleProductSelect} style={{display:'flex'}}>
           <option value="">Select a product</option>
           {items.map((item) => (
             <option key={item.name} value={item.name}>

@@ -6,10 +6,10 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 export default function TabTasks() {
   return (
-    <div>
+    <div style={{ padding:50 }}>
       <Tabs>
         <div className="container">
-          <TabList>
+          <TabList style={{display:"flex", justifyContent:"space-evenly"}}>
             <Tab>
               {" "}
               <button className={"btn1"}>Toiletries</button>

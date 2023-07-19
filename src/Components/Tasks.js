@@ -87,6 +87,7 @@ function TableComponent() {
     );
     setFilteredChats(filteredChats);
   }, [searchTerm, tasks]);
+
   const setIsMarked = (id, typeID) => {
     deleteRow.mutate({ id, typeID });
   };
@@ -325,118 +326,120 @@ function TableComponent() {
 
   return (
     <>
-      <span className="header">Task List</span>
-
-      {tasks && tasks.length > 0 ? (
-        <div className="container">
-          <h2 style={{ marginLeft: "40px" }}>Search Bar</h2>
-          <Input
-            placeholder="Search Room Number or Request Id "
-            onChange={handleSearchChange}
-            onClear={handleSearchClear}
-            leftIcon={{ type: "search" }}
-            key={inputKey}
-            inputStyle={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              width: "100%",
-              boxSizing: "border-box",
-              marginLeft: "40px",
-            }}
-          />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              borderBottom: "1px solid black",
-              padding: "9px 0",
-              marginTop: "50px",
-            }}
-          >
-            <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Name</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
-            {cat === "Room Service" ? (
-              <>
-                <div style={{ flex: "1", textAlign: "center" }}>Price</div>
-                <div style={{ flex: "1", textAlign: "center" }}>Changes</div>
-              </>
-            ) : (
-              <>
-                <div style={{ flex: "1", textAlign: "center", color: "red" }}>
-                  Requested Date{" "}
-                </div>
-                <div style={{ flex: "1", textAlign: "center", color: "red" }}>
-                  {" "}
-                  Requested Time
-                </div>
-              </>
-            )}
-
-            <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
-          </div>
-          {searchTerm === ""
-            ? tasks.sort((a, b) => new Date(a.requestDate) > new Date(b.requestDate)).map((item, index) =>
-              !item.isMarked && cat === "Room Service" ? (
-                <RoomServiceTaskRow
-                  item={item}
-                  key={index}
-                  setIsMarked={setIsMarked}
-                  dataList={cat}
-                />
+      <div style={{ justifyContent: "center", display: "flex" }}>
+        <span className="header">Task List</span>
+      </div>
+      <div style={{marginTop:-150}}>
+        {tasks && tasks.length > 0 ? (
+          <div className="container">
+            <Input
+              placeholder="Search Room Number or Request Id "
+              onChange={handleSearchChange}
+              onClear={handleSearchClear}
+              leftIcon={{ type: "search" }}
+              key={inputKey}
+              inputStyle={{
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                width: "100%",
+                boxSizing: "border-box",
+                marginLeft: "40px",
+              }}
+            />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                borderBottom: "1px solid black",
+                padding: "9px 0",
+                marginTop: "50px",
+              }}
+            >
+              <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Name</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
+              {cat === "Room Service" ? (
+                <>
+                  <div style={{ flex: "1", textAlign: "center" }}>Price</div>
+                  <div style={{ flex: "1", textAlign: "center" }}>Changes</div>
+                </>
               ) : (
-                <HouseHoldTaskRow
-                  item={item}
-                  key={index}
-                  setIsMarked={setIsMarked}
-                  dataList={cat}
-                />
+                <>
+                  <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+                    Requested Date{" "}
+                  </div>
+                  <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+                    {" "}
+                    Requested Time
+                  </div>
+                </>
+              )}
+
+              <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
+            </div>
+            {searchTerm === ""
+              ? tasks.sort((a, b) => new Date(a.requestDate) > new Date(b.requestDate)).map((item, index) =>
+                !item.isMarked && cat === "Room Service" ? (
+                  <RoomServiceTaskRow
+                    item={item}
+                    key={index}
+                    setIsMarked={setIsMarked}
+                    dataList={cat}
+                  />
+                ) : (
+                  <HouseHoldTaskRow
+                    item={item}
+                    key={index}
+                    setIsMarked={setIsMarked}
+                    dataList={cat}
+                  />
+                )
               )
-            )
-            : filteredChats.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate)).map((item, index) =>
-              !item.isMarked && cat === "Room Service" ? (
-                <RoomServiceTaskRow
-                  item={item}
-                  key={index}
-                  setIsMarked={setIsMarked}
-                  dataList={cat}
-                />
-              ) : (
-                <HouseHoldTaskRow
-                  item={item}
-                  key={index}
-                  setIsMarked={setIsMarked}
-                  dataList={cat}
-                />
-              )
-            )}{" "}
-          {isFetching && <p>Refreshing...</p>}
-          <Form //create task form
-            addRow={addRow}
-            setNewRow={setNewRow}
-            handleSubmit={handleSubmit}
-            newRow={newRow}
-            cat={cat}
-          />
-        </div>
-      ) : (
-        <div className="container">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: 50,
-              marginBottom: 50,
-            }}
-          >
-            No tasks available
+              : filteredChats.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate)).map((item, index) =>
+                !item.isMarked && cat === "Room Service" ? (
+                  <RoomServiceTaskRow
+                    item={item}
+                    key={index}
+                    setIsMarked={setIsMarked}
+                    dataList={cat}
+                  />
+                ) : (
+                  <HouseHoldTaskRow
+                    item={item}
+                    key={index}
+                    setIsMarked={setIsMarked}
+                    dataList={cat}
+                  />
+                )
+              )}{" "}
+            {isFetching && <p>Refreshing...</p>}
+            <Form //create task form
+              addRow={addRow}
+              setNewRow={setNewRow}
+              handleSubmit={handleSubmit}
+              newRow={newRow}
+              cat={cat}
+            />
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="container">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: 50,
+                marginBottom: 50,
+              }}
+            >
+              No tasks available
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }
