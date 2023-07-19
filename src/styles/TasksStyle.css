@@ -6,15 +6,13 @@
   
 }
 
-.container{
+.container {
   font-weight: 250;
   display: flex;
-  height: 10vh;
-  margin-left: 280px;
-  margin-top: 50px;
   flex-direction: column;
+  margin-left: 15vw; /* Adjust the left margin to accommodate the width of the navbarr */
+  margin-top: 170px; /* Adjust the top margin to accommodate the height of the AppHeader */
   
-
 }
 
 .header{

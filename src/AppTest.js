@@ -48,7 +48,7 @@ function App() {
     localStorage.removeItem("isLoggedIn");
     setUsername(""); // Reset the username state
     setIsLoggedIn(false);
-    navigate("/");
+    navigate("/"); // Redirect the user to the login page after logout
   };
 
   return (
