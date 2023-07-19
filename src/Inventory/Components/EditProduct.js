@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../mngrStyle.css";
 
-const EditProduct = ({ items, addNewProduct, category }) => {
+const EditProduct = ({ items, addOrUpdateNewProduct, category }) => {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [newformData, setFormData] = useState({});
 
@@ -107,7 +107,7 @@ const EditProduct = ({ items, addNewProduct, category }) => {
   };
 
   const handleSubmit = () => {
-    addNewProduct(newformData);
+    addOrUpdateNewProduct(newformData, category);
   };
 
   return (

@@ -1,8 +1,9 @@
 import React from "react";
 import "../mngrStyle.css";
 
-const ProductTableRow = ({ product, deleteProduct, category }) => {
-  const [checked, setChecked] = React.useState(true);
+const ProductTableRow = ({ product, category, showDeleted, addOrUpdateNewProduct }) => {
+
+  const [checked, setChecked] = React.useState(product.inStock);
 
   const renderTableRows = (product) => {
     const headers = Object.keys(product);
@@ -19,7 +20,6 @@ const ProductTableRow = ({ product, deleteProduct, category }) => {
         // Skip these properties to the table row
         continue;
       }
-
       if (header.includes("description")) {
         const Description =
           product[header] && product[header].length > 20
@@ -35,7 +35,10 @@ const ProductTableRow = ({ product, deleteProduct, category }) => {
             </a>
           </td>
         );
-      } else {
+      } else if(header.includes("inStock")){
+
+      }
+      else {
         values.push(<td key={header}>{product[header]}</td>);
       }
     }
@@ -43,25 +46,50 @@ const ProductTableRow = ({ product, deleteProduct, category }) => {
     return values;
   };
 
+  const handleCheck = () => {
+    console.log(product.inStock)
+    if (product.inStock) {
+      setChecked(false);
+      product.inStock = false;
+    } else {
+      setChecked(true)
+      product.inStock = true;
+    }
+
+    addOrUpdateNewProduct(product, category);
+  }
+
   const handleSubmit = () => {
-    const id =
-      product.ID || product.placeID || product.therapyID || product.facilityID;
-    deleteProduct(id);
+    if (showDeleted) {
+      product.isDeleted = false;
+    } else {
+      product.isDeleted = true;
+    }
+
+    addOrUpdateNewProduct(product, category);
   };
 
   return (
     <tr>
       {renderTableRows(product)}
-      <td>
+      {
+        category === "hotelActivities" || category === "hotelFacilities" || category === "spaTherapies" ? 
+        <></>
+        :
+        <td>
         <input
           type="checkbox"
           defaultChecked={checked}
-          onChange={() => setChecked((state) => !state)}
+          onChange={handleCheck}
         />
       </td>
+      }
       <td className="deleteButton">
         <button type="button" onClick={handleSubmit}>
-          Delete
+          {
+            showDeleted ?
+              "Restore" : "Delete"
+          }
         </button>
       </td>
     </tr>

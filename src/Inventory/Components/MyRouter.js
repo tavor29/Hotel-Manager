@@ -9,8 +9,7 @@ const MyRouter = ({
   inventory,
   newItemFormData,
   changeNewItemForm,
-  addNewProduct,
-  deleteProduct,
+  addOrUpdateNewProduct,
   category,
 }) => {
   const route = (activeTab) => {
@@ -21,7 +20,7 @@ const MyRouter = ({
             items={inventory}
             formData={newItemFormData}
             changeForm={changeNewItemForm}
-            addNewProduct={addNewProduct}
+            addOrUpdateNewProduct={addOrUpdateNewProduct}
             category={category}
           />
         );
@@ -29,7 +28,7 @@ const MyRouter = ({
         return (
           <ProductsTab
             inventory={inventory}
-            deleteProduct={deleteProduct}
+            addOrUpdateNewProduct={addOrUpdateNewProduct}
             category={category}
           />
         );
@@ -37,7 +36,7 @@ const MyRouter = ({
         return (
           <ProductsTab
             inventory={inventory}
-            deleteProduct={deleteProduct}
+            addOrUpdateNewProduct={addOrUpdateNewProduct}
             showDeleted={true}
             category={category}
           />
@@ -48,7 +47,7 @@ const MyRouter = ({
             items={inventory}
             formData={newItemFormData}
             changeForm={changeNewItemForm}
-            addNewProduct={addNewProduct}
+            addOrUpdateNewProduct={addOrUpdateNewProduct}
             category={category}
           />
         );

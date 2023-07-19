@@ -2,7 +2,7 @@ import React from "react";
 import ProductTableRow from "./ProductTableRow";
 import "../mngrStyle.css";
 
-const ProductsTab = ({ inventory, deleteProduct, showDeleted, category }) => {
+const ProductsTab = ({ inventory, showDeleted, category, addOrUpdateNewProduct }) => {
   //this component creates the headers of the table
   console.log("category: ", category);
 
@@ -17,7 +17,7 @@ const ProductsTab = ({ inventory, deleteProduct, showDeleted, category }) => {
       const headers = Object.keys(inventory[0]);
 
       let headerRow = headers
-        .filter((header) => header !== "isDeleted" && !header.includes("ID"))
+        .filter((header) => header !== "isDeleted" && !header.includes("ID") && !header.includes("inStock"))
         .map((header) => <th key={header}>{header}</th>);
 
       if (category !== "hotelFacilities") {
@@ -37,8 +37,9 @@ const ProductsTab = ({ inventory, deleteProduct, showDeleted, category }) => {
         <ProductTableRow
           key={index}
           product={product}
-          deleteProduct={deleteProduct}
+          addOrUpdateNewProduct={addOrUpdateNewProduct}
           category={category}
+          showDeleted={showDeleted}
         />
       ));
 
@@ -46,7 +47,20 @@ const ProductsTab = ({ inventory, deleteProduct, showDeleted, category }) => {
         <>
           <tr>
             {headerRow}
-            <th>In Stock</th>
+            {
+              category === "hotelActivities" || category === "hotelFacilities" || category === "spaTherapies" ?
+                <></>
+                :
+                <th>In Stock</th>
+            }
+
+            {
+              showDeleted ?
+                <th>Restore Item</th>
+                :
+                <th>Delete Item</th>
+            }
+
           </tr>
           {rows}
         </>

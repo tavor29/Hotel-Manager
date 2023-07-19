@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import MyRouter from "./MyRouter";
 import "../mngrStyle.css";
+import { getAdditionalItemObject, getFoodAndDrinksObject, getHotelActivitiesObject, getHotelFacilityObject, getTherapyObject } from "../../Utils/GeneratePostObjects";
 
-const InventoryManagementApp = ({ tab, category }) => {
+const InventoryManagementApp = ({ tab, category, fetchJSON }) => {
   const [activeTab, setActiveTab] = useState(1);
   // const [inventory, setInventory] = useState(null);
 
@@ -42,58 +43,54 @@ const InventoryManagementApp = ({ tab, category }) => {
     setNewItemForm(formData);
   };
 
-  const addNewProduct = (product) => {
+  const addOrUpdateNewProduct = (product, category) => {
     (async () => {
-      console.log("add product: " + product.category);
+      const postObject = getPostObject(product, category);
+      console.log(JSON.stringify(postObject))
 
       const res = await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHotelServices?hotelID=1002",
+        "http://proj.ruppin.ac.il/cgroup97/test2/api/AddOrUpdateService?hotelID=1002",
         {
           method: "POST",
+          body: JSON.stringify(postObject),
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(product),
         }
       );
-      console.log("promise: " + res);
-      console.log("product: " + JSON.stringify(product));
 
       if (res) {
         console.log("Posting...");
       }
       if (res.ok) {
         console.log("Success");
+        fetchJSON();
       } else {
         console.log("Failed to Post");
       }
     })();
   };
 
-  const deleteProduct = (productId) => {
-    (async () => {
-      try {
-        const res = await fetch(
-          `http://proj.ruppin.ac.il/cgroup97/test2/api/DeleteHotelService?hotelID=1002&serviceID=${productId}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
 
-        if (res.ok) {
-          console.log("Product deleted successfully");
-        } else {
-          console.log("Failed to delete product");
-        }
-      } catch (error) {
-        console.log("Error deleting product:", error);
-      }
-    })();
-    console.log("main product id :", productId);
-  };
+  const getPostObject = (product, category) => {
+    const foodAndDrinksCategories = ["foodMenu", "drinksMenu", "alcoholMenu"];
+
+    if (foodAndDrinksCategories.includes(category)) 
+      return getFoodAndDrinksObject(product, category);
+
+    if(category === "hotelActivities")
+      return getHotelActivitiesObject(product);
+    
+    if(category === "hotelFacilities")
+      return getHotelFacilityObject(product);
+    
+    if(category === "spaTherapies")
+      return getTherapyObject(product);
+
+    if(category === "additionalItemsMenu"){
+      return getAdditionalItemObject(product);
+    }
+  }
 
   return (
     <div className="InventoryManagementApp">
@@ -107,9 +104,9 @@ const InventoryManagementApp = ({ tab, category }) => {
           inventory={tab}
           newItemFormData={newItemForm}
           changeNewItemForm={changeNewItemForm}
-          addNewProduct={addNewProduct}
-          deleteProduct={deleteProduct}
+          addOrUpdateNewProduct={addOrUpdateNewProduct}
           category={category}
+          fetchJSON={fetchJSON}
         />
       </div>
     </div>

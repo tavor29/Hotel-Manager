@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../mngrStyle.css";
 
-const NewItemTab = ({ items, addNewProduct, category }) => {
+const NewItemTab = ({ items, addOrUpdateNewProduct, category }) => {
   //this component creates a new item based on the items given as the argument
   const [newformData, setFormData] = useState({});
 
@@ -70,6 +70,11 @@ const NewItemTab = ({ items, addNewProduct, category }) => {
         (element === "type" && category !== "hotelFacilities")
       ) {
         continue;
+      }
+      else if (
+        element.includes("inStock")
+      ) {
+        continue;
       } else if (element.toLowerCase().includes("description")) {
         inputs.push(
           <p key={element}>
@@ -83,7 +88,40 @@ const NewItemTab = ({ items, addNewProduct, category }) => {
             />
           </p>
         );
-      } else {
+      } else if (element.toLowerCase().includes("type") && category === "hotelFacilities") {
+        continue;
+      } else if (element.toLowerCase() === "openinghours") {
+        inputs.push(
+          <p key={element}>
+            <label>{element}</label>
+            <input
+              className={""}
+              type="text"
+              id={element}
+              placeholder="e.g. Daily, 10:00 - 18:00"
+              onChange={handleChange}
+              value={newformData[element] || ""}
+            />
+          </p>
+        );
+      }
+      else if (element.toLowerCase() === "tags") {
+        inputs.push(
+          <p key={element}>
+            <label>{element}</label>
+            <textarea
+              className={""}
+              type="text"
+              id={element}
+              placeholder="key words for search, (e.g. soda, lime, grill)"
+              onChange={handleChange}
+              value={newformData[element] || ""}
+              style={{ padding: 5 }}
+            />
+          </p>
+        );
+      }
+      else {
         inputs.push(
           <p key={element}>
             <label>{element}</label>
@@ -103,7 +141,13 @@ const NewItemTab = ({ items, addNewProduct, category }) => {
   };
 
   const handleSubmit = () => {
-    addNewProduct(newformData);
+    const foodAndDrinksCategories = ["foodMenu", "drinksMenu", "alcoholMenu"];
+
+    if (foodAndDrinksCategories.includes(category) || category === "additionalItemsMenu") {
+      newformData.inStock = true;
+    }
+    newformData.isDeleted = false;
+    addOrUpdateNewProduct(newformData, category);
   };
 
   return (

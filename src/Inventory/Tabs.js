@@ -110,31 +110,31 @@ export default function TabTasks() {
           </div>
           {/* {console.log("tabs: " + hotelActivities)} */}
           <TabPanel>
-            <Main tab={hotelActivities} category={"hotelActivities"} />
+            <Main tab={hotelActivities} category={"hotelActivities"} fetchJSON={fetchJSON}/>
           </TabPanel>
 
           <TabPanel>
-            <Main tab={hotelFacilities} category={"hotelFacilities"} />
+            <Main tab={hotelFacilities} category={"hotelFacilities"} fetchJSON={fetchJSON}/>
           </TabPanel>
 
           <TabPanel>
-            <Main tab={spaTherapies} category={"spaTherapies"} />
+            <Main tab={spaTherapies} category={"spaTherapies"} fetchJSON={fetchJSON}/>
           </TabPanel>
 
           <TabPanel>
-            <Main tab={foodMenu} category={"foodMenu"} />
+            <Main tab={foodMenu} category={"foodMenu"} fetchJSON={fetchJSON}/>
           </TabPanel>
 
           <TabPanel>
-            <Main tab={drinksMenu} category={"drinksMenu"} />
+            <Main tab={drinksMenu} category={"drinksMenu"} fetchJSON={fetchJSON}/>
           </TabPanel>
 
           <TabPanel>
-            <Main tab={alcoholMenu} category={"alcoholMenu"} />
+            <Main tab={alcoholMenu} category={"alcoholMenu"} fetchJSON={fetchJSON}/>
           </TabPanel>
 
           <TabPanel>
-            <Main tab={additionalItemsMenu} category={"additionalItemsMenu"} />
+            <Main tab={additionalItemsMenu} category={"additionalItemsMenu"} fetchJSON={fetchJSON}/>
           </TabPanel>
         </Tabs>
       </div>
