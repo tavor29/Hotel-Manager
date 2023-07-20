@@ -35,7 +35,7 @@ const RoomCleaningTaskRow = ({ item, setIsMarked}) => {
                 {RequestedDate}
             </div>
             <div style={{ flex: "1", textAlign: "center" }}>
-                {toClear ? RequestedHour ? requestHour : "Any Time" : "---"}
+                {toClear ? RequestedHour ? RequestedHour : "Any Time" : "---"}
             </div>
             <div style={{ flex: "1", textAlign: "center" }}>
                 {" "}
