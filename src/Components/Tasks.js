@@ -11,9 +11,7 @@ import HouseHoldTaskRow from "./HouseHoldTaskRow";
 import Form from "./AddTaskForm";
 import Data from "../data/TaskData";
 import RoomServiceTaskRow from "./RoomServiceTaskRow";
-import {
-  faCircleUp
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Input } from "react-chat-elements";
 import RoomCleaningTaskRow from "./RoomCleaningTaskRow";
@@ -126,7 +124,6 @@ function TableComponent() {
 
   const deleteRow = useMutation(
     async ({ id, typeID }) => {
-
       let url;
 
       if (cat === "Room Service") {
@@ -139,12 +136,9 @@ function TableComponent() {
         url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkCustomRequest?requestID=${id}&typeID=${typeID}`
       }
 
-      await fetch(
-        url,
-        {
-          method: "PUT",
-        }
-      );
+      await fetch(url, {
+        method: "PUT",
+      });
       console.log("fetching");
     },
     {
@@ -185,7 +179,7 @@ function TableComponent() {
           newRow.clearRow();
         } else {
           const data = await res.json();
-          console.log({ errorDetails: data })
+          console.log({ errorDetails: data });
           if (data.type && data.type === "NonActiveRoom") {
             if (data.message) {
               alert(data.message);
@@ -243,8 +237,6 @@ function TableComponent() {
     retVal["requestHour"] = requestHour;
     retVal["status"] = status;
 
-
-
     const requestInOrder = [];
     if (cat !== "Room Service") {
       //creating the children
@@ -291,42 +283,42 @@ function TableComponent() {
       retVal["HouseHold_Request"] = houseHold_Request;
     } else {
       requestInOrder[0] = {
-        price: newRow.amount * newRow.price
+        price: newRow.amount * newRow.price,
       };
 
-      console.log("Room service Type" + " " + newRow.roomServiceType)
+      console.log("Room service Type" + " " + newRow.roomServiceType);
       if (!newRow.roomServiceType) {
-        console.log("The room service creation must have roomService Type")
-        return null
+        console.log("The room service creation must have roomService Type");
+        return null;
       }
 
       if (!newRow.typeID) {
-        console.log("The room service creation must have item ID")
-        return null
+        console.log("The room service creation must have item ID");
+        return null;
       }
 
       const roomServiceOrder = {};
-
 
       if (newRow.roomServiceType === "AdditionlItems") {
         const additionalItemsRoomService = [];
         additionalItemsRoomService[0] = {
           ID: newRow.ID,
-          amount: newRow.amount
-        }
+          amount: newRow.amount,
+        };
 
-        roomServiceOrder["Additional_Items_Room_Service"] = additionalItemsRoomService;
-      }
-      else {
+        roomServiceOrder["Additional_Items_Room_Service"] =
+          additionalItemsRoomService;
+      } else {
         const foodAndDrinksRoomService = [];
         foodAndDrinksRoomService[0] = {
           ID: newRow.typeID,
           amount: newRow.amount,
           changes: newRow.changes,
-          itemsCount: 1
-        }
+          itemsCount: 1,
+        };
 
-        roomServiceOrder["Food_And_Drinks_Room_Service"] = foodAndDrinksRoomService;
+        roomServiceOrder["Food_And_Drinks_Room_Service"] =
+          foodAndDrinksRoomService;
       }
 
       retVal["Room_Service_Order"] = roomServiceOrder;
@@ -339,7 +331,7 @@ function TableComponent() {
 
     retVal["Request_In_Order"] = requestInOrder;
 
-    console.log(retVal)
+    console.log(retVal);
     return retVal;
   };
 
@@ -369,17 +361,34 @@ function TableComponent() {
 
   return (
     <>
-      {isScrolled ?
-        <div className="container" style={{ position: "fixed", zIndex: 100, top: -50, right: 5 }}>
-          <FontAwesomeIcon className="fontAwsomeArrowUp" onClick={() => window.scrollTo(0, 0)} icon={faCircleUp} style={{ fontSize: 30 }} />
+      {isScrolled ? (
+        <div
+          className="container"
+          style={{ position: "fixed", zIndex: 100, top: -50, right: 5 }}
+        >
+          <FontAwesomeIcon
+            className="fontAwsomeArrowUp"
+            onClick={() => window.scrollTo(0, 0)}
+            icon={faCircleUp}
+            style={{ fontSize: 30 }}
+          />
         </div>
-        :
+      ) : (
         <></>
-      }
+      )}
       <div className="container" style={{ marginTop: 0 }}>
-        <div style={{ flexDirection: "row", display: "flex", alignItems: "center" }}>
+        <div
+          style={{
+            flexDirection: "row",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <div style={{ width: "45%" }}>
-            <button style={{ padding: 4, borderRadius: 15, borderWidth: 1 }} onClick={handleCreateTaskClick}>
+            <button
+              style={{ padding: 4, borderRadius: 15, borderWidth: 1 }}
+              onClick={handleCreateTaskClick}
+            >
               <p style={{ fontWeight: "bold" }}>Create Task</p>
             </button>
           </div>
@@ -391,7 +400,13 @@ function TableComponent() {
       <div style={{ marginTop: -150 }}>
         {tasks && tasks.length > 0 ? (
           <div className="container">
-            <div style={{ border: "1px solid #ccc", borderRadius: "8px", overflow: "hidden" }}>
+            <div
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                overflow: "hidden",
+              }}
+            >
               <Input
                 placeholder="Search Room Number or Request Id"
                 onChange={handleSearchChange}
@@ -521,10 +536,10 @@ function TableComponent() {
           </div>
         ) : (
           <div className="container">
-            <div
-            >
-              <p style={{ textAlign: "center", fontWeight: "bold" }}>No tasks available</p>
-
+            <div>
+              <p style={{ textAlign: "center", fontWeight: "bold" }}>
+                No tasks available
+              </p>
             </div>
             <div ref={formRef} tabIndex={0}>
               <Form //create task form
