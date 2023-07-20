@@ -68,6 +68,20 @@ const EditProduct = ({ items, addOrUpdateNewProduct, category }) => {
         (element === "type" && category !== "hotelFacilities")
       ) {
         continue;
+      } else if (element === "inStock") {
+        inputs.push(
+          <>
+            <label>Stock status</label>
+            <select
+              id="inStock"
+              onChange={handleChange}
+              value={newformData[element]}
+            >
+              <option value={true} key={1}>In Stock</option>
+              <option value={false} key={0}>Out Of Stock</option>
+            </select>
+          </>
+        );
       } else if (element.toLowerCase().includes("description")) {
         inputs.push(
           <p key={element}>
@@ -115,7 +129,7 @@ const EditProduct = ({ items, addOrUpdateNewProduct, category }) => {
       <div className="newItem-input">
         <h1>Edit Product</h1>
 
-        <select value={selectedProduct} onChange={handleProductSelect}>
+        <select value={selectedProduct} onChange={handleProductSelect} style={{ display: 'flex' }}>
           <option value="">Select a product</option>
           {items.map((item) => (
             <option key={item.name} value={item.name}>

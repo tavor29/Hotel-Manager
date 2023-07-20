@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   useQuery,
   useQueryClient,
@@ -6,12 +6,15 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "react-query";
-import { Input } from "react-chat-elements";
 import "../styles/TasksStyle.css";
 import HouseHoldTaskRow from "./HouseHoldTaskRow";
 import Form from "./AddTaskForm";
 import Data from "../data/TaskData";
 import RoomServiceTaskRow from "./RoomServiceTaskRow";
+import { faCircleUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Input } from "react-chat-elements";
+
 let cat = "";
 
 const fetchTable = async () => {
@@ -64,6 +67,14 @@ function TableComponent() {
     }
   }, [data]);
 
+  const formRef = useRef(null);
+
+  const handleCreateTaskClick = () => {
+    if (formRef.current) {
+      formRef.current.focus();
+    }
+  };
+
   const [newRow, setNewRow] = useState({});
 
   const [tasks, setTasks] = useState([]);
@@ -73,6 +84,21 @@ function TableComponent() {
 
   const [filteredChats, setFilteredChats] = useState(tasks);
   const [inputKey, setInputKey] = useState(0);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   useEffect(() => {
     const filteredChats = tasks.filter(
       (task) =>
@@ -87,6 +113,7 @@ function TableComponent() {
     );
     setFilteredChats(filteredChats);
   }, [searchTerm, tasks]);
+
   const setIsMarked = (id, typeID) => {
     deleteRow.mutate({ id, typeID });
   };
@@ -223,6 +250,7 @@ function TableComponent() {
       //creating the grand children
 
       const isCustomType = CheckIfCustom();
+      console.log(isCustomType);
       let addedCustomRequest;
       if (isCustomType) {
         addedCustomRequest = {
@@ -306,11 +334,7 @@ function TableComponent() {
   };
 
   const CheckIfCustom = () => {
-    const customTypeName = dataList?.find(
-      (obj) => obj.typeID === newRow.typeID
-    )?.name;
-
-    return customTypeName && customTypeName === "CUSTOM";
+    return newRow && newRow.typeID == 12;
   };
 
   const handleSearchChange = (event) => {
@@ -325,126 +349,178 @@ function TableComponent() {
 
   return (
     <>
-      <span className="header">Task List</span>
-
-      {tasks && tasks.length > 0 ? (
-        <div className="container">
-          <h2 style={{ marginLeft: "10px" }}>Search Bar</h2>
-          <Input
-            placeholder="Search Room Number or Request Id "
-            onChange={handleSearchChange}
-            onClear={handleSearchClear}
-            leftIcon={{ type: "search" }}
-            key={inputKey}
-            inputStyle={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              width: "100%",
-              boxSizing: "border-box",
-              marginLeft: "10px",
-            }}
-          />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              borderBottom: "1px solid black",
-              padding: "9px 0",
-              marginTop: "40px",
-            }}
-          >
-            <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Name</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
-            {cat === "Room Service" ? (
-              <>
-                <div style={{ flex: "1", textAlign: "center" }}>Price</div>
-                <div style={{ flex: "1", textAlign: "center" }}>Changes</div>
-              </>
-            ) : (
-              <>
-                <div style={{ flex: "1", textAlign: "center", color: "red" }}>
-                  Requested Date{" "}
-                </div>
-                <div style={{ flex: "1", textAlign: "center", color: "red" }}>
-                  {" "}
-                  Requested Time
-                </div>
-              </>
-            )}
-
-            <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
-            <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
-          </div>
-          {searchTerm === ""
-            ? tasks
-                .sort(
-                  (a, b) => new Date(a.requestDate) > new Date(b.requestDate)
-                )
-                .map((item, index) =>
-                  !item.isMarked && cat === "Room Service" ? (
-                    <RoomServiceTaskRow
-                      item={item}
-                      key={index}
-                      setIsMarked={setIsMarked}
-                      dataList={cat}
-                    />
-                  ) : (
-                    <HouseHoldTaskRow
-                      item={item}
-                      key={index}
-                      setIsMarked={setIsMarked}
-                      dataList={cat}
-                    />
-                  )
-                )
-            : filteredChats
-                .sort(
-                  (a, b) => new Date(a.requestDate) - new Date(b.requestDate)
-                )
-                .map((item, index) =>
-                  !item.isMarked && cat === "Room Service" ? (
-                    <RoomServiceTaskRow
-                      item={item}
-                      key={index}
-                      setIsMarked={setIsMarked}
-                      dataList={cat}
-                    />
-                  ) : (
-                    <HouseHoldTaskRow
-                      item={item}
-                      key={index}
-                      setIsMarked={setIsMarked}
-                      dataList={cat}
-                    />
-                  )
-                )}{" "}
-          {isFetching && <p>Refreshing...</p>}
-          <Form //create task form
-            addRow={addRow}
-            setNewRow={setNewRow}
-            handleSubmit={handleSubmit}
-            newRow={newRow}
-            cat={cat}
+      {isScrolled ? (
+        <div
+          className="container"
+          style={{ position: "fixed", zIndex: 100, top: -50, right: 5 }}
+        >
+          <FontAwesomeIcon
+            className="fontAwsomeArrowUp"
+            onClick={() => window.scrollTo(0, 0)}
+            icon={faCircleUp}
+            style={{ fontSize: 30 }}
           />
         </div>
       ) : (
-        <div className="container">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: 50,
-              marginBottom: 50,
-            }}
-          >
-            No tasks available
+        <></>
+      )}
+      <div className="container" style={{ marginTop: 0 }}>
+        <div
+          style={{
+            flexDirection: "row",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ width: "45%" }}>
+            <button
+              style={{ padding: 4, borderRadius: 15, borderWidth: 1 }}
+              onClick={handleCreateTaskClick}
+            >
+              <p style={{ fontWeight: "bold" }}>Create Task</p>
+            </button>
+          </div>
+          <div style={{ width: "55%" }}>
+            <span style={{ fontWeight: "bold", fontSize: 30 }}>Task List</span>
           </div>
         </div>
-      )}
+      </div>
+      <div style={{ marginTop: -150 }}>
+        {tasks && tasks.length > 0 ? (
+          <div className="container">
+            <div
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                overflow: "hidden",
+              }}
+            >
+              <Input
+                placeholder="Search Room Number or Request Id"
+                onChange={handleSearchChange}
+                onClear={handleSearchClear}
+                key={inputKey}
+                inputStyle={{
+                  backgroundColor: "#fff",
+                  boxSizing: "border-box",
+                  padding: "8px",
+                  margin: "0",
+                }}
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                borderBottom: "1px solid black",
+                padding: "9px 0",
+                marginTop: "50px",
+              }}
+            >
+              <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Name</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
+              {cat === "Room Service" ? (
+                <>
+                  <div style={{ flex: "1", textAlign: "center" }}>Price</div>
+                  <div style={{ flex: "1", textAlign: "center" }}>Changes</div>
+                </>
+              ) : (
+                <>
+                  <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+                    Requested Date{" "}
+                  </div>
+                  <div style={{ flex: "1", textAlign: "center", color: "red" }}>
+                    {" "}
+                    Requested Time
+                  </div>
+                </>
+              )}
+
+              <div style={{ flex: "1", textAlign: "center" }}>Room Number</div>
+              <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
+            </div>
+            {searchTerm === ""
+              ? tasks
+                  .sort(
+                    (a, b) => new Date(a.requestDate) > new Date(b.requestDate)
+                  )
+                  .map((item, index) =>
+                    !item.isMarked && cat === "Room Service" ? (
+                      <RoomServiceTaskRow
+                        item={item}
+                        key={index}
+                        setIsMarked={setIsMarked}
+                        dataList={cat}
+                      />
+                    ) : (cat === "Toiletries" && item.typeID != 12) ||
+                      cat === "CustomRequests" ? (
+                      <HouseHoldTaskRow
+                        item={item}
+                        key={index}
+                        setIsMarked={setIsMarked}
+                        dataList={cat}
+                      />
+                    ) : (
+                      <></>
+                    )
+                  )
+              : filteredChats
+                  .sort(
+                    (a, b) => new Date(a.requestDate) - new Date(b.requestDate)
+                  )
+                  .map((item, index) =>
+                    !item.isMarked && cat === "Room Service" ? (
+                      <RoomServiceTaskRow
+                        item={item}
+                        key={index}
+                        setIsMarked={setIsMarked}
+                        dataList={cat}
+                      />
+                    ) : (cat === "Toiletries" && item.typeID != 12) ||
+                      cat === "CustomRequests" ? (
+                      <HouseHoldTaskRow
+                        item={item}
+                        key={index}
+                        setIsMarked={setIsMarked}
+                        dataList={cat}
+                      />
+                    ) : (
+                      <></>
+                    )
+                  )}{" "}
+            {isFetching && <p>Refreshing...</p>}
+            <div ref={formRef} tabIndex={0}>
+              <Form //create task form
+                addRow={addRow}
+                setNewRow={setNewRow}
+                handleSubmit={handleSubmit}
+                newRow={newRow}
+                cat={cat}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="container">
+            <div>
+              <p style={{ textAlign: "center", fontWeight: "bold" }}>
+                No tasks available
+              </p>
+            </div>
+            <div ref={formRef} tabIndex={0}>
+              <Form //create task form
+                addRow={addRow}
+                setNewRow={setNewRow}
+                handleSubmit={handleSubmit}
+                newRow={newRow}
+                cat={cat}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

@@ -4,10 +4,14 @@ const Sidebar = ({ activeTab, changeTab }) => {
   return (
     <div className="Sidebar">
       <ul>
-        <li className="add-new-item" onClick={() => changeTab(0)}>
+        <li onClick={() => changeTab(0)}
+          className={activeTab === 0 ? "active" : ""}
+        >
           <span>Add New Item</span>
         </li>
-        <li onClick={() => changeTab(3)}>
+        <li onClick={() => changeTab(3)}
+          className={activeTab === 3 ? "active" : ""}
+        >
           <span>Edit Existing Item</span>
         </li>
         <li

@@ -225,7 +225,6 @@ body {
 .Sidebar{
   background-color: rgb(231, 209, 209);
   height: 100%;
-  
 }
 
 .Sidebar ul {
@@ -299,7 +298,7 @@ body {
 .sidebar-and-product-table {
   display: flex;
   margin-left: 17px;
-  height: 155px;
+  height: 100%;
 
 }
 
