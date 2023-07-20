@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Input } from "react-chat-elements";
+import RoomCleaningTaskRow from "./RoomCleaningTaskRow";
 
 let cat = "";
 
@@ -25,7 +26,10 @@ const fetchTable = async () => {
   if (cat === "Room Service") {
     url =
       "http://proj.ruppin.ac.il/cgroup97/test2/api/GetRoomServiceRequest?hotelID=1002";
-  } else
+  } else if (cat === "Room Cleaning") {
+    url = "http://proj.ruppin.ac.il/cgroup97/test2/api/GetRoomCleaningSchedule?hotelID=1002";
+  }
+  else
     url =
       "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1002";
 
@@ -127,7 +131,11 @@ function TableComponent() {
 
       if (cat === "Room Service") {
         url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkRoomServiceRequest?requestID=${id}&itemsCount=${typeID}`
-      } else {
+      }
+      else if (cat === "Room Cleaning") {
+        url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkCleaningRequest?requestID=${id}`
+      }
+      else {
         url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkCustomRequest?requestID=${id}&typeID=${typeID}`
       }
 
@@ -152,6 +160,7 @@ function TableComponent() {
   const addRow = useMutation(
     async () => {
       const postObject = GetRequestObject();
+      console.log(postObject)
       if (!postObject) { return }
       const response = await fetch(
         `http://proj.ruppin.ac.il/cgroup97/test2/api/AdminCreateHouseHoldRequest?roomNum=${newRow.roomNumber}&hotelID=1002`,
@@ -190,10 +199,12 @@ function TableComponent() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (Object.entries(newRow).length !== 0) {
-      if (cat !== "Room Service" && newRow.customName === "" && CheckIfCustom()) {
+      if (cat !== "Room Service" && cat !== "Room Cleaning" && newRow.customName === "" && CheckIfCustom()) {
         alert("Custom item must have a name");
       } else if (newRow.typeID === "") {
         alert("Please make sure to select an item");
+      } else if (cat === "Room Cleaning" && newRow.requestedDate && newRow.roomNumber !== "") {
+        addRow.mutate();
       } else if (newRow.amount !== "" && newRow.roomNumber !== "") {
         addRow.mutate();
       }
@@ -241,7 +252,7 @@ function TableComponent() {
 
       if (newRow.requestedDate || newRow.requestedHour) {
         const requestedDate = convertDateToRequiredFormat(newRow.requestedDate);
-        const requestedHour = newRow.requestedHour;
+        const requestedHour = newRow.requestedHour !== "" ? newRow.requestedHour : null;
 
         requestInOrder[0] = {
           requestedDate,
@@ -250,25 +261,32 @@ function TableComponent() {
       }
 
       //creating the grand children
+      if (cat !== "Room Cleaning") {
+        const isCustomType = CheckIfCustom();
+        console.log(isCustomType)
+        let addedCustomRequest;
+        if (isCustomType) {
+          addedCustomRequest = {
+            typeID: newRow.typeID,
+            amount: newRow.amount,
+            description: newRow.customName,
+          };
+        } else {
+          addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
+        }
 
-      const isCustomType = CheckIfCustom();
-      console.log(isCustomType)
-      let addedCustomRequest;
-      if (isCustomType) {
-        addedCustomRequest = {
-          typeID: newRow.typeID,
-          amount: newRow.amount,
-          description: newRow.customName,
-        };
+        const houseHold_Custom_Request = [addedCustomRequest];
+
+        // setting the grand child to his parent
+        houseHold_Request["HouseHold_Custom_Request"] = houseHold_Custom_Request;
       } else {
-        addedCustomRequest = { typeID: newRow.typeID, amount: newRow.amount };
+        const householdCleaningRequest = {
+          toClear: newRow.typeID,
+        };
+
+        houseHold_Request["HouseHold_Cleaning_Request"] = householdCleaningRequest;
+
       }
-
-      const houseHold_Custom_Request = [addedCustomRequest];
-
-      // setting the grand child to his parent
-      houseHold_Request["HouseHold_Custom_Request"] = houseHold_Custom_Request;
-
       //setting the childredn to the parent
       retVal["HouseHold_Request"] = houseHold_Request;
     } else {
@@ -397,10 +415,23 @@ function TableComponent() {
               }}
             >
               <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
-              <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
-              <div style={{ flex: "1", textAlign: "center" }}>Name</div>
-              <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
-              <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
+              {
+                cat === "Room Cleaning" ?
+                  <div style={{ flex: "1", textAlign: "center" }}>To Clean</div>
+                  :
+                  <></>
+              }
+              {
+                cat !== "Room Cleaning" ?
+                  <>
+                    <div style={{ flex: "1", textAlign: "center" }}>Amount</div>
+                    <div style={{ flex: "1", textAlign: "center" }}>Name</div>
+                    <div style={{ flex: "1", textAlign: "center" }}>Request Date</div>
+                    <div style={{ flex: "1", textAlign: "center" }}>Request Time</div>
+                  </>
+                  :
+                  <></>
+              }
               {cat === "Room Service" ? (
                 <>
                   <div style={{ flex: "1", textAlign: "center" }}>Price</div>
@@ -430,17 +461,26 @@ function TableComponent() {
                     setIsMarked={setIsMarked}
                     dataList={cat}
                   />
-                ) : (
-                  cat === "Toiletries" && item.typeID != 12 || cat === "CustomRequests" ?
-                    <HouseHoldTaskRow
-                      item={item}
-                      key={index}
-                      setIsMarked={setIsMarked}
-                      dataList={cat}
-                    />
+                ) :
+                  cat === "Room Cleaning" ?
+                    (
+                      <RoomCleaningTaskRow
+                        item={item}
+                        key={index}
+                        setIsMarked={setIsMarked}
+                      />
+                    )
                     :
-                    <></>
-                )
+                    (
+                      cat === "Toiletries" && item.typeID != 12 || cat === "CustomRequests" ?
+                        <HouseHoldTaskRow
+                          item={item}
+                          key={index}
+                          setIsMarked={setIsMarked}
+                        />
+                        :
+                        <></>
+                    )
               )
               : filteredChats.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate)).map((item, index) =>
                 !item.isMarked && cat === "Room Service" ? (
@@ -448,19 +488,25 @@ function TableComponent() {
                     item={item}
                     key={index}
                     setIsMarked={setIsMarked}
-                    dataList={cat}
                   />
-                ) : (
-                  cat === "Toiletries" && item.typeID != 12 || cat === "CustomRequests" ?
-                    <HouseHoldTaskRow
+                ) : cat === "Room Cleaning" ?
+                  (
+                    <RoomCleaningTaskRow
                       item={item}
                       key={index}
                       setIsMarked={setIsMarked}
-                      dataList={cat}
                     />
-                    :
-                    <></>
-                )
+                  )
+                  : (
+                    cat === "Toiletries" && item.typeID != 12 || cat === "CustomRequests" ?
+                      <HouseHoldTaskRow
+                        item={item}
+                        key={index}
+                        setIsMarked={setIsMarked}
+                      />
+                      :
+                      <></>
+                  )
               )}{" "}
             {isFetching && <p>Refreshing...</p>}
             <div ref={formRef} tabIndex={0}>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const HouseHoldTaskRow = ({ item, setIsMarked, dataList }) => {
+const HouseHoldTaskRow = ({ item, setIsMarked }) => {
   const {
     requestID,
     amount,
