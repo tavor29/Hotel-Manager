@@ -6,7 +6,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 export default function TabTasks() {
   return (
-    <div style={{ padding:50 }}>
+    <div style={{ padding:50, marginTop:-50 }}>
       <Tabs>
         <div className="container">
           <TabList style={{display:"flex", justifyContent:"space-evenly"}}>
