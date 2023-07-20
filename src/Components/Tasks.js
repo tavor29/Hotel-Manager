@@ -6,12 +6,17 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "react-query";
-import { Input } from "react-chat-elements";
 import "../styles/TasksStyle.css";
 import HouseHoldTaskRow from "./HouseHoldTaskRow";
 import Form from "./AddTaskForm";
 import Data from "../data/TaskData";
 import RoomServiceTaskRow from "./RoomServiceTaskRow";
+import {
+  faSearch
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Input } from "react-chat-elements";
+
 let cat = "";
 
 const fetchTable = async () => {
@@ -224,6 +229,7 @@ function TableComponent() {
       //creating the grand children
 
       const isCustomType = CheckIfCustom();
+      console.log(isCustomType)
       let addedCustomRequest;
       if (isCustomType) {
         addedCustomRequest = {
@@ -307,11 +313,7 @@ function TableComponent() {
   };
 
   const CheckIfCustom = () => {
-    const customTypeName = dataList?.find(
-      (obj) => obj.typeID === newRow.typeID
-    )?.name;
-
-    return customTypeName && customTypeName === "CUSTOM";
+    return newRow && newRow.typeID == 12;
   };
 
   const handleSearchChange = (event) => {
@@ -326,26 +328,26 @@ function TableComponent() {
 
   return (
     <>
-      <div style={{ justifyContent: "center", display: "flex" }}>
-        <span className="header">Task List</span>
+      <div className="container" style={{ marginTop: 0 }}>
+        <span style={{ textAlign: "center", fontWeight: "bold", fontSize: 30 }}>Task List</span>
       </div>
-      <div style={{marginTop:-150}}>
+      <div style={{ marginTop: -150 }}>
         {tasks && tasks.length > 0 ? (
           <div className="container">
-            <Input
-              placeholder="Search Room Number or Request Id "
-              onChange={handleSearchChange}
-              onClear={handleSearchClear}
-              leftIcon={{ type: "search" }}
-              key={inputKey}
-              inputStyle={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                width: "100%",
-                boxSizing: "border-box",
-                marginLeft: "40px",
-              }}
-            />
+            <div style={{ border: "1px solid #ccc", borderRadius: "8px", overflow: "hidden" }}>
+              <Input
+                placeholder="Search Room Number or Request Id"
+                onChange={handleSearchChange}
+                onClear={handleSearchClear}
+                key={inputKey}
+                inputStyle={{
+                  backgroundColor: "#fff",
+                  boxSizing: "border-box", 
+                  padding: "8px", 
+                  margin: "0",
+                }}
+              />
+            </div>
             <div
               style={{
                 display: "flex",
@@ -390,12 +392,15 @@ function TableComponent() {
                     dataList={cat}
                   />
                 ) : (
-                  <HouseHoldTaskRow
-                    item={item}
-                    key={index}
-                    setIsMarked={setIsMarked}
-                    dataList={cat}
-                  />
+                  cat === "Toiletries" && item.typeID != 12 || cat === "CustomRequests" ?
+                    <HouseHoldTaskRow
+                      item={item}
+                      key={index}
+                      setIsMarked={setIsMarked}
+                      dataList={cat}
+                    />
+                    :
+                    <></>
                 )
               )
               : filteredChats.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate)).map((item, index) =>
@@ -407,12 +412,15 @@ function TableComponent() {
                     dataList={cat}
                   />
                 ) : (
-                  <HouseHoldTaskRow
-                    item={item}
-                    key={index}
-                    setIsMarked={setIsMarked}
-                    dataList={cat}
-                  />
+                  cat === "Toiletries" && item.typeID != 12 || cat === "CustomRequests" ?
+                    <HouseHoldTaskRow
+                      item={item}
+                      key={index}
+                      setIsMarked={setIsMarked}
+                      dataList={cat}
+                    />
+                    :
+                    <></>
                 )
               )}{" "}
             {isFetching && <p>Refreshing...</p>}
@@ -427,16 +435,17 @@ function TableComponent() {
         ) : (
           <div className="container">
             <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontSize: 50,
-                marginBottom: 50,
-              }}
             >
-              No tasks available
+              <p style={{ textAlign: "center", fontWeight: "bold" }}>No tasks available</p>
+
             </div>
+            <Form //create task form
+              addRow={addRow}
+              setNewRow={setNewRow}
+              handleSubmit={handleSubmit}
+              newRow={newRow}
+              cat={cat}
+            />
           </div>
         )}
       </div>
