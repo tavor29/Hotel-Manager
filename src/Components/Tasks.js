@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   useQuery,
   useQueryClient,
@@ -12,7 +12,7 @@ import Form from "./AddTaskForm";
 import Data from "../data/TaskData";
 import RoomServiceTaskRow from "./RoomServiceTaskRow";
 import {
-  faSearch
+  faCircleUp
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Input } from "react-chat-elements";
@@ -69,6 +69,14 @@ function TableComponent() {
     }
   }, [data]);
 
+  const formRef = useRef(null);
+
+  const handleCreateTaskClick = () => {
+    if (formRef.current) {
+      formRef.current.focus();
+    }
+  };
+
   const [newRow, setNewRow] = useState({});
 
   const [tasks, setTasks] = useState([]);
@@ -78,6 +86,21 @@ function TableComponent() {
 
   const [filteredChats, setFilteredChats] = useState(tasks);
   const [inputKey, setInputKey] = useState(0);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   useEffect(() => {
     const filteredChats = tasks.filter(
       (task) =>
@@ -328,8 +351,24 @@ function TableComponent() {
 
   return (
     <>
+      {isScrolled ?
+        <div className="container" style={{ position: "fixed", zIndex: 100, top: -50, right: 5 }}>
+          <FontAwesomeIcon className="fontAwsomeArrowUp" onClick={() => window.scrollTo(0, 0)} icon={faCircleUp} style={{ fontSize: 30 }} />
+        </div>
+        :
+        <></>
+      }
       <div className="container" style={{ marginTop: 0 }}>
-        <span style={{ textAlign: "center", fontWeight: "bold", fontSize: 30 }}>Task List</span>
+        <div style={{ flexDirection: "row", display: "flex", alignItems: "center" }}>
+          <div style={{ width: "45%" }}>
+            <button style={{ padding: 4, borderRadius: 15, borderWidth: 1 }} onClick={handleCreateTaskClick}>
+              <p style={{ fontWeight: "bold" }}>Create Task</p>
+            </button>
+          </div>
+          <div style={{ width: "55%" }}>
+            <span style={{ fontWeight: "bold", fontSize: 30 }}>Task List</span>
+          </div>
+        </div>
       </div>
       <div style={{ marginTop: -150 }}>
         {tasks && tasks.length > 0 ? (
@@ -342,8 +381,8 @@ function TableComponent() {
                 key={inputKey}
                 inputStyle={{
                   backgroundColor: "#fff",
-                  boxSizing: "border-box", 
-                  padding: "8px", 
+                  boxSizing: "border-box",
+                  padding: "8px",
                   margin: "0",
                 }}
               />
@@ -424,13 +463,15 @@ function TableComponent() {
                 )
               )}{" "}
             {isFetching && <p>Refreshing...</p>}
-            <Form //create task form
-              addRow={addRow}
-              setNewRow={setNewRow}
-              handleSubmit={handleSubmit}
-              newRow={newRow}
-              cat={cat}
-            />
+            <div ref={formRef} tabIndex={0}>
+              <Form //create task form
+                addRow={addRow}
+                setNewRow={setNewRow}
+                handleSubmit={handleSubmit}
+                newRow={newRow}
+                cat={cat}
+              />
+            </div>
           </div>
         ) : (
           <div className="container">
@@ -439,13 +480,15 @@ function TableComponent() {
               <p style={{ textAlign: "center", fontWeight: "bold" }}>No tasks available</p>
 
             </div>
-            <Form //create task form
-              addRow={addRow}
-              setNewRow={setNewRow}
-              handleSubmit={handleSubmit}
-              newRow={newRow}
-              cat={cat}
-            />
+            <div ref={formRef} tabIndex={0}>
+              <Form //create task form
+                addRow={addRow}
+                setNewRow={setNewRow}
+                handleSubmit={handleSubmit}
+                newRow={newRow}
+                cat={cat}
+              />
+            </div>
           </div>
         )}
       </div>
