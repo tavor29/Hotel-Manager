@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   margin-left: 15vw; /* Adjust the left margin to accommodate the width of the navbarr */
-  margin-top: 170px; /* Adjust the top margin to accommodate the height of the AppHeader */
+  margin-top: 150px; /* Adjust the top margin to accommodate the height of the AppHeader */
   
 }
 
@@ -20,7 +20,7 @@
   font-size: 3rem;
   font-weight: 600;
   margin-left: 320px;
-  margin-top: 10px; 
+  margin-top: 100px; 
 }
 
 

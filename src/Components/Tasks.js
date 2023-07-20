@@ -93,21 +93,17 @@ function TableComponent() {
 
   const deleteRow = useMutation(
     async ({ id, typeID }) => {
-
       let url;
 
       if (cat === "Room Service") {
-        url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkRoomServiceRequest?requestID=${id}&itemsCount=${typeID}`
+        url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkRoomServiceRequest?requestID=${id}&itemsCount=${typeID}`;
       } else {
-        url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkCustomRequest?requestID=${id}&typeID=${typeID}`
+        url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkCustomRequest?requestID=${id}&typeID=${typeID}`;
       }
 
-      await fetch(
-        url,
-        {
-          method: "PUT",
-        }
-      );
+      await fetch(url, {
+        method: "PUT",
+      });
       console.log("fetching");
     },
     {
@@ -123,7 +119,9 @@ function TableComponent() {
   const addRow = useMutation(
     async () => {
       const postObject = GetRequestObject();
-      if (!postObject) { return }
+      if (!postObject) {
+        return;
+      }
       const response = await fetch(
         `http://proj.ruppin.ac.il/cgroup97/test2/api/AdminCreateHouseHoldRequest?roomNum=${newRow.roomNumber}&hotelID=1002`,
         {
@@ -147,7 +145,7 @@ function TableComponent() {
           newRow.clearRow();
         } else {
           const data = await res.json();
-          console.log({ errorDetails: data })
+          console.log({ errorDetails: data });
           if (data.type && data.type === "NonActiveRoom") {
             if (data.message) {
               alert(data.message);
@@ -161,7 +159,11 @@ function TableComponent() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (Object.entries(newRow).length !== 0) {
-      if (cat !== "Room Service" && newRow.customName === "" && CheckIfCustom()) {
+      if (
+        cat !== "Room Service" &&
+        newRow.customName === "" &&
+        CheckIfCustom()
+      ) {
         alert("Custom item must have a name");
       } else if (newRow.typeID === "") {
         alert("Please make sure to select an item");
@@ -203,8 +205,6 @@ function TableComponent() {
     retVal["requestHour"] = requestHour;
     retVal["status"] = status;
 
-
-
     const requestInOrder = [];
     if (cat !== "Room Service") {
       //creating the children
@@ -243,42 +243,42 @@ function TableComponent() {
       retVal["HouseHold_Request"] = houseHold_Request;
     } else {
       requestInOrder[0] = {
-        price: newRow.amount * newRow.price
+        price: newRow.amount * newRow.price,
       };
 
-      console.log("Room service Type" + " " + newRow.roomServiceType)
+      console.log("Room service Type" + " " + newRow.roomServiceType);
       if (!newRow.roomServiceType) {
-        console.log("The room service creation must have roomService Type")
-        return null
+        console.log("The room service creation must have roomService Type");
+        return null;
       }
 
       if (!newRow.typeID) {
-        console.log("The room service creation must have item ID")
-        return null
+        console.log("The room service creation must have item ID");
+        return null;
       }
 
       const roomServiceOrder = {};
-
 
       if (newRow.roomServiceType === "AdditionlItems") {
         const additionalItemsRoomService = [];
         additionalItemsRoomService[0] = {
           ID: newRow.ID,
-          amount: newRow.amount
-        }
+          amount: newRow.amount,
+        };
 
-        roomServiceOrder["Additional_Items_Room_Service"] = additionalItemsRoomService;
-      }
-      else {
+        roomServiceOrder["Additional_Items_Room_Service"] =
+          additionalItemsRoomService;
+      } else {
         const foodAndDrinksRoomService = [];
         foodAndDrinksRoomService[0] = {
           ID: newRow.typeID,
           amount: newRow.amount,
           changes: newRow.changes,
-          itemsCount: 1
-        }
+          itemsCount: 1,
+        };
 
-        roomServiceOrder["Food_And_Drinks_Room_Service"] = foodAndDrinksRoomService;
+        roomServiceOrder["Food_And_Drinks_Room_Service"] =
+          foodAndDrinksRoomService;
       }
 
       retVal["Room_Service_Order"] = roomServiceOrder;
@@ -291,7 +291,7 @@ function TableComponent() {
 
     retVal["Request_In_Order"] = requestInOrder;
 
-    console.log(retVal)
+    console.log(retVal);
     return retVal;
   };
 
@@ -329,7 +329,7 @@ function TableComponent() {
 
       {tasks && tasks.length > 0 ? (
         <div className="container">
-          <h2 style={{ marginLeft: "40px" }}>Search Bar</h2>
+          <h2 style={{ marginLeft: "10px" }}>Search Bar</h2>
           <Input
             placeholder="Search Room Number or Request Id "
             onChange={handleSearchChange}
@@ -341,7 +341,7 @@ function TableComponent() {
               borderRadius: "8px",
               width: "100%",
               boxSizing: "border-box",
-              marginLeft: "40px",
+              marginLeft: "10px",
             }}
           />
           <div
@@ -350,7 +350,7 @@ function TableComponent() {
               flexDirection: "row",
               borderBottom: "1px solid black",
               padding: "9px 0",
-              marginTop: "50px",
+              marginTop: "40px",
             }}
           >
             <div style={{ flex: "1", textAlign: "center" }}>Request id</div>
@@ -379,40 +379,48 @@ function TableComponent() {
             <div style={{ flex: "1", textAlign: "center" }}>Complete</div>
           </div>
           {searchTerm === ""
-            ? tasks.sort((a, b) => new Date(a.requestDate) > new Date(b.requestDate)).map((item, index) =>
-              !item.isMarked && cat === "Room Service" ? (
-                <RoomServiceTaskRow
-                  item={item}
-                  key={index}
-                  setIsMarked={setIsMarked}
-                  dataList={cat}
-                />
-              ) : (
-                <HouseHoldTaskRow
-                  item={item}
-                  key={index}
-                  setIsMarked={setIsMarked}
-                  dataList={cat}
-                />
-              )
-            )
-            : filteredChats.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate)).map((item, index) =>
-              !item.isMarked && cat === "Room Service" ? (
-                <RoomServiceTaskRow
-                  item={item}
-                  key={index}
-                  setIsMarked={setIsMarked}
-                  dataList={cat}
-                />
-              ) : (
-                <HouseHoldTaskRow
-                  item={item}
-                  key={index}
-                  setIsMarked={setIsMarked}
-                  dataList={cat}
-                />
-              )
-            )}{" "}
+            ? tasks
+                .sort(
+                  (a, b) => new Date(a.requestDate) > new Date(b.requestDate)
+                )
+                .map((item, index) =>
+                  !item.isMarked && cat === "Room Service" ? (
+                    <RoomServiceTaskRow
+                      item={item}
+                      key={index}
+                      setIsMarked={setIsMarked}
+                      dataList={cat}
+                    />
+                  ) : (
+                    <HouseHoldTaskRow
+                      item={item}
+                      key={index}
+                      setIsMarked={setIsMarked}
+                      dataList={cat}
+                    />
+                  )
+                )
+            : filteredChats
+                .sort(
+                  (a, b) => new Date(a.requestDate) - new Date(b.requestDate)
+                )
+                .map((item, index) =>
+                  !item.isMarked && cat === "Room Service" ? (
+                    <RoomServiceTaskRow
+                      item={item}
+                      key={index}
+                      setIsMarked={setIsMarked}
+                      dataList={cat}
+                    />
+                  ) : (
+                    <HouseHoldTaskRow
+                      item={item}
+                      key={index}
+                      setIsMarked={setIsMarked}
+                      dataList={cat}
+                    />
+                  )
+                )}{" "}
           {isFetching && <p>Refreshing...</p>}
           <Form //create task form
             addRow={addRow}
