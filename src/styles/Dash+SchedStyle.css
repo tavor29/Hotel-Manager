@@ -1,91 +1,94 @@
 .Dashboard {
-    margin-left: 20px;
-  }
-  .Schedule {
-    margin-left: 50px;
-    margin-right: 50px;
-   
+  margin-left: 20px;
+}
 
-  }
-  
-  
-  .header1 {
-    font-size: 45px;
-    margin-bottom: 105px;
-    margin-left: 500px;
+.Schedule {
+  margin-left: 50px;
+  margin-right: 50px;
+}
 
-  }
-  
-  .ChartsContainer {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-  }
-  
-  .Chart {
-    flex-basis: 48%;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th,
-  td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-  }
-  
-  tr:hover {
-    background-color: #f5f5f5;
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align items horizontally (center) */
+}
 
-  
-  .modal-content {
-    position: relative;
-    background-color: #f1e6e6;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 400px;
-  }
-  
-   .Dashboard h2 {
-    margin-top: 0;
-    margin-left: 40px;
+.header1 {
+  font-size: 45px;
+  margin-bottom: 40px;
+}
 
-  }
+.ChartsContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
 
-  
-  .modal div {
-    margin-bottom: 10px;
-  }
-  
-  .modal label {
-    display: inline-block;
-    width: 120px;
-    font-weight: bold;
-  }
-  
-  .modal input[type="text"],
-  .modal input[type="date"],
-  .modal input[type="time"] {
-    width: 200px;
-  }
-  
-  .modal-buttons {
-    text-align: right;
-    margin-top: 20px;
-  }
-  
-  .modal-buttons button {
-    margin-left: 10px;
-  }
-  
-  
+.Chart {
+  flex-basis: 48%;
+}
+
+.PieChartsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #f1e6e6;
+  padding: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+.Dashboard h2 {
+  margin-top: 0;
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+.modal div {
+  margin-bottom: 8px;
+}
+
+.modal label {
+  display: inline-block;
+  width: 100px;
+  font-weight: bold;
+}
+
+.modal input[type="text"],
+.modal input[type="date"],
+.modal input[type="time"] {
+  width: 150px;
+}
+
+.modal-buttons {
+  text-align: right;
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  margin-left: 8px;
+}
