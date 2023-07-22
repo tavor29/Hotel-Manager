@@ -8,7 +8,7 @@ body {
 
 .ProductsTab {
   box-sizing: border-box;
-  width: 100%;
+  width: 95%;
 
 }
 
@@ -306,6 +306,7 @@ body {
 .content {
   flex: 2;
   margin-left: 25px;
+  
   /* Add additional styling as needed */
 }
 
