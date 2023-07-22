@@ -1,23 +1,27 @@
 .Dashboard {
   margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
 }
+
 
 .Schedule {
   margin-left: 50px;
   margin-right: 50px;
 }
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Align items horizontally (center) */
-}
-
+  
 .header1 {
   font-size: 45px;
-  margin-bottom: 40px;
+  margin-bottom: 70px;
 }
 
+.DateRangeSelector {
+  display: flex;
+  margin: 30px;
+  justify-content: space-between;
+
+}
 .ChartsContainer {
   display: flex;
   justify-content: space-between;
@@ -34,8 +38,17 @@
 }
 
 table {
-  width: 100%;
+  width: 90%;
   border-collapse: collapse;
+  margin-left: 50px;
+  margin-right: 50px;
+
+}
+.table1{
+  margin-left: 50px;
+}
+.TableRow {
+  border-bottom: 1px solid #ddd;
 }
 
 th,

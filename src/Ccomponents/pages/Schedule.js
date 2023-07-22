@@ -9,23 +9,21 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
-//next: delete and edit option for reservations using a modal box
-
 export default function Schedule() {
   const [reservations, setReservations] = useState([]);
   const [newReservation, setNewReservation] = useState(null);
 
   useEffect(() => {
-    const data = generateFakeReservations();
+    const data = getReservations();
     setReservations(data);
   }, []);
 
-  const generateFakeReservations = () => {
+  const getReservations = () => {
     const reservations = [];
     const today = new Date();
     const startOfMonth = moment().startOf("month").toDate();
     const endOfMonth = moment().endOf("month").toDate();
-    const numReservations = Math.floor(Math.random() * 10) + 15; // Random number of reservations (1-10)
+    const numReservations = Math.floor(Math.random() * 10) + 15;
 
     for (let i = 0; i < numReservations; i++) {
       const reservationStart = new Date(
