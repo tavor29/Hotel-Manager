@@ -5,6 +5,15 @@
   align-items: center; 
 }
 
+/* Hide time part in week view */
+.week-event .rbc-time-view {
+  display: none;
+}
+
+/* Hide time part in day view */
+.day-event .rbc-time-view {
+  display: none;
+}
 
 .Schedule {
   margin-left: 50px;
