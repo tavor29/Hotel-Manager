@@ -6,8 +6,57 @@ import "../../styles/Dash+SchedStyle.css";
 
 const localizer = momentLocalizer(moment);
 
+const titleStyle = {
+  width: "100%",
+  textAlign: "center",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  fontWeight: "bold",
+};
+
+const DailyView = ({ date, reservations }) => {
+  const filteredReservations = reservations.filter((event) =>
+    moment(event.start).isSame(date, "day")
+  );
+
+  // Define the style for the underlined event room
+  const underlineStyle = {
+    textDecoration: "underline",
+    fontWeight: "bold",
+  };
+
+  return (
+    <div>
+      <h2>{moment(date).format("LL")}</h2>
+      <ul>
+        {filteredReservations.map((event) => (
+          <li key={event.id}>
+            <span style={underlineStyle}>Room: {event.room}</span>
+            <br />
+            Time: {moment(event.start).format("LT")} -{" "}
+            {moment(event.end).format("LT")}
+            <br />
+            Therapist 1: {event.body.match(/Therapist 1: (\w+)/)[1]}
+            <br />
+            {event.body.match(/Therapist 2: (\w+)/) && (
+              <div>
+                Therapist 2: {event.body.match(/Therapist 2: (\w+)/)[1]}
+                <br />
+              </div>
+            )}
+            &nbsp;&nbsp;&nbsp;
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 export default function Schedule() {
   const [reservations, setReservations] = useState([]);
+  const [currentDate, setCurrentDate] = useState(moment().toDate());
+  const [showDailyView, setShowDailyView] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
@@ -41,18 +90,23 @@ export default function Schedule() {
         Room,
       } = appointment;
 
-      // Use moment to parse the date and time strings
-      const start = moment(`${Date} ${StartTime}`, "YYYY-MM-DD HH:mm:ss").toDate();
+      const start = moment(
+        `${Date} ${StartTime}`,
+        "YYYY-MM-DD HH:mm:ss"
+      ).toDate();
       const end = moment(`${Date} ${EndTime}`, "YYYY-MM-DD HH:mm:ss").toDate();
 
       const title = `Room ${Room}`;
-      const body = `\nRoom ${Room}\nTherapist 1: ${Therapy1Gender}\n${Therapy2Gender ? "Therapist 2: " + Therapy2Gender : ""}`;
+      const body = `\nRoom ${Room}\nTherapist 1: ${Therapy1Gender}\n${
+        Therapy2Gender ? "Therapist 2: " + Therapy2Gender : ""
+      }`;
 
       return {
         id: AppointmentID,
         title,
         start,
         end,
+        room: Room,
         body,
       };
     });
@@ -60,23 +114,30 @@ export default function Schedule() {
     return reservations;
   };
 
-  const eventStyleGetter = (event) => {
-    const backgroundColor = event.id % 2 === 0 ? "#e6b576" : "#e6cba9";
-    const borderColor = event.id % 2 === 0 ? "#007bff" : "#007bff";
+  const eventStyleGetter = () => {
     const style = {
-      backgroundColor,
-      borderColor,
+      backgroundColor: "#e6b576",
+      borderColor: "#007bff",
       borderRadius: "5px",
       color: "#000",
       padding: "4px",
       height: "100%",
       overflow: "hidden",
-      display:"flex",
-      flex:1,
+      display: "flex",
+      flex: 1,
     };
     return {
       style,
     };
+  };
+
+  const handleNavigateBack = () => {
+    setShowDailyView(false);
+  };
+
+  const handleEventClick = (event) => {
+    setCurrentDate(event.start);
+    setShowDailyView(true);
   };
 
   return (
@@ -84,52 +145,30 @@ export default function Schedule() {
       <div>
         <div className="Schedule">
           <h1>Spa Reservations</h1>
-          <Calendar
-            localizer={localizer}
-            events={reservations}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 600 }}
-            defaultView="month"
-            views={{ month: true, week: true, day: true }}
-            components={{
-              event: EventComponent,
-            }}
-            eventPropGetter={eventStyleGetter}
-            doShowMoreDrillDown={true}
-            tooltipAccessor="body"
-          />
+          {!showDailyView ? (
+            <div>
+              <Calendar
+                localizer={localizer}
+                events={reservations}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: 600 }}
+                defaultView="month"
+                views={{ month: true, week: true, day: true }}
+                eventPropGetter={eventStyleGetter}
+                tooltipAccessor="body"
+                onSelectEvent={handleEventClick}
+                step={60}
+              />
+            </div>
+          ) : (
+            <div>
+              <button onClick={handleNavigateBack}>Back</button>
+              <DailyView date={currentDate} reservations={reservations} />
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-const EventComponent = ({ event }) => {
-  const backgroundColor = event.id % 2 === 0 ? "#e6b576" : "#e6cba9";
-  const borderColor = event.id % 2 === 0 ? "#007bff" : "#007bff";
-  const style = {
-    backgroundColor,
-    borderColor,
-    borderRadius: "5px",
-    color: "#000",
-    padding: "4px",
-    height: "100%",
-    overflow: "hidden",
-  };
-
-  const titleStyle = {
-    width: "100%",
-    textAlign: "center",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-    fontWeight: "bold",
-  };
-
-  return (
-    <div style={style}>
-      <div style={titleStyle}>{event.title}</div>
-    </div>
-  );
-};
