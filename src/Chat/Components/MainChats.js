@@ -27,12 +27,8 @@ const MainMenu = () => {
   const handleChatClick = (chatId) => {
     console.log("Clicked chat:", chatId);
     const messages = chatsMap.get(chatId);
-    const usersEmail = messages.find(
-      (obj) => obj.email != "serviso4u@gmail.com"
-    )?.email;
-    navigate(`/chat/${chatId}`, {
-      state: { messages, room: chatId, userEmail: usersEmail },
-    });
+    const usersEmail = messages.find(obj => obj.email != "serviso4u@gmail.com")?.email;
+    navigate(`/chat/${chatId}`, { state: { messages, room: chatId, userEmail: usersEmail } });
   };
 
   useEffect(() => {
@@ -42,8 +38,8 @@ const MainMenu = () => {
 
   useEffect(() => {
     // Fetch all messages from Firestore
-    const unsubscribe = onSnapshot(collection(db, "chats"), (snapshot) => {
-      const messages = [];
+    const unsubscribe = onSnapshot(query(chatsRef, orderBy("createdAt")), (snapshot) => {
+      const chatMap = new Map(); // Initialize a new map
       snapshot.forEach((doc) => {
         const messageData = doc.data();
         const message = {
@@ -56,25 +52,17 @@ const MainMenu = () => {
           translatedText: messageData.translatedText,
           user: { _id: messageData.user._id },
         };
-        messages.push(message);
-      });
-  
-      // Sort the messages locally in descending order based on createdAt timestamp
-      messages.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  
-      // Group messages by room
-      const chatMap = new Map();
-      messages.forEach((message) => {
+
         if (!chatMap.has(message.room)) {
           chatMap.set(message.room, []);
         }
         chatMap.get(message.room).push(message);
       });
-  
+
       // Update the state with the chatMap
       setChatsMap(chatMap);
     });
-  
+
     return () => {
       unsubscribe();
     };
@@ -97,18 +85,10 @@ const MainMenu = () => {
     }
   };
 
-  const handleSearchClear = () => {
-    // Clear search results and use the original messages from the map
-    const flatMessages = Array.from(chatsMap.values()).flat();
-    setFilteredChats(flatMessages);
-    setInputKey((prevKey) => prevKey + 1);
-  };
-
   return (
     <div className="container">
       <div className="main-menu-container">
-        <h1>Chats</h1>
-        <div className="main-menu-header"></div>
+        <div className="main-menu-header">Chats</div>
         <div className="chat-row">
           <div>
             <Input
@@ -123,22 +103,17 @@ const MainMenu = () => {
             {Array.from(filteredChats.keys()).map((room) => {
               const messagesForRoom = filteredChats.get(room);
 
-              const isThereUsersMessage = messagesForRoom.find(
-                (obj) => obj.email != "serviso4u@gmail.com"
-              );
-              if (!isThereUsersMessage) return <></>;
+              const isThereUsersMessage = messagesForRoom.find(obj => obj.email != "serviso4u@gmail.com")
+              if (!isThereUsersMessage)
+                return <></>
 
               const lastMessage = messagesForRoom[messagesForRoom.length - 1];
               const title = `Room ${room}`;
-              const subtitle =
-                lastMessage?.email === "serviso4u@gmail.com"
-                  ? "Me: " +
-                    lastMessage?.text.slice(0, 30) +
-                    (lastMessage?.text.length > 30 ? "..." : "")
-                  : lastMessage.name +
-                    ": " +
-                    lastMessage?.translatedText.slice(0, 30) +
-                    (lastMessage?.translatedText.length > 30 ? "..." : "");
+              const subtitle = lastMessage?.email === "serviso4u@gmail.com" ?
+                "Me: " + lastMessage?.text.slice(0, 30) +
+                (lastMessage?.text.length > 30 ? "..." : "") :
+                lastMessage.name + ": " +lastMessage?.translatedText.slice(0, 30) +
+                (lastMessage?.translatedText.length > 30 ? "..." : "");
               const date = lastMessage?.createdAt?.toLocaleString();
 
               return (
@@ -171,5 +146,6 @@ const MainMenu = () => {
     </div>
   );
 };
+
 
 export default MainMenu;
