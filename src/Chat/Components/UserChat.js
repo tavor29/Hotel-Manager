@@ -45,13 +45,20 @@ const ChatPage = () => {
       snapshot.forEach((doc) => {
         messages.push({ ...doc.data(), _id: doc.id });
       });
-      setMessages(messages);
+
+      const sortedMessages = [...messages].sort((a, b) =>
+        a.createdAt.localeCompare(b.createdAt)
+      );
+
+      // Update the messages state with the sorted messages
+      setMessages(sortedMessages);
     });
 
     return () => {
       unsuscribe();
     };
   }, [room]);
+
 
   const handleInputChange = (event) => {
     setNewMessage(event.target.value);
@@ -92,24 +99,27 @@ const ChatPage = () => {
   };
 
   const handleSendMessage = async () => {
-    newMessage.trim();
+    newMessage.trim()
+    const createdAt = new Date().toISOString();
     if (newMessage.trim() !== "") {
+      setMessages([...messages, {
+        createdAt: createdAt,
+        text: newMessage,
+        email: "serviso4u@gmail.com",
+        room: room,
+        user: { _id: "serviso4u@gmail.com", name: "Reception", avatar: "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFufGVufDB8fDB8fHww&w=1000&q=80" }
+      }])
       const translatedMessage = await GetTranslatedMessage();
 
       if (translatedMessage) {
         await addDoc(chatsRef, {
-          createdAt: new Date().toISOString(),
+          createdAt: createdAt,
           text: newMessage,
           translatedText: translatedMessage,
           email: "serviso4u@gmail.com",
           name: "Reception",
           room: room,
-          user: {
-            _id: "serviso4u@gmail.com",
-            name: "Reception",
-            avatar:
-              "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFufGVufDB8fDB8fHww&w=1000&q=80",
-          },
+          user: { _id: "serviso4u@gmail.com", name: "Reception", avatar: "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFufGVufDB8fDB8fHww&w=1000&q=80" }
         });
         setNewMessage("");
         setInputKey((prevKey) => prevKey + 1);
@@ -148,10 +158,7 @@ const ChatPage = () => {
             dataSource={messages.map((message) => ({
               ...message,
               type: "text",
-              text:
-                message.email === receivedFrom
-                  ? message.text
-                  : message.translatedText,
+              text: message.translatedText == "" || !message.translatedText ? message.text : message.email === receivedFrom ? message.text : message.translatedText,
               position: message.email === receivedFrom ? "right" : "left",
               title: message.email === receivedFrom ? "Me" : message.name,
               date: message.createdAt,
