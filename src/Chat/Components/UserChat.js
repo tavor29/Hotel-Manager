@@ -119,8 +119,8 @@ const ChatPage = () => {
       setMessages((prevMessages) => [
         ...prevMessages,
         newMessageData,
-      ].sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
-      
+      ].sort((a, b) => a.createdAt.localeCompare(b.createdAt)));
+
       const translatedMessage = await GetTranslatedMessage();
 
       if (translatedMessage) {
