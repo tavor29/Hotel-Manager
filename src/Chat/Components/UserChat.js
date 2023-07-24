@@ -37,21 +37,28 @@ const ChatPage = () => {
 
     const queryMessages = query(
       chatsRef,
-      where("room", "==", room),
-      orderBy("createdAt", "asc")
+      where("room", "==", room)
+      // Remove the orderBy("createdAt", "asc") from here
     );
-    const unsuscribe = onSnapshot(queryMessages, (snapshot) => {
+    const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
       let messages = [];
       snapshot.forEach((doc) => {
         messages.push({ ...doc.data(), _id: doc.id });
       });
-      setMessages(messages);
+
+      // Sort the messages by createdAt in descending order
+      const sortedMessages = messages.sort((a, b) =>
+        a.createdAt.localeCompare(b.createdAt)
+      );
+
+      setMessages(sortedMessages);
     });
 
     return () => {
-      unsuscribe();
+      unsubscribe();
     };
   }, [room]);
+
 
   const handleInputChange = (event) => {
     setNewMessage(event.target.value);
