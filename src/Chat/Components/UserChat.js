@@ -84,7 +84,7 @@ const ChatPage = () => {
 
       if (response.ok) {
         const responseString = await response.text();
-        return  responseString.substring(1, responseString.length -1);
+        return responseString.substring(1, responseString.length - 1);
       } else {
         return null;
       }
@@ -96,10 +96,16 @@ const ChatPage = () => {
   const handleSendMessage = async () => {
     newMessage.trim()
     if (newMessage.trim() !== "") {
-
+      setMessages([...messages, {
+        createdAt: new Date().toISOString(),
+        text: newMessage,
+        email: "serviso4u@gmail.com",
+        room: room,
+        user: { _id: "serviso4u@gmail.com", name: "Reception", avatar: "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFufGVufDB8fDB8fHww&w=1000&q=80" }
+      }])
       const translatedMessage = await GetTranslatedMessage();
 
-      if(translatedMessage){
+      if (translatedMessage) {
         await addDoc(chatsRef, {
           createdAt: new Date().toISOString(),
           text: newMessage,
@@ -141,7 +147,7 @@ const ChatPage = () => {
             dataSource={messages.map((message) => ({
               ...message,
               type: "text",
-              text: message.email === receivedFrom ? message.text : message.translatedText,
+              text: message.translatedText == "" || !message.translatedText ? message.text : message.email === receivedFrom ? message.text : message.translatedText,
               position: message.email === receivedFrom ? "right" : "left",
               title: message.email === receivedFrom ? "Me" : message.name,
               date: message.createdAt,
