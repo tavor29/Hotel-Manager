@@ -95,9 +95,10 @@ const ChatPage = () => {
 
   const handleSendMessage = async () => {
     newMessage.trim()
+    const createdAt =  new Date().toISOString();
     if (newMessage.trim() !== "") {
       setMessages([...messages, {
-        createdAt: new Date().toISOString(),
+        createdAt: createdAt,
         text: newMessage,
         email: "serviso4u@gmail.com",
         room: room,
@@ -107,7 +108,7 @@ const ChatPage = () => {
 
       if (translatedMessage) {
         await addDoc(chatsRef, {
-          createdAt: new Date().toISOString(),
+          createdAt: createdAt,
           text: newMessage,
           translatedText: translatedMessage,
           email: "serviso4u@gmail.com",
