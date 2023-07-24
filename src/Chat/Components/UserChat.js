@@ -102,13 +102,25 @@ const ChatPage = () => {
     newMessage.trim()
     const createdAt = new Date().toISOString();
     if (newMessage.trim() !== "") {
-      setMessages([...messages, {
+      const newMessageData = {
         createdAt: createdAt,
         text: newMessage,
         email: "serviso4u@gmail.com",
         room: room,
-        user: { _id: "serviso4u@gmail.com", name: "Reception", avatar: "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFufGVufDB8fDB8fHww&w=1000&q=80" }
-      }])
+        user: {
+          _id: "serviso4u@gmail.com",
+          name: "Reception",
+          avatar:
+            "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFufGVufDB8fDB8fHww&w=1000&q=80",
+        },
+      };
+
+      // Add the new message to the state and sort by createdAt in descending order
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        newMessageData,
+      ].sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
+      
       const translatedMessage = await GetTranslatedMessage();
 
       if (translatedMessage) {
