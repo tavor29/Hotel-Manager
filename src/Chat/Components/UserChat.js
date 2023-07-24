@@ -144,7 +144,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container1">
       <div className="chat-page-container">
         <div
           className="chat-page-header"

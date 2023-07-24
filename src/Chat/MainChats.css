@@ -7,7 +7,11 @@
   /* Remove underline style from links */
   margin: 15px;
 }
-
+h1{
+  font-size:30px;
+  padding: 10px;
+  margin-top: 0;
+}
 .chat-list-item:hover {
   background-color: #e0e0e0;
 }
@@ -29,11 +33,12 @@
 }
 
 .main-menu-container {
-  margin-left: 12px;
+  margin-left: 10px;
+  
 }
 
 .main-menu-header {
   text-align: center;
   font-size: 30px;
-  margin-bottom: 10px;
+  margin-bottom: -20px;
 }
