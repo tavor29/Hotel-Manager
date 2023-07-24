@@ -38,12 +38,6 @@ function Navbar() {
             <h2 className="textBar">Chat</h2>
           </button>
         </Link>
-        <Link to="/chat/:id">
-          <button className="buttonBar">
-            <BiMessage className="barIcons" />
-            <h2 className="textBar">Chats</h2>
-          </button>
-        </Link>
       </div>
       {/* <nav className="navbar">
         <ul className={click ? "nav-menu active" : "nav-menu"}>

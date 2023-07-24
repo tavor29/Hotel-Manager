@@ -20,6 +20,10 @@ import PassReset from "./Login/PassReset";
 import Register from "./Login/Register";
 import Validator from "./Login/Validator";
 
+//firebase
+import { auth } from './firebase-config';
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState(""); // Add username state
@@ -35,7 +39,7 @@ function App() {
   }, []);
 
   // Basic login function for demonstration purposes
-  const handleLogin = (username) => {
+  const handleLogin = async (username) => {
     // Save the login status to localStorage
     localStorage.setItem("isLoggedIn", username);
     setUsername(username); // Store the entered username in the state
@@ -44,8 +48,10 @@ function App() {
   };
 
   // Basic logout function
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut(auth);
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("auth-token");
     setUsername(""); // Reset the username state
     setIsLoggedIn(false);
     navigate("/"); // Redirect the user to the login page after logout
@@ -70,7 +76,7 @@ function App() {
       ) : (
         <>
           <Routes>
-            <Route path="/" element={<LoginPage handleLogin={handleLogin} />} />
+            <Route path="/" element={<LoginPage handleLogin={handleLogin}/>} />
             <Route path="/ForgotPass" element={<ForgotPass />} />
             <Route path="/Register" element={<Register />} />
             <Route path="/PassReset" element={<PassReset />} />

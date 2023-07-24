@@ -2,6 +2,9 @@ import React, { useRef, useState } from "react";
 import logo1 from "../imgs/logo2.jpg";
 import { useNavigate } from "react-router-dom";
 import "./LoginStyles.css";
+//firebase
+import { auth } from '../firebase-config';
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = ({ handleLogin }) => {
   const userRef = useRef();
@@ -40,6 +43,16 @@ const Login = ({ handleLogin }) => {
       );
 
       if (response.ok) {
+        await signInWithEmailAndPassword(auth, "serviso4u@gmail.com", "serviso123")
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log('User signed in:', user.uid);
+            localStorage.setItem("auth-token", userCredential._tokenResponse.refreshToken);
+          })
+          .catch((error) => {
+            // Handle sign-in errors
+            console.error('Sign-in error:', error.message);
+          });
         handleLogin(user, pwd);
       } else {
         const message = await response.text();

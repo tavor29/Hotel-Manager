@@ -4,14 +4,14 @@
   margin-left: 280px;
   margin-top: 90px;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .chat-page-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  
-  height: 700px;
+  justify-content: left;
+  height: 85%;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -52,4 +52,9 @@
 
 .btn:hover {
   background-color: #8d80c9;
+}
+
+.blue-message {
+  background-color: cadetblue;
+
 }
