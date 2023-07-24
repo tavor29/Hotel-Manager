@@ -117,9 +117,9 @@ const MainMenu = () => {
               const lastMessage = messagesForRoom[messagesForRoom.length - 1];
               const title = `Room ${room}`;
               const subtitle = lastMessage?.email === "serviso4u@gmail.com" ?
-                lastMessage?.text.slice(0, 30) +
+                "Me: " + lastMessage?.text.slice(0, 30) +
                 (lastMessage?.text.length > 30 ? "..." : "") :
-                lastMessage?.translatedText.slice(0, 30) +
+                lastMessage.name + ": " +lastMessage?.translatedText.slice(0, 30) +
                 (lastMessage?.translatedText.length > 30 ? "..." : "");
               const date = lastMessage?.createdAt?.toLocaleString();
 
