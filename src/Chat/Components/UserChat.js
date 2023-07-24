@@ -12,13 +12,14 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase-config";
 
+
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messageListRef = useRef(null);
   const [inputKey, setInputKey] = useState(0);
-  const [room, setRoom] = useState(null);
-  const [userEmail, setUserEmail] = useState(null);
+  const [room, setRoom] = useState(null)
+  const [userEmail, setUserEmail] = useState(null)
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,39 +27,33 @@ const ChatPage = () => {
 
   useEffect(() => {
     setMessages(location.state?.messages || []);
-    setRoom(location.state?.room || null);
-    setUserEmail(location.state?.userEmail || null);
+    setRoom(location.state?.room || null)
+    setUserEmail(location.state?.userEmail || null)
   }, [location.state?.messages]);
 
   const chatsRef = collection(db, "chats");
 
   useEffect(() => {
-    if (!room) return;
+    if (!room)
+      return
 
     const queryMessages = query(
       chatsRef,
-      where("room", "==", room)
-      // Remove the orderBy("createdAt", "asc") from here
+      where("room", "==", room),
+      orderBy("createdAt", "asc")
     );
-    const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
+    const unsuscribe = onSnapshot(queryMessages, (snapshot) => {
       let messages = [];
       snapshot.forEach((doc) => {
         messages.push({ ...doc.data(), _id: doc.id });
       });
-
-      // Sort the messages by createdAt in descending order
-      const sortedMessages = messages.sort((a, b) =>
-        a.createdAt.localeCompare(b.createdAt)
-      );
-
-      setMessages(sortedMessages);
+      setMessages(messages);
     });
 
     return () => {
-      unsubscribe();
+      unsuscribe();
     };
   }, [room]);
-
 
   const handleInputChange = (event) => {
     setNewMessage(event.target.value);
@@ -96,27 +91,30 @@ const ChatPage = () => {
     } catch (error) {
       return null;
     }
-  };
+  }
 
   const handleSendMessage = async () => {
-    newMessage.trim();
+    newMessage.trim()
     if (newMessage.trim() !== "") {
+      const time = new Date().toISOString();
+      setMessages([...messages, {
+        createdAt: time,
+        text: newMessage,
+        email: "serviso4u@gmail.com",
+        room: room,
+        user: { _id: "serviso4u@gmail.com", name: "Reception", avatar: "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFufGVufDB8fDB8fHww&w=1000&q=80" }
+      }])
       const translatedMessage = await GetTranslatedMessage();
 
       if (translatedMessage) {
         await addDoc(chatsRef, {
-          createdAt: new Date().toISOString(),
+          createdAt: time,
           text: newMessage,
           translatedText: translatedMessage,
           email: "serviso4u@gmail.com",
           name: "Reception",
           room: room,
-          user: {
-            _id: "serviso4u@gmail.com",
-            name: "Reception",
-            avatar:
-              "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFufGVufDB8fDB8fHww&w=1000&q=80",
-          },
+          user: { _id: "serviso4u@gmail.com", name: "Reception", avatar: "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFufGVufDB8fDB8fHww&w=1000&q=80" }
         });
         setNewMessage("");
         setInputKey((prevKey) => prevKey + 1);
@@ -131,19 +129,14 @@ const ChatPage = () => {
   return (
     <div className="container">
       <div className="chat-page-container">
-        <div
-          className="chat-page-header"
-          style={{ display: "flex", alignItems: "center" }}
-        >
+        <div className="chat-page-header" style={{ display: "flex", alignItems: "center" }}>
           <div style={{ flex: 1 }}>
             <button className="btn" onClick={handleGoBack}>
               Go Back
             </button>
           </div>
           <div style={{ flex: 1, textAlign: "center" }}>
-            <label style={{ fontSize: 22 }}>
-              Chat with Room {messages.map((obj) => obj.room)[0]}
-            </label>
+            <label style={{ fontSize: 22 }}>Chat with Room {messages.map(obj => obj.room)[0]}</label>
           </div>
           <div style={{ flex: 1 }}></div> {/* Empty div to create space */}
         </div>
@@ -155,10 +148,7 @@ const ChatPage = () => {
             dataSource={messages.map((message) => ({
               ...message,
               type: "text",
-              text:
-                message.email === receivedFrom
-                  ? message.text
-                  : message.translatedText,
+              text: message.translatedText == "" || !message.translatedText ? message.text : message.email === receivedFrom ? message.text : message.translatedText,
               position: message.email === receivedFrom ? "right" : "left",
               title: message.email === receivedFrom ? "Me" : message.name,
               date: message.createdAt,
@@ -182,7 +172,7 @@ const ChatPage = () => {
                 onClick={handleSendMessage}
               >
                 Send
-              </button>,
+              </button>
             ]}
           />
         </div>

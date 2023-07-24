@@ -42,39 +42,34 @@ const MainMenu = () => {
 
   useEffect(() => {
     // Fetch all messages from Firestore
-    const unsubscribe = onSnapshot(collection(db, "chats"), (snapshot) => {
-      const messages = [];
-      snapshot.forEach((doc) => {
-        const messageData = doc.data();
-        const message = {
-          id: doc.id,
-          createdAt: messageData.createdAt,
-          email: messageData.email,
-          name: messageData.name,
-          room: messageData.room,
-          text: messageData.text,
-          translatedText: messageData.translatedText,
-          user: { _id: messageData.user._id },
-        };
-        messages.push(message);
-      });
-  
-      // Sort the messages locally in descending order based on createdAt timestamp
-      messages.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  
-      // Group messages by room
-      const chatMap = new Map();
-      messages.forEach((message) => {
-        if (!chatMap.has(message.room)) {
-          chatMap.set(message.room, []);
-        }
-        chatMap.get(message.room).push(message);
-      });
-  
-      // Update the state with the chatMap
-      setChatsMap(chatMap);
-    });
-  
+    const unsubscribe = onSnapshot(
+      query(chatsRef, orderBy("createdAt")),
+      (snapshot) => {
+        const chatMap = new Map(); // Initialize a new map
+        snapshot.forEach((doc) => {
+          const messageData = doc.data();
+          const message = {
+            id: doc.id,
+            createdAt: messageData.createdAt,
+            email: messageData.email,
+            name: messageData.name,
+            room: messageData.room,
+            text: messageData.text,
+            translatedText: messageData.translatedText,
+            user: { _id: messageData.user._id },
+          };
+
+          if (!chatMap.has(message.room)) {
+            chatMap.set(message.room, []);
+          }
+          chatMap.get(message.room).push(message);
+        });
+
+        // Update the state with the chatMap
+        setChatsMap(chatMap);
+      }
+    );
+
     return () => {
       unsubscribe();
     };
@@ -97,18 +92,12 @@ const MainMenu = () => {
     }
   };
 
-  const handleSearchClear = () => {
-    // Clear search results and use the original messages from the map
-    const flatMessages = Array.from(chatsMap.values()).flat();
-    setFilteredChats(flatMessages);
-    setInputKey((prevKey) => prevKey + 1);
-  };
-
   return (
     <div className="container">
       <div className="main-menu-container">
         <h1>Chats</h1>
         <div className="main-menu-header"></div>
+
         <div className="chat-row">
           <div>
             <Input
