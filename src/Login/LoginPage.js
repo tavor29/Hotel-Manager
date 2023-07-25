@@ -29,7 +29,7 @@ const Login = ({ handleLogin }) => {
 
     try {
       const response = await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/login",
+        "https://proj.ruppin.ac.il/cgroup97/prod/api/login",
         {
           method: "POST",
           body: JSON.stringify({
@@ -46,7 +46,6 @@ const Login = ({ handleLogin }) => {
         await signInWithEmailAndPassword(auth, "serviso4u@gmail.com", "serviso123")
           .then((userCredential) => {
             const user = userCredential.user;
-            console.log('User signed in:', user.uid);
             localStorage.setItem("auth-token", userCredential._tokenResponse.refreshToken);
           })
           .catch((error) => {

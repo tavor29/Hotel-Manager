@@ -69,7 +69,7 @@ const ChatPage = () => {
   const GetTranslatedMessage = async () => {
     try {
       const response = await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/translateMessage",
+        "https://proj.ruppin.ac.il/cgroup97/prod/api/translateMessage",
         {
           method: "POST",
           body: JSON.stringify({

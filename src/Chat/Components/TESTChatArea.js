@@ -14,7 +14,7 @@ const Chat = () => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/GetMessages"
+        "https://proj.ruppin.ac.il/cgroup97/prod/api/GetMessages"
       );
       const data = await response.json();
       setMessages(data);
@@ -26,7 +26,7 @@ const Chat = () => {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/GetUsers"
+        "https://proj.ruppin.ac.il/cgroup97/prod/api/GetUsers"
       );
       const data = await response.json();
       setUsers(data);

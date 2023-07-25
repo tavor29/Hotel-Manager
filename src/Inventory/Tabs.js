@@ -11,7 +11,7 @@ export default function TabTasks() {
   const fetchJSON = async () => {
     try {
       const response = await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHotelServices?hotelID=1002"
+        "https://proj.ruppin.ac.il/cgroup97/prod/api/GetHotelServices?hotelID=1002"
       );
       if (response.status === 200) {
         setData(await response.json());

@@ -49,7 +49,7 @@ const InventoryManagementApp = ({ tab, category, fetchJSON }) => {
       console.log(JSON.stringify(postObject))
 
       const res = await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/AddOrUpdateService?hotelID=1002",
+        "https://proj.ruppin.ac.il/cgroup97/prod/api/AddOrUpdateService?hotelID=1002",
         {
           method: "POST",
           body: JSON.stringify(postObject),

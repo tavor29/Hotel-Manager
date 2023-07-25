@@ -88,10 +88,10 @@ function AddTaskForm({ setNewRow, handleSubmit, cat, ref }) {
       try {
         if (cat === "Room Service") {
           url =
-            "http://proj.ruppin.ac.il/cgroup97/test2/api/GetFoodTypes?hotelID=1002";
+            "https://proj.ruppin.ac.il/cgroup97/prod/api/GetFoodTypes?hotelID=1002";
         } else
           url =
-            "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomTypes";
+            "https://proj.ruppin.ac.il/cgroup97/prod/api/GetHouseHoldCustomTypes";
 
         const res = await fetch(url);
         const json = await res.json();

@@ -67,6 +67,8 @@ function App() {
             <Route path="/Schedule" element={<Schedule />} />
             <Route path="/Chats" element={<ChatMain />} />
             <Route path="/chat/:id" element={<Chat />} />
+            <Route path={"*"} element={<Dashboard />} />
+
           </Routes>
         </>
       ) : (
@@ -77,6 +79,7 @@ function App() {
             <Route path="/Register" element={<Register />} />
             <Route path="/PassReset" element={<PassReset />} />
             <Route path="/Validator" element={<Validator />} />
+            <Route path={"*"} element={<LoginPage handleLogin={handleLogin} />} />
           </Routes>
         </>
       )}

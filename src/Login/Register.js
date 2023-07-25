@@ -27,7 +27,7 @@ const Register = () => {
     console.log("register object:", userObject);
     try {
       const response = await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/signUP",
+        "https://proj.ruppin.ac.il/cgroup97/prod/api/signUP",
         {
           method: "POST",
           body: JSON.stringify(userObject),

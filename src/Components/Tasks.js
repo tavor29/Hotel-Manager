@@ -23,13 +23,13 @@ const fetchTable = async () => {
 
   if (cat === "Room Service") {
     url =
-      "http://proj.ruppin.ac.il/cgroup97/test2/api/GetRoomServiceRequest?hotelID=1002";
+      "https://proj.ruppin.ac.il/cgroup97/prod/api/GetRoomServiceRequest?hotelID=1002";
   } else if (cat === "Room Cleaning") {
     url =
-      "http://proj.ruppin.ac.il/cgroup97/test2/api/GetRoomCleaningSchedule?hotelID=1002";
+      "https://proj.ruppin.ac.il/cgroup97/prod/api/GetRoomCleaningSchedule?hotelID=1002";
   } else
     url =
-      "http://proj.ruppin.ac.il/cgroup97/test2/api/GetHouseHoldCustomRequests?hotelID=1002";
+      "https://proj.ruppin.ac.il/cgroup97/prod/api/GetHouseHoldCustomRequests?hotelID=1002";
 
   const res = await fetch(url);
 
@@ -127,11 +127,11 @@ function TableComponent() {
       let url;
 
       if (cat === "Room Service") {
-        url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkRoomServiceRequest?requestID=${id}&itemsCount=${typeID}`;
+        url = `https://proj.ruppin.ac.il/cgroup97/prod/api/MarkRoomServiceRequest?requestID=${id}&itemsCount=${typeID}`;
       } else if (cat === "Room Cleaning") {
-        url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkCleaningRequest?requestID=${id}`;
+        url = `https://proj.ruppin.ac.il/cgroup97/prod/api/MarkCleaningRequest?requestID=${id}`;
       } else {
-        url = `http://proj.ruppin.ac.il/cgroup97/test2/api/MarkCustomRequest?requestID=${id}&typeID=${typeID}`;
+        url = `https://proj.ruppin.ac.il/cgroup97/prod/api/MarkCustomRequest?requestID=${id}&typeID=${typeID}`;
       }
 
       await fetch(url, {
@@ -157,7 +157,7 @@ function TableComponent() {
         return;
       }
       const response = await fetch(
-        `http://proj.ruppin.ac.il/cgroup97/test2/api/AdminCreateHouseHoldRequest?roomNum=${newRow.roomNumber}&hotelID=1002`,
+        `https://proj.ruppin.ac.il/cgroup97/prod/api/AdminCreateHouseHoldRequest?roomNum=${newRow.roomNumber}&hotelID=1002`,
         {
           method: "POST",
           headers: {

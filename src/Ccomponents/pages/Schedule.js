@@ -65,7 +65,7 @@ export default function Schedule() {
   const fetchDashboardData = async () => {
     try {
       const response = await fetch(
-        "http://proj.ruppin.ac.il/cgroup97/test2/api/GetSpaOrders?hotelID=1002"
+        "https://proj.ruppin.ac.il/cgroup97/test2/api/GetSpaOrders?hotelID=1002"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
